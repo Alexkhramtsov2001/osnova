@@ -2,6 +2,7 @@
   "name": "osnova",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://alexkhramtsov2001.github.io/osnova",
   "type": "module",
   "scripts": {
     "dev": "vite",
