@@ -1,0 +1,132 @@
+.osnova-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--line, #e4e1d9);
+  border-radius: 0;
+  color: var(--ink, #252621);
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.osnova-select-trigger:hover,
+.osnova-select-trigger[data-state="open"] {
+  border-color: var(--accent, #b95e43);
+  background: #fffdfa;
+}
+
+.osnova-select-trigger:focus-visible {
+  outline: 2px solid var(--accent, #b95e43);
+  outline-offset: 3px;
+}
+
+.osnova-select-icon {
+  flex: 0 0 auto;
+  color: var(--accent, #b95e43);
+  font-size: 19px;
+  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.osnova-select-trigger[data-state="open"] .osnova-select-icon {
+  transform: rotate(180deg);
+}
+
+.osnova-select-content {
+  z-index: 100;
+  width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+  overflow: hidden;
+  border: 1px solid var(--line, #e4e1d9);
+  color: var(--ink, #252621);
+  background: #fbfaf7;
+  box-shadow: 0 16px 36px rgb(37 38 33 / 14%);
+  animation: osnova-select-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.osnova-select-content[data-state="closed"] {
+  animation: osnova-select-out 140ms ease-in;
+}
+
+.osnova-select-viewport {
+  padding: 5px;
+}
+
+.osnova-select-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 30px 8px 11px;
+  outline: none;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.osnova-select-item[data-highlighted] {
+  color: var(--accent-dark, #98462f);
+  background: #f5eee7;
+}
+
+.osnova-select-item[data-disabled] {
+  color: #aaa9a1;
+  cursor: not-allowed;
+}
+
+.osnova-select-indicator {
+  position: absolute;
+  right: 10px;
+  color: var(--accent, #b95e43);
+}
+
+.osnova-select-scroll {
+  display: grid;
+  height: 25px;
+  place-items: center;
+  color: var(--accent, #b95e43);
+  background: #fbfaf7;
+}
+
+@keyframes osnova-select-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes osnova-select-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .osnova-select-content {
+    animation: none;
+  }
+  .osnova-select-icon,
+  .osnova-select-trigger {
+    transition: none;
+  }
+}
