@@ -721,6 +721,7 @@
 
 .estimate-request-toggle,
 .estimate-request-copy,
+.estimate-demo-submit,
 .estimate-save-button {
   min-height: 42px;
   padding: 10px 16px;
@@ -734,6 +735,7 @@
 
 .estimate-request-toggle:focus-visible,
 .estimate-request-copy:focus-visible,
+.estimate-demo-submit:focus-visible,
 .estimate-save-button:focus-visible {
   outline: 2px solid var(--ink, #252621);
   outline-offset: 3px;
@@ -743,6 +745,19 @@
   margin: 0 0 0 9px;
   color: var(--accent-dark, #98462f);
   background: transparent;
+}
+
+.estimate-demo-submit {
+  margin: 0 0 14px;
+}
+
+.estimate-demo-submit:hover:not(:disabled) {
+  background: var(--accent-dark, #98462f);
+}
+
+.estimate-demo-submit:disabled {
+  opacity: 0.65;
+  cursor: default;
 }
 
 .estimate-save-button:hover {

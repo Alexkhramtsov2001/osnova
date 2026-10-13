@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import OsnovaSelect from "../../components/OsnovaSelect";
 import ContactIcon from "../../components/ContactIcon";
 import {
@@ -21,6 +21,7 @@ import {
   normalizeForArea,
 } from "./constraints";
 import { formatRequestSummary } from "./requestSummary";
+import { createDemoRequestPayload, submitDemoRequest } from "./demoRequest";
 import { contactLinks } from "../contact/links";
 import {
   readSavedEstimates,
@@ -122,6 +123,12 @@ export default function EstimateCalculator({
     readSavedEstimates(window.localStorage),
   );
   const [savedStatus, setSavedStatus] = useState("");
+  const [demoSubmission, setDemoSubmission] = useState<{
+    signature: string;
+    phase: "sending" | "sent" | "error";
+    message: string;
+  } | null>(null);
+  const demoRequestId = useRef<{ signature: string; id: string } | null>(null);
 
   const { estimate, inputError } = useMemo(() => {
     try {
@@ -141,6 +148,54 @@ export default function EstimateCalculator({
     estimate && includedStageCount > 0
       ? formatRequestSummary(parameters, estimate, projectName, constructionMode)
       : null;
+  const requestSignature = JSON.stringify({
+    parameters,
+    constructionMode,
+    selectedStageIds,
+    total: estimate?.total,
+  });
+  const currentSubmission = demoSubmission?.signature === requestSignature ? demoSubmission : null;
+
+  const sendDemoRequest = async () => {
+    if (
+      !estimate ||
+      includedStageCount === 0 ||
+      currentSubmission?.phase === "sending" ||
+      currentSubmission?.phase === "sent"
+    )
+      return;
+    const id =
+      demoRequestId.current?.signature === requestSignature
+        ? demoRequestId.current.id
+        : crypto.randomUUID();
+    demoRequestId.current = { signature: requestSignature, id };
+    setDemoSubmission({
+      signature: requestSignature,
+      phase: "sending",
+      message: "Отправляем тестовую заявку…",
+    });
+    try {
+      const payload = createDemoRequestPayload(
+        parameters,
+        estimate,
+        projectName,
+        constructionMode,
+        id,
+      );
+      const savedId = await submitDemoRequest(payload);
+      setDemoSubmission({
+        signature: requestSignature,
+        phase: "sent",
+        message: `Тестовая заявка сохранена в Supabase. Номер: ${savedId.slice(0, 8)}.`,
+      });
+    } catch {
+      setDemoSubmission({
+        signature: requestSignature,
+        phase: "error",
+        message: "Не удалось сохранить тестовую заявку. Попробуйте ещё раз позже.",
+      });
+    }
+  };
 
   const copySummary = async () => {
     if (!requestSummary) return;
@@ -617,10 +672,33 @@ export default function EstimateCalculator({
               {requestSummary && (
                 <div className="estimate-request-card">
                   <span className="estimate-overline">СЛЕДУЮЩИЙ ШАГ</span>
-                  <h3>Подготовить обращение</h3>
+                  <h3>Проверить отправку заявки</h3>
                   <p>
-                    Соберите параметры и ориентиры расчёта в один текст. Это портфолио-демо: заявка
-                    не отправляется.
+                    Тестовая заявка сохранит в Supabase только параметры дома и расчёта. Имя,
+                    телефон, email и сообщения посетителей не запрашиваются.
+                  </p>
+                  <button
+                    type="button"
+                    className="estimate-demo-submit"
+                    onClick={sendDemoRequest}
+                    disabled={
+                      currentSubmission?.phase === "sending" || currentSubmission?.phase === "sent"
+                    }
+                  >
+                    {currentSubmission?.phase === "sending"
+                      ? "Отправляем…"
+                      : currentSubmission?.phase === "sent"
+                        ? "Тестовая заявка отправлена"
+                        : "Отправить тестовую заявку"}
+                  </button>
+                  {currentSubmission && (
+                    <p role={currentSubmission.phase === "error" ? "alert" : "status"}>
+                      {currentSubmission.message}
+                    </p>
+                  )}
+                  <p className="estimate-contact-note">
+                    Это проверка работы сайта, а не запрос на строительство. Для связи с автором
+                    используйте контакты ниже.
                   </p>
                   <button
                     type="button"
