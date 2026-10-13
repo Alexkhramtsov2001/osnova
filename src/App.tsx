@@ -270,6 +270,11 @@ function HomePage({
     setHouseParameters(next);
     if (next.projectType !== "standard") setSelectedProjectName(null);
   };
+  const restoreHouseParameters = (next: HouseParameters, projectName: string | null) => {
+    setHouseParameters(next);
+    setSelectedProjectName(projectName);
+    calculatorRef.current?.focus({ preventScroll: true });
+  };
   const catalogResultsRef = useRef<HTMLDivElement>(null);
   const [favoriteNotice, setFavoriteNotice] = useState<{ name: string; added: boolean } | null>(
     null,
@@ -705,6 +710,7 @@ function HomePage({
           <EstimateCalculator
             parameters={houseParameters}
             onParametersChange={updateHouseParameters}
+            onRestore={restoreHouseParameters}
             projectName={selectedProjectName}
             onReset={resetHouseParameters}
           />

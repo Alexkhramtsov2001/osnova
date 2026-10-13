@@ -6,6 +6,7 @@ import {
   WALL_MATERIALS,
   HOUSE_NUMBER_LIMITS,
   DEMO_ESTIMATE_CATALOG,
+  DEMO_ESTIMATE_DATA,
   PROJECT_TYPES,
   DEMO_REGIONS,
   DEMO_DELIVERY,
@@ -96,6 +97,7 @@ function Field({
 type EstimateCalculatorProps = {
   parameters: HouseParameters;
   onParametersChange: (parameters: HouseParameters) => void;
+  onRestore: (parameters: HouseParameters, projectName: string | null) => void;
   projectName: string | null;
   onReset: () => void;
 };
@@ -103,6 +105,7 @@ type EstimateCalculatorProps = {
 export default function EstimateCalculator({
   parameters,
   onParametersChange,
+  onRestore,
   projectName,
   onReset,
 }: EstimateCalculatorProps) {
@@ -168,6 +171,11 @@ export default function EstimateCalculator({
       mode: constructionMode,
       dataVersion: estimate.dataVersion,
       summary: requestSummary,
+      configuration: {
+        parameters: { ...parameters },
+        stageIds: [...selectedStageIds],
+        projectName,
+      },
     };
     const next = [entry, ...savedEstimates].slice(0, SAVED_ESTIMATES_LIMIT);
     if (!writeSavedEstimates(window.localStorage, next)) {
@@ -197,6 +205,19 @@ export default function EstimateCalculator({
         "Не удалось скопировать автоматически. Выделите текст сохранённой сводки вручную.",
       );
     }
+  };
+
+  const restoreSavedEstimate = (entry: SavedEstimate) => {
+    if (!entry.configuration) return;
+    onRestore({ ...entry.configuration.parameters }, entry.configuration.projectName);
+    setConstructionMode(entry.mode);
+    setSelectedStageIds([...entry.configuration.stageIds]);
+    setSavedStatus(
+      entry.dataVersion === DEMO_ESTIMATE_DATA.version
+        ? "Параметры восстановлены. Сводка ниже осталась снимком сохранённого расчёта."
+        : "Параметры восстановлены и пересчитаны по текущей демо-базе. Сохранённая сводка не изменилась.",
+    );
+    document.getElementById("calculator")?.scrollIntoView();
   };
 
   const toggleIncludedStage = (id: EstimateStageId) => {
@@ -791,7 +812,8 @@ export default function EstimateCalculator({
         </div>
         <p>
           Сохраняется снимок сводки с версией демо-данных. Он не меняется при последующих правках
-          калькулятора и доступен только в этом браузере. Новые записи сверх лимита заменяют самые
+          калькулятора. Новые записи можно загрузить в поля для повторного расчёта по текущей
+          демо-базе. Данные доступны только в этом браузере; записи сверх лимита заменяют самые
           старые.
         </p>
         {savedStatus && (
@@ -828,6 +850,15 @@ export default function EstimateCalculator({
                     Удалить
                   </button>
                 </div>
+                {entry.configuration && (
+                  <button
+                    type="button"
+                    onClick={() => restoreSavedEstimate(entry)}
+                    aria-label={`Загрузить параметры расчёта ${entry.title}`}
+                  >
+                    Загрузить параметры
+                  </button>
+                )}
                 <details>
                   <summary>Посмотреть сохранённую сводку</summary>
                   <textarea

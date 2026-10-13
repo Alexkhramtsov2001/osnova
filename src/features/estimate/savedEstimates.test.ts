@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { DEFAULT_HOUSE_PARAMETERS } from "./catalog";
 import {
   normalizeSavedEstimates,
   readSavedEstimates,
@@ -14,6 +15,14 @@ const sample = {
   mode: "turnkey" as const,
   dataVersion: "demo-1",
   summary: "Расчёт и допущения",
+};
+const withConfiguration = {
+  ...sample,
+  configuration: {
+    parameters: { ...DEFAULT_HOUSE_PARAMETERS },
+    stageIds: ["foundation", "walls"] as ("foundation" | "walls")[],
+    projectName: "Север",
+  },
 };
 
 describe("сохранённые расчёты", () => {
@@ -31,8 +40,21 @@ describe("сохранённые расчёты", () => {
         stored = value;
       },
     };
-    expect(writeSavedEstimates(storage, [sample])).toBe(true);
-    expect(readSavedEstimates(storage)).toEqual([sample]);
+    expect(writeSavedEstimates(storage, [withConfiguration, { ...sample, id: "legacy" }])).toBe(
+      true,
+    );
+    expect(readSavedEstimates(storage)).toEqual([withConfiguration, { ...sample, id: "legacy" }]);
+  });
+
+  it("сохраняет старую текстовую сводку, если конфигурация повреждена", () => {
+    const damaged = {
+      ...withConfiguration,
+      configuration: {
+        ...withConfiguration.configuration,
+        parameters: { ...DEFAULT_HOUSE_PARAMETERS, area: 5 },
+      },
+    };
+    expect(normalizeSavedEstimates([damaged])).toEqual([sample]);
   });
 
   it("сообщает, когда браузер не разрешает запись", () => {
