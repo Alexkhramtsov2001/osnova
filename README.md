@@ -56,6 +56,12 @@ npm run dev
 
 Vite покажет локальный адрес сайта в терминале.
 
+## Публикация на GitHub Pages
+
+В репозитории `Alexkhramtsov2001/osnova` выберите **Settings → Pages → Build and deployment → Source → GitHub Actions**. Файл `.github/workflows/deploy.yml` собирает сайт и публикует папку `dist` при отправке изменений в `main`. Публикация из ветки `main` и папки `/(root)` отдаёт исходный `index.html` вместо собранного приложения и приводит к пустому экрану.
+
+Сборка использует базовый адрес `/osnova/`; локальный сервер работает от `/`. Workflow также добавляет `404.html` для прямого открытия страниц проектов и сравнения на GitHub Pages. После завершения публикации сайт доступен по адресу `https://alexkhramtsov2001.github.io/osnova/`.
+
 ## Проверки
 
 ```bash

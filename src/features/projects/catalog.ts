@@ -16,6 +16,9 @@ export type Project = {
   image: string;
 };
 
+const projectImage = (filename: string) =>
+  `${import.meta.env?.BASE_URL ?? "/"}images/projects/${filename}`;
+
 export const projects: readonly Project[] = [
   {
     number: "01",
@@ -40,7 +43,7 @@ export const projects: readonly Project[] = [
     area: 118,
     floors: 1,
     bedrooms: 3,
-    image: "/images/projects/scandinavia.jpg",
+    image: projectImage("scandinavia.jpg"),
   },
   {
     number: "02",
@@ -65,7 +68,7 @@ export const projects: readonly Project[] = [
     area: 164,
     floors: 2,
     bedrooms: 4,
-    image: "/images/projects/sever.jpg",
+    image: projectImage("sever.jpg"),
   },
   {
     number: "03",
@@ -91,7 +94,7 @@ export const projects: readonly Project[] = [
     area: 142,
     floors: 1,
     bedrooms: 3,
-    image: "/images/projects/lesnoy.jpg",
+    image: projectImage("lesnoy.jpg"),
   },
   {
     number: "04",
@@ -115,7 +118,7 @@ export const projects: readonly Project[] = [
     area: 90,
     floors: 1,
     bedrooms: 2,
-    image: "/images/projects/compact.jpg",
+    image: projectImage("compact.jpg"),
   },
   {
     number: "05",
@@ -140,7 +143,7 @@ export const projects: readonly Project[] = [
     area: 185,
     floors: 2,
     bedrooms: 5,
-    image: "/images/projects/semeyny.jpg",
+    image: projectImage("semeyny.jpg"),
   },
   {
     number: "06",
@@ -165,7 +168,7 @@ export const projects: readonly Project[] = [
     area: 150,
     floors: 1,
     bedrooms: 4,
-    image: "/images/projects/terrace.jpg",
+    image: projectImage("terrace.jpg"),
   },
   {
     number: "07",
@@ -190,7 +193,7 @@ export const projects: readonly Project[] = [
     area: 220,
     floors: 2,
     bedrooms: 5,
-    image: "/images/projects/prostor.jpg",
+    image: projectImage("prostor.jpg"),
   },
   {
     number: "08",
@@ -214,6 +217,6 @@ export const projects: readonly Project[] = [
     area: 135,
     floors: 1,
     bedrooms: 2,
-    image: "/images/projects/harmonia.jpg",
+    image: projectImage("harmonia.jpg"),
   },
 ];
