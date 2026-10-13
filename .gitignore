@@ -28,3 +28,5 @@ dist-ssr
 .env.*
 !.env.example
 test-results/
+supabase/.temp/
+supabase/.branches/
