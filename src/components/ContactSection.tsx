@@ -1,5 +1,6 @@
 import { CONTACTS, contactLinks } from "../features/contact/links";
 import ContactIcon from "./ContactIcon";
+import ArrowIcon from "./ArrowIcon";
 
 type ContactSectionProps = {
   id?: string;
@@ -38,7 +39,7 @@ export default function ContactSection({
             </span>
             <span>Email</span>
             <span className="contact-option-arrow" aria-hidden="true">
-              ↗
+              <ArrowIcon />
             </span>
           </span>
           <strong>{CONTACTS.email}</strong>
@@ -58,7 +59,7 @@ export default function ContactSection({
             </span>
             <span>Telegram</span>
             <span className="contact-option-arrow" aria-hidden="true">
-              ↗
+              <ArrowIcon />
             </span>
           </span>
           <strong>@{CONTACTS.telegramUsername}</strong>
@@ -76,7 +77,7 @@ export default function ContactSection({
             </span>
             <span>ВКонтакте</span>
             <span className="contact-option-arrow" aria-hidden="true">
-              ↗
+              <ArrowIcon />
             </span>
           </span>
           <strong>khramtsov2001</strong>

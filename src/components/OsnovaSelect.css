@@ -34,9 +34,12 @@
 .osnova-select-icon {
   flex: 0 0 auto;
   color: var(--accent, #b95e43);
-  font-size: 19px;
-  line-height: 1;
   transition: transform 180ms ease;
+}
+
+.osnova-select-icon .arrow-icon {
+  width: 19px;
+  height: 19px;
 }
 
 .osnova-select-trigger[data-state="open"] .osnova-select-icon {

@@ -9,6 +9,7 @@ import {
   useSearchParams,
 } from "react-router";
 import SiteHeader from "./components/SiteHeader";
+import ArrowIcon from "./components/ArrowIcon";
 import ContactSection from "./components/ContactSection";
 import RouteScrollManager from "./components/RouteScrollManager";
 import "./App.css";
@@ -100,7 +101,7 @@ function HouseCard({
             loading="lazy"
           />
           <span className="project-arrow" aria-hidden="true">
-            ↗
+            <ArrowIcon />
           </span>
         </Link>
         <button
@@ -159,7 +160,7 @@ function HouseCard({
             onClick={onCalculate}
             aria-label={`Рассчитать стоимость проекта ${project.name}`}
           >
-            Рассчитать ↗
+            Рассчитать <ArrowIcon />
           </a>
           {showCompareControl && (
             <button
@@ -340,7 +341,7 @@ function HomePage({
           </span>
           {favoriteNotice.added && (
             <a href="#projects" onClick={() => setShowFavorites(true)}>
-              Показать избранное ↗
+              Показать избранное <ArrowIcon />
             </a>
           )}
         </div>
@@ -367,10 +368,10 @@ function HomePage({
 
             <div className="hero-actions">
               <a className="button button-primary" href="#calculator">
-                Рассчитать стоимость <span aria-hidden="true">↗</span>
+                Рассчитать стоимость <ArrowIcon />
               </a>
               <a className="button button-secondary" href="#projects">
-                Смотреть проекты <span aria-hidden="true">↓</span>
+                Смотреть проекты <ArrowIcon direction="down" />
               </a>
             </div>
 
@@ -445,7 +446,9 @@ function HomePage({
             </button>
             <div className="image-label">
               <div className="hero-slide-caption" aria-live={heroFocused ? "polite" : "off"}>
-                <a href={`#project-${featuredProject.number}`}>Проект «{featuredProject.name}» ↗</a>
+                <a href={`#project-${featuredProject.number}`}>
+                  Проект «{featuredProject.name}» <ArrowIcon />
+                </a>
               </div>
             </div>
           </div>
@@ -581,7 +584,7 @@ function HomePage({
                   state={{ fromCatalog: true }}
                   onClick={() => setComparisonIds([...favoriteProjects])}
                 >
-                  Сравнить {favoriteProjects.length} дома ↗
+                  Сравнить {favoriteProjects.length} дома <ArrowIcon />
                 </Link>
               )}
               {favoriteProjects.length > 3 && comparisonIds.length >= 2 && (
@@ -590,7 +593,7 @@ function HomePage({
                   to={comparisonUrl(comparisonIds)}
                   state={{ fromCatalog: true }}
                 >
-                  Сравнить выбранные ({comparisonIds.length}/3) ↗
+                  Сравнить выбранные ({comparisonIds.length}/3) <ArrowIcon />
                 </Link>
               )}
             </div>
@@ -643,7 +646,7 @@ function HomePage({
           <div className="projects-footer">
             <p>Это лишь несколько идей. Подберём решение под ваши задачи.</p>
             <a href="#calculator">
-              Подобрать свой дом <span aria-hidden="true">↗</span>
+              Подобрать свой дом <ArrowIcon />
             </a>
           </div>
         </section>
@@ -725,7 +728,9 @@ function HomePage({
           </span>
         </div>
         <p>Демонстрационный проект строительной компании.</p>
-        <a href="#home">Вернуться наверх ↑</a>
+        <a href="#home">
+          Вернуться наверх <ArrowIcon direction="up" />
+        </a>
       </footer>
     </div>
   );
@@ -838,7 +843,7 @@ function ComparisonPage({
                           to={`/?project=${project.number}#calculator`}
                           aria-label={`Рассчитать стоимость проекта ${project.name}`}
                         >
-                          Рассчитать этот дом ↗
+                          Рассчитать этот дом <ArrowIcon />
                         </Link>
                         <button
                           className="comparison-remove"
@@ -987,7 +992,7 @@ function ComparisonPage({
                       to={`/?project=${project.number}#calculator`}
                       aria-label={`Рассчитать стоимость проекта ${project.name}`}
                     >
-                      Рассчитать этот дом ↗
+                      Рассчитать этот дом <ArrowIcon />
                     </Link>
                   </article>
                 );
@@ -1008,7 +1013,7 @@ function ComparisonPage({
               списка.
             </p>
             <Link className="button button-primary" to="/#projects">
-              Выбрать проекты ↗
+              Выбрать проекты <ArrowIcon />
             </Link>
           </div>
         )}
@@ -1037,7 +1042,7 @@ function ProjectPage() {
           <p className="eyebrow">ПРОЕКТ НЕ НАЙДЕН</p>
           <h1>Такого дома в подборке нет.</h1>
           <Link className="button button-primary" to="/#projects">
-            Вернуться к проектам ↗
+            Вернуться к проектам <ArrowIcon />
           </Link>
         </main>
       </div>
@@ -1202,7 +1207,7 @@ function ProjectPage() {
               коммерческое предложение.
             </p>
             <Link className="button button-primary" to={`/?project=${project.number}#calculator`}>
-              Рассчитать этот дом ↗
+              Рассчитать этот дом <ArrowIcon />
             </Link>
           </div>
         </section>

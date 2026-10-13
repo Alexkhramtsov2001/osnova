@@ -1,5 +1,6 @@
 import { useId } from "react";
 import * as Select from "@radix-ui/react-select";
+import ArrowIcon from "./ArrowIcon";
 import "./OsnovaSelect.css";
 
 type Option = { value: string; label: string; disabled?: boolean };
@@ -28,7 +29,7 @@ export default function OsnovaSelect({
       >
         <Select.Value />
         <Select.Icon className="osnova-select-icon" aria-hidden="true">
-          ⌄
+          <ArrowIcon direction="chevron-down" />
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
@@ -38,7 +39,9 @@ export default function OsnovaSelect({
           sideOffset={6}
           collisionPadding={12}
         >
-          <Select.ScrollUpButton className="osnova-select-scroll">↑</Select.ScrollUpButton>
+          <Select.ScrollUpButton className="osnova-select-scroll">
+            <ArrowIcon direction="up" />
+          </Select.ScrollUpButton>
           <Select.Viewport className="osnova-select-viewport">
             {options.map((option) => (
               <Select.Item
@@ -52,7 +55,9 @@ export default function OsnovaSelect({
               </Select.Item>
             ))}
           </Select.Viewport>
-          <Select.ScrollDownButton className="osnova-select-scroll">↓</Select.ScrollDownButton>
+          <Select.ScrollDownButton className="osnova-select-scroll">
+            <ArrowIcon direction="down" />
+          </Select.ScrollDownButton>
         </Select.Content>
       </Select.Portal>
     </Select.Root>

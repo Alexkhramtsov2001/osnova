@@ -51,3 +51,32 @@ test("свайп меняет проект и не открывает ссылк
   await expect(page.locator(".hero-slide-caption")).toContainText("Проект «Север»");
   await expect(page).toHaveURL(/\/$/);
 });
+
+test("на телефоне фото занимает первый экран, а стрелки кнопок остаются видимыми", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+
+  const visual = page.locator(".hero-visual");
+  const image = page.locator(".hero-image");
+  await expect
+    .poll(async () =>
+      image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0),
+    )
+    .toBe(true);
+  const visualBox = await visual.boundingBox();
+  const imageBox = await image.boundingBox();
+  expect(visualBox!.width).toBeGreaterThan(300);
+  expect(visualBox!.height).toBeGreaterThan(300);
+  expect(imageBox!.width).toBeGreaterThanOrEqual(visualBox!.width - 1);
+  expect(imageBox!.height).toBeGreaterThanOrEqual(visualBox!.height - 1);
+
+  const arrows = page.locator(".hero-actions .arrow-icon");
+  await expect(arrows).toHaveCount(2);
+  for (const arrow of await arrows.all()) {
+    const box = await arrow.boundingBox();
+    expect(box!.width).toBeGreaterThanOrEqual(16);
+    expect(box!.height).toBeGreaterThanOrEqual(16);
+  }
+});
