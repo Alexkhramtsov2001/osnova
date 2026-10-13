@@ -2257,6 +2257,120 @@
   font-size: 12px;
 }
 
+.demo-chat {
+  margin-top: 38px;
+  padding: clamp(22px, 3vw, 40px);
+  border: 1px solid var(--line);
+  background: #eeeae2;
+}
+
+.demo-chat-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 25px;
+}
+
+.demo-chat-intro h3 {
+  margin: 12px 0 0;
+  font-size: clamp(25px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.demo-chat-intro > p {
+  max-width: 370px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.demo-chat-log {
+  max-height: 340px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.demo-chat-message {
+  max-width: min(610px, 90%);
+  margin: 0;
+  padding: 13px 16px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.demo-chat-answer {
+  align-self: flex-start;
+  background: #e9e4d9;
+}
+
+.demo-chat-question {
+  align-self: flex-end;
+  color: #fff;
+  background: var(--accent-dark);
+}
+
+.demo-chat-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.demo-chat-topics button,
+.demo-chat-status button {
+  min-height: 42px;
+  padding: 10px 15px;
+  border: 1px solid var(--accent);
+  color: var(--accent-dark);
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.demo-chat-topics button:hover,
+.demo-chat-status button:hover {
+  color: #fff;
+  background: var(--accent-dark);
+}
+
+.demo-chat-topics button:focus-visible,
+.demo-chat-status button:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 3px;
+}
+
+.demo-chat-topics button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.demo-chat-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.demo-chat-status p {
+  width: 100%;
+  margin: 0;
+  color: var(--accent-dark);
+  font-size: 12px;
+}
+
 .comparison-page .contact-section,
 .project-detail .contact-section {
   width: 100%;
@@ -2282,6 +2396,23 @@
 
   .contact-options a {
     padding: 21px;
+  }
+
+  .demo-chat-intro {
+    display: block;
+  }
+
+  .demo-chat-intro > p {
+    margin-top: 12px;
+  }
+
+  .demo-chat-log {
+    padding: 14px;
+  }
+
+  .demo-chat-topics button {
+    width: 100%;
+    text-align: left;
   }
 
   .comparison-page .contact-section,

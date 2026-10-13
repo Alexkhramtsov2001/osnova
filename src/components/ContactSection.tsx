@@ -1,6 +1,7 @@
 import { CONTACTS, contactLinks } from "../features/contact/links";
 import ContactIcon from "./ContactIcon";
 import ArrowIcon from "./ArrowIcon";
+import DemoChat from "./DemoChat";
 
 type ContactSectionProps = {
   id?: string;
@@ -88,6 +89,7 @@ export default function ContactSection({
         Это контакты автора портфолио. Сайт сам не отправляет сообщение и не сохраняет переписку;
         отправку вы подтверждаете в выбранном приложении.
       </p>
+      <DemoChat />
     </section>
   );
 }

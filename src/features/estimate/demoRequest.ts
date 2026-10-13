@@ -1,9 +1,6 @@
 import type { EstimateResult, HouseParameters } from "./types";
 import { projects } from "../projects/catalog";
-
-// This publishable key is intended for browsers. Database permissions are enforced in SQL.
-const projectUrl = "https://ykmuwefaohpkmfdjxjkx.supabase.co";
-const publishableKey = "sb_publishable_ieQ0Lp_OpNq46Aq2zGNSEA_Dk3dZJWm";
+import { projectUrl, publishableKey } from "../backend/config";
 
 export function createDemoRequestPayload(
   parameters: HouseParameters,
