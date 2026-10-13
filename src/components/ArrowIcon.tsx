@@ -1,5 +1,5 @@
 type ArrowIconProps = {
-  direction?: "up-right" | "down" | "up" | "chevron-down";
+  direction?: "up-right" | "down" | "up" | "left" | "chevron-down";
   className?: string;
 };
 
@@ -7,6 +7,7 @@ const paths = {
   "up-right": "M5 19 19 5M8 5h11v11",
   down: "M12 4v16m-7-7 7 7 7-7",
   up: "M12 20V4m-7 7 7-7 7 7",
+  left: "M20 12H4m7-7-7 7 7 7",
   "chevron-down": "m6 9 6 6 6-6",
 } as const;
 

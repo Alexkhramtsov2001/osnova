@@ -421,7 +421,7 @@
 .estimate-stage-toggle {
   display: grid;
   width: 100%;
-  grid-template-columns: 28px minmax(0, 1fr) auto 17px;
+  grid-template-columns: 28px minmax(0, 1fr) auto 28px;
   align-items: center;
   gap: 12px;
   padding: 17px 0;
@@ -474,13 +474,24 @@
 }
 
 .estimate-chevron {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid var(--line, #e4e1d9);
+  border-radius: 50%;
   color: var(--accent, #b95e43);
-  font-size: 16px;
+  background: #fff;
+}
+
+.estimate-chevron .arrow-icon {
+  width: 15px;
+  height: 15px;
   transition: transform 160ms ease;
 }
 
-.estimate-chevron.is-open {
-  transform: rotate(135deg);
+.estimate-chevron.is-open .arrow-icon {
+  transform: rotate(180deg);
 }
 
 .estimate-stage-details {
@@ -617,7 +628,7 @@
   }
 
   .estimate-stage-toggle {
-    grid-template-columns: 22px minmax(0, 1fr) auto 12px;
+    grid-template-columns: 22px minmax(0, 1fr) auto 28px;
     gap: 8px;
   }
 }
@@ -666,7 +677,7 @@
   }
 
   .estimate-stage-toggle {
-    grid-template-columns: 20px minmax(0, 1fr) 12px;
+    grid-template-columns: 20px minmax(0, 1fr) 28px;
   }
 
   .estimate-stage-price {
@@ -692,7 +703,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .estimate-choice,
-  .estimate-chevron,
+  .estimate-chevron .arrow-icon,
   .estimate-stage-copy strong {
     transition: none;
   }

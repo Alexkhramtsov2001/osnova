@@ -63,3 +63,30 @@ test("выбор этапов помещается на мобильном эк�
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x + box!.width).toBeLessThanOrEqual(320);
 });
+
+test("стрелки этапов сохраняют стиль и положение на узких экранах", async ({ page }) => {
+  await page.goto("/#calculator");
+  const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
+  const firstStage = calculator.locator(".estimate-stage-toggle").first();
+  const chevron = firstStage.locator(".estimate-chevron");
+
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(chevron.locator("svg")).toBeVisible();
+    await expect(chevron).not.toContainText("↗");
+    const buttonBox = await firstStage.boundingBox();
+    const arrowBox = await chevron.boundingBox();
+    expect(arrowBox).not.toBeNull();
+    expect(arrowBox!.width).toBe(28);
+    expect(arrowBox!.height).toBe(28);
+    expect(arrowBox!.x).toBeGreaterThanOrEqual(buttonBox!.x);
+    expect(arrowBox!.x + arrowBox!.width).toBeLessThanOrEqual(buttonBox!.x + buttonBox!.width);
+  }
+
+  await firstStage.click();
+  await expect(firstStage).toHaveAttribute("aria-expanded", "false");
+  await expect(chevron).not.toHaveClass(/is-open/);
+  await firstStage.click();
+  await expect(firstStage).toHaveAttribute("aria-expanded", "true");
+  await expect(chevron).toHaveClass(/is-open/);
+});

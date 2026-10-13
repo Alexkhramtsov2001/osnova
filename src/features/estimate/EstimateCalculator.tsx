@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import OsnovaSelect from "../../components/OsnovaSelect";
 import ContactIcon from "../../components/ContactIcon";
+import ArrowIcon from "../../components/ArrowIcon";
 import {
   DEMO_PRICES_NOTICE,
   WALL_MATERIALS,
@@ -732,7 +733,7 @@ export default function EstimateCalculator({
                           <span className="estimate-contact-icon">
                             <ContactIcon kind="email" />
                           </span>
-                          Открыть письмо с расчётом <span aria-hidden="true">↗</span>
+                          Открыть письмо с расчётом <ArrowIcon />
                         </a>
                         <a
                           className="contact-channel-telegram"
@@ -743,7 +744,7 @@ export default function EstimateCalculator({
                           <span className="estimate-contact-icon">
                             <ContactIcon kind="telegram" />
                           </span>
-                          Открыть Telegram с расчётом <span aria-hidden="true">↗</span>
+                          Открыть Telegram с расчётом <ArrowIcon />
                         </a>
                       </div>
                       <p className="estimate-contact-note">
@@ -807,7 +808,7 @@ export default function EstimateCalculator({
                           className={`estimate-chevron ${isExpanded ? "is-open" : ""}`}
                           aria-hidden="true"
                         >
-                          ↗
+                          <ArrowIcon direction="chevron-down" />
                         </span>
                       </button>
 

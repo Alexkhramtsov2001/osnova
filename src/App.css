@@ -1714,7 +1714,9 @@
 }
 
 .project-detail-back {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 60px;
   color: var(--accent-dark) !important;
   font-size: 12px;

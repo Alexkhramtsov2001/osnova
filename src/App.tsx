@@ -763,7 +763,7 @@ function BackToCatalog() {
         }
       }}
     >
-      ← К подборке проектов
+      <ArrowIcon direction="left" /> К подборке проектов
     </Link>
   );
 }
