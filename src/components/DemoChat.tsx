@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useLayoutEffect, useRef, useState } from "react";
 import { chatTopics, submitDemoChatTurn, type ChatTopic } from "../features/demoChat/chat";
 
 type Turn = { id: string; topic: ChatTopic };
@@ -7,8 +7,33 @@ export default function DemoChat() {
   const [turns, setTurns] = useState<Turn[]>([]);
   const [pending, setPending] = useState<Turn | null>(null);
   const [busy, setBusy] = useState(false);
+  const logRef = useRef<HTMLDivElement>(null);
+  const answers = useRef(new Map<string, HTMLParagraphElement>());
+
+  function revealAnswer(id: string) {
+    const log = logRef.current;
+    const answer = answers.current.get(id);
+    if (!log || !answer) return;
+    log.scrollTo({
+      top:
+        log.scrollTop + answer.getBoundingClientRect().top - log.getBoundingClientRect().top - 16,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }
+
+  useLayoutEffect(() => {
+    const last = turns.at(-1);
+    if (last) revealAnswer(last.id);
+  }, [turns]);
 
   async function send(turn: Turn) {
+    const previous = turns.find((entry) => entry.topic.code === turn.topic.code);
+    if (previous) {
+      revealAnswer(previous.id);
+      return;
+    }
     setPending(turn);
     setBusy(true);
     try {
@@ -34,14 +59,29 @@ export default function DemoChat() {
           код темы. Это не чат с менеджером.
         </p>
       </div>
-      <div className="demo-chat-log" role="log" aria-live="polite" aria-label="История демо-чата">
+      <div
+        className="demo-chat-log"
+        ref={logRef}
+        tabIndex={0}
+        role="log"
+        aria-live="polite"
+        aria-label="История демо-чата"
+      >
         <p className="demo-chat-message demo-chat-answer">
           Привет! Я покажу, как может работать чат ОСНОВЫ. О чём рассказать?
         </p>
         {turns.map((turn) => (
           <Fragment key={turn.id}>
             <p className="demo-chat-message demo-chat-question">{turn.topic.question}</p>
-            <p className="demo-chat-message demo-chat-answer">{turn.topic.answer}</p>
+            <p
+              className="demo-chat-message demo-chat-answer"
+              ref={(element) => {
+                if (element) answers.current.set(turn.id, element);
+                else answers.current.delete(turn.id);
+              }}
+            >
+              {turn.topic.answer}
+            </p>
           </Fragment>
         ))}
       </div>

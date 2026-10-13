@@ -1,0 +1,218 @@
+.house-finder {
+  padding-top: 36px;
+  padding-bottom: 64px;
+  max-width: 1120px;
+}
+.finder-back {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 36px;
+  font-size: 13px;
+}
+.house-finder h1 {
+  max-width: 760px;
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+  margin: 16px 0;
+}
+.house-finder h1,
+.finder-card legend {
+  scroll-margin-top: 100px;
+}
+
+.house-finder h1:focus,
+.finder-card legend:focus {
+  outline: none;
+}
+.finder-lead {
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.finder-card {
+  max-width: 780px;
+  border: 1px solid var(--line);
+  background: #eeece5;
+  padding: clamp(20px, 4vw, 42px);
+}
+.finder-progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.finder-card progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin: 14px 0 30px;
+  border: 0;
+  appearance: none;
+  background: var(--line);
+  color: var(--accent);
+}
+.finder-card progress::-webkit-progress-bar {
+  background: var(--line);
+}
+.finder-card progress::-webkit-progress-value {
+  background: var(--accent);
+}
+.finder-card progress::-moz-progress-bar {
+  background: var(--accent);
+}
+.finder-card fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.finder-card legend {
+  font-size: clamp(23px, 3vw, 32px);
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+.finder-hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.finder-options {
+  display: grid;
+  gap: 10px;
+}
+.finder-options label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 58px;
+  padding: 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.finder-options label.is-selected {
+  border-color: var(--accent);
+  background: #f4e6de;
+}
+.finder-options label:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.finder-options input {
+  accent-color: var(--accent-dark);
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.finder-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.house-finder button {
+  cursor: pointer;
+  font-family: inherit;
+}
+.house-finder button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.finder-result {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 28px;
+}
+.finder-result > img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.finder-result h2 {
+  font-weight: 400;
+  font-size: 42px;
+  margin: 14px 0;
+}
+.finder-result h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 24px 0 12px;
+}
+.finder-result p,
+.finder-result li {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.finder-result ul {
+  padding-left: 20px;
+}
+.finder-result li + li {
+  margin-top: 8px;
+}
+.finder-compromises {
+  border-left: 2px solid var(--accent);
+  padding: 1px 16px;
+  background: #eee7dc;
+}
+.finder-price small,
+.finder-price strong {
+  display: block;
+}
+.finder-price strong {
+  font-size: 25px;
+  font-weight: 400;
+  color: var(--accent-dark);
+}
+.finder-next {
+  grid-column: 1 / -1;
+  background: #eeece5;
+  padding: 28px;
+}
+.finder-next h3 {
+  margin-top: 0;
+}
+.finder-next .button {
+  margin: 10px 10px 0 0;
+}
+.finder-restart {
+  display: block;
+  margin-top: 22px;
+  border: 0;
+  padding: 8px 0;
+  background: none;
+  text-decoration: underline;
+  color: var(--muted);
+}
+@media (max-width: 760px) {
+  .finder-result {
+    grid-template-columns: 1fr;
+  }
+  .finder-result > img {
+    aspect-ratio: 4 / 3;
+  }
+  .finder-next {
+    padding: 20px;
+  }
+  .finder-next .button {
+    display: flex;
+    width: 100%;
+    margin-right: 0;
+    height: auto;
+    min-height: 48px;
+    padding: 12px;
+    text-align: left;
+  }
+  .finder-actions .button {
+    padding: 0 12px;
+    font-size: 12px;
+  }
+}

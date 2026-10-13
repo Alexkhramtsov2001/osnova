@@ -643,8 +643,8 @@
 }
 
 .projects-section {
-  padding-top: 115px;
-  padding-bottom: 110px;
+  padding-top: 72px;
+  padding-bottom: 72px;
 }
 
 .section-heading {
@@ -823,12 +823,15 @@
   font-size: 11px;
 }
 
-.projects-footer a {
+.projects-footer .house-finder-link {
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  font-size: 11px;
+  font-size: 15px;
   font-weight: 600;
+  min-height: 58px;
+  padding: 0 28px;
+  color: #fff;
 }
 
 .approach-section {
@@ -839,8 +842,8 @@
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 10%;
-  padding-top: 94px;
-  padding-bottom: 94px;
+  padding-top: 64px;
+  padding-bottom: 64px;
 }
 
 .approach-points {
@@ -1151,8 +1154,8 @@
   }
 
   .projects-section {
-    padding-top: 76px;
-    padding-bottom: 72px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 
   .section-heading {
@@ -1196,8 +1199,8 @@
   .approach-inner {
     grid-template-columns: 1fr;
     gap: 36px;
-    padding-top: 72px;
-    padding-bottom: 72px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 
   .approach-points article {
@@ -1804,7 +1807,7 @@
 }
 
 .project-detail-section {
-  padding: 70px 0;
+  padding: 48px 0;
   border-top: 1px solid var(--line);
 }
 
@@ -2122,8 +2125,8 @@
 }
 
 .contact-section {
-  padding-top: 95px;
-  padding-bottom: 95px;
+  padding-top: 64px;
+  padding-bottom: 64px;
   border-top: 1px solid var(--line);
   scroll-margin-top: 73px;
 }
@@ -2374,14 +2377,14 @@
 .comparison-page .contact-section,
 .project-detail .contact-section {
   width: 100%;
-  margin-top: 70px;
-  padding: 70px 0 0;
+  margin-top: 48px;
+  padding: 48px 0 0;
 }
 
 @media (max-width: 760px) {
   .contact-section {
-    padding-top: 65px;
-    padding-bottom: 70px;
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 
   .contact-section-head,

@@ -8,6 +8,7 @@ import {
   useParams,
   useSearchParams,
 } from "react-router";
+import HouseFinder from "./features/finder/HouseFinder";
 import SiteHeader from "./components/SiteHeader";
 import ArrowIcon from "./components/ArrowIcon";
 import ContactSection from "./components/ContactSection";
@@ -650,9 +651,14 @@ function HomePage({
 
           <div className="projects-footer">
             <p>Это лишь несколько идей. Подберём решение под ваши задачи.</p>
-            <a href="#calculator">
+            <Link
+              className="button button-primary house-finder-link"
+              to="/find-home"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Подобрать свой дом <ArrowIcon />
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -1276,6 +1282,7 @@ function App() {
             />
           }
         />
+        <Route path="/find-home" element={<HouseFinder />} />
         <Route path="/projects/:id" element={<ProjectPage />} />
         <Route
           path="*"
