@@ -57,21 +57,21 @@ test("концепции семейного дома и террасы объя�
   await expect(characterRow.locator(".comparison-selection-note")).toHaveCount(3);
 });
 
-test("будущий кабинет честно объяснён, окно закрывается с клавиатуры", async ({ page }) => {
+test("мобильная ссылка на кабинет открывает внутреннюю страницу в текущей вкладке", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
   const button = page.getByRole("button", { name: "Открыть меню" });
   await button.click();
+  const pagesBeforeClick = page.context().pages().length;
   await page
     .getByRole("navigation", { name: "Мобильная навигация" })
-    .getByRole("button", { name: "Личный кабинет Скоро" })
+    .getByRole("link", { name: "Личный кабинет Демо" })
     .click();
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText("Вход и синхронизация между устройствами пока не подключены");
-  await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
-  await expect(button).toBeFocused();
-  const box = await button.boundingBox();
-  expect(box!.x + box!.width).toBeLessThanOrEqual(320);
+  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole("heading", { name: "Ваши проекты" })).toBeVisible();
+  expect(page.context().pages()).toHaveLength(pagesBeforeClick);
+  await expect(page.getByRole("button", { name: "Открыть меню" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

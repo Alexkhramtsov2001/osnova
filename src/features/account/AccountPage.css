@@ -1,0 +1,320 @@
+.account-page {
+  min-height: 65vh;
+  padding-top: 40px;
+  padding-bottom: 100px;
+}
+
+.account-page .project-detail-back {
+  margin-bottom: 38px;
+}
+
+.account-page-heading,
+.account-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.account-page-heading h1 {
+  margin: 16px 0;
+  font-size: clamp(42px, 6vw, 78px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+
+.account-page-lead {
+  max-width: 600px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.account-login-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+  gap: clamp(28px, 6vw, 80px);
+  margin-top: 48px;
+  padding: clamp(22px, 5vw, 52px);
+  border: 1px solid var(--line);
+  background: #f1ece3;
+}
+
+.account-demo-note {
+  max-width: 500px;
+  align-self: start;
+  padding: 22px;
+  border-left: 2px solid var(--accent);
+  background: rgb(255 255 255 / 55%);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.account-demo-note > strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.account-demo-note p {
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.account-demo-credentials code {
+  color: var(--accent-dark);
+  font-size: 13px;
+}
+
+.account-login-form {
+  display: grid;
+  gap: 17px;
+}
+
+.account-login-form h2,
+.account-section-heading h2 {
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.account-login-form h2 {
+  margin-bottom: 5px;
+  font-size: 30px;
+}
+
+.account-login-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.account-login-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fffefa;
+  color: var(--ink);
+  font: inherit;
+}
+
+.account-login-form .button {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.account-demo-banner,
+.account-message {
+  margin: 25px 0 0;
+  padding: 14px 17px;
+  border-left: 2px solid var(--accent);
+  background: #f1ece3;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.account-message:empty {
+  display: none;
+}
+
+.account-error {
+  margin: 0;
+  border-color: #a33e32;
+  color: #8e3329;
+}
+
+.account-data-section {
+  margin-top: 62px;
+}
+
+.account-section-heading {
+  margin-bottom: 24px;
+}
+
+.account-section-heading h2 {
+  margin-top: 8px;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.account-section-actions,
+.account-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.account-project-list,
+.account-estimate-list {
+  display: grid;
+  gap: 14px;
+}
+
+.account-project-card,
+.account-estimate-card,
+.account-empty-state {
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 50%);
+}
+
+.account-project-card {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.32fr) minmax(0, 1fr);
+  gap: clamp(18px, 4vw, 40px);
+  padding: 16px;
+}
+
+.account-project-card > img {
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  max-height: 230px;
+  object-fit: cover;
+}
+
+.account-project-card > div {
+  align-self: center;
+  padding: 12px 20px 12px 0;
+}
+
+.account-project-card h3,
+.account-estimate-card h3 {
+  margin: 8px 0;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.account-project-card p:not(.eyebrow),
+.account-estimate-card p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.account-card-actions {
+  margin-top: 15px;
+}
+
+.account-card-actions .button {
+  min-height: 42px;
+  gap: 8px;
+}
+
+.account-text-button {
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--accent-dark);
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.account-danger-button {
+  color: #8e3329;
+}
+
+.account-estimate-card {
+  padding: 20px 24px;
+}
+
+.account-estimate-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.account-estimate-card details {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.account-estimate-card summary {
+  width: fit-content;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.account-estimate-card pre {
+  overflow: auto;
+  max-height: 360px;
+  padding: 14px;
+  background: #f1ece3;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.account-empty-state {
+  padding: 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.account-empty-state a {
+  color: var(--accent-dark);
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .account-page {
+    padding-top: 26px;
+    padding-bottom: 64px;
+  }
+
+  .account-page .project-detail-back {
+    margin-bottom: 30px;
+  }
+
+  .account-page-heading,
+  .account-section-heading,
+  .account-estimate-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .account-login-card {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 30px;
+  }
+
+  .account-data-section {
+    margin-top: 46px;
+  }
+
+  .account-project-card {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .account-project-card > img {
+    height: 190px;
+  }
+
+  .account-project-card > div {
+    padding: 10px 7px 8px;
+  }
+
+  .account-section-actions {
+    width: 100%;
+  }
+
+  .account-estimate-card {
+    padding: 17px;
+  }
+
+  .site-footer:has(p) {
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+}

@@ -9,6 +9,7 @@ import {
   useSearchParams,
 } from "react-router";
 import HouseFinder from "./features/finder/HouseFinder";
+import AccountPage from "./features/account/AccountPage";
 import SiteHeader from "./components/SiteHeader";
 import ArrowIcon from "./components/ArrowIcon";
 import ContactSection from "./components/ContactSection";
@@ -1278,6 +1279,12 @@ function App() {
           }
         />
         <Route path="/find-home" element={<HouseFinder />} />
+        <Route
+          path="/account"
+          element={
+            <AccountPage favoriteIds={favoriteProjects} onFavoritesChange={setFavoriteProjects} />
+          }
+        />
         <Route path="/projects/:id" element={<ProjectPage />} />
         <Route
           path="*"

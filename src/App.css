@@ -127,31 +127,6 @@
   font-size: 9px;
 }
 
-.account-dialog {
-  width: min(480px, calc(100% - 32px));
-  max-height: calc(100dvh - 32px);
-  overflow: auto;
-  padding: 28px;
-  border: 1px solid var(--line);
-  background: var(--paper);
-  color: var(--ink);
-}
-
-.account-dialog::backdrop {
-  background: rgb(33 37 30 / 55%);
-}
-
-.account-dialog h2 {
-  font-size: 28px;
-}
-
-.account-dialog p:not(.eyebrow) {
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 18px 0;
-}
-
 .catalog-price-note {
   max-width: 900px;
   margin: 18px 0 26px;

@@ -5,14 +5,7 @@ type SiteHeaderProps = { home?: boolean };
 
 export default function SiteHeader({ home = false }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const accountDialogRef = useRef<HTMLDialogElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const accountOpenedFromMenu = useRef(false);
-  const openAccount = (fromMenu = false) => {
-    accountOpenedFromMenu.current = fromMenu;
-    setMenuOpen(false);
-    accountDialogRef.current?.showModal();
-  };
 
   return (
     <>
@@ -48,13 +41,9 @@ export default function SiteHeader({ home = false }: SiteHeaderProps) {
           )}
           {home ? <a href="#contacts">Контакты</a> : <Link to="/#contacts">Контакты</Link>}
         </nav>
-        <button
-          className="header-contact header-account"
-          type="button"
-          onClick={() => openAccount()}
-        >
-          Личный кабинет <small>Скоро</small>
-        </button>
+        <Link className="header-contact header-account" to="/account">
+          Личный кабинет <small>Демо</small>
+        </Link>
         <button
           ref={menuButtonRef}
           className="mobile-menu-toggle"
@@ -106,38 +95,12 @@ export default function SiteHeader({ home = false }: SiteHeaderProps) {
                 Контакты
               </Link>
             )}
-            <button type="button" onClick={() => openAccount(true)}>
-              Личный кабинет <small>Скоро</small>
-            </button>
+            <Link to="/account" onClick={() => setMenuOpen(false)}>
+              Личный кабинет <small>Демо</small>
+            </Link>
           </nav>
         )}
       </header>
-      <dialog
-        className="account-dialog"
-        ref={accountDialogRef}
-        onClose={() => {
-          if (accountOpenedFromMenu.current) menuButtonRef.current?.focus();
-        }}
-        aria-labelledby="account-title"
-        aria-describedby="account-description"
-      >
-        <p className="eyebrow">В РАЗРАБОТКЕ</p>
-        <h2 id="account-title">Ваши проекты в одном месте</h2>
-        <p id="account-description">
-          В личном кабинете планируем сохранять избранные дома и расчёты, возвращаться к ним с
-          другого устройства и отправлять заявки менеджеру. Вход и синхронизация между устройствами
-          пока не подключены.
-        </p>
-        <p>
-          Сейчас можно сравнивать дома и рассчитывать бюджет без регистрации. Избранное сохраняется
-          в этом браузере.
-        </p>
-        <form method="dialog">
-          <button className="button button-primary" autoFocus>
-            Понятно
-          </button>
-        </form>
-      </dialog>
     </>
   );
 }
