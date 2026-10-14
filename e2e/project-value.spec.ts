@@ -74,4 +74,12 @@ test("мобильная ссылка на кабинет открывает в�
   expect(page.context().pages()).toHaveLength(pagesBeforeClick);
   await expect(page.getByRole("button", { name: "Открыть меню" })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+
+  await page.getByRole("button", { name: "Открыть меню" }).click();
+  await page
+    .getByRole("navigation", { name: "Мобильная навигация" })
+    .getByRole("link", { name: "Чат" })
+    .click();
+  await expect(page).toHaveURL(/\/#demo-chat$/);
+  await expect(page.locator("#demo-chat")).toBeInViewport();
 });
