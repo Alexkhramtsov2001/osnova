@@ -349,11 +349,11 @@
 .projects-footer .house-finder-link {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  min-height: 58px;
-  padding: 0 28px;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  min-height: 44px;
+  padding: 0 18px;
   color: #fff;
 }
 
@@ -480,12 +480,8 @@
   }
 
   .hero-side-arrow {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .hero-side-arrow:focus-visible {
-    opacity: 1;
+    height: 52px;
+    background: rgb(24 26 22 / 18%);
   }
 
   .hero-bottom {

@@ -38,7 +38,7 @@ test("при уменьшенной анимации слайды не пере�
 test("свайп меняет проект и не открывает ссылку с изображения", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await expect(page.getByRole("button", { name: "Следующий проект" })).toHaveCSS("opacity", "0");
+  await expect(page.getByRole("button", { name: "Следующий проект" })).toBeVisible();
   await page.locator(".hero-image-link").evaluate((link) => {
     const start = new Touch({ identifier: 1, target: link, clientX: 300, clientY: 200 });
     const end = new Touch({ identifier: 1, target: link, clientX: 200, clientY: 205 });
@@ -48,6 +48,11 @@ test("свайп меняет проект и не открывает ссылк
     link.dispatchEvent(new TouchEvent("touchend", { bubbles: true, changedTouches: [end] }));
     link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
   });
+  await expect(page.locator(".hero-slide-caption")).toContainText("Проект «Север»");
+  await expect(page).toHaveURL(/\/$/);
+  await page.getByRole("button", { name: "Предыдущий проект" }).click();
+  await expect(page.locator(".hero-slide-caption")).toContainText("Проект «Скандинавия»");
+  await page.getByRole("button", { name: "Следующий проект" }).click();
   await expect(page.locator(".hero-slide-caption")).toContainText("Проект «Север»");
   await expect(page).toHaveURL(/\/$/);
 });
