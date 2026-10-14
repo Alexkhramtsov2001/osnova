@@ -54,6 +54,20 @@ test("форма показывает только тестовые реквиз
   expect(networkRequests).toBe(0);
 });
 
+test("чат отвечает по выбранному дому локально и не отправляет сообщения", async ({ page }) => {
+  let networkRequests = 0;
+  page.on("request", (request) => {
+    if (request.url().includes("supabase.co")) networkRequests += 1;
+  });
+  await page.getByRole("button", { name: "Открыть демо-кабинет" }).click();
+  await page.getByLabel("О каком проекте спросить?").selectOption("01");
+  await page.getByRole("button", { name: "Можно изменить планировку?" }).click();
+
+  await expect(page.getByLabel("История демо-чата")).toContainText("Для проекта «Скандинавия»");
+  await expect(page.getByLabel("История демо-чата")).toContainText("Это демонстрационный сценарий");
+  expect(networkRequests).toBe(0);
+});
+
 test("удаление дома и расчёта изменяет только локальный список", async ({ page }) => {
   await page.getByRole("button", { name: "Открыть демо-кабинет" }).click();
   await page.getByRole("button", { name: "Убрать из избранного" }).first().click();

@@ -129,6 +129,132 @@
   margin-top: 62px;
 }
 
+.account-chat-section {
+  margin-top: 38px;
+}
+
+.account-chat-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.account-chat-status > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.account-chat-panel {
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 50%);
+}
+
+.account-chat-disclaimer,
+.account-chat-welcome {
+  max-width: 780px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.account-chat-project {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 360px);
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+.account-chat-project select {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fffefa;
+  color: var(--ink);
+  font: inherit;
+}
+
+.account-chat-transcript {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 118px;
+  max-height: 360px;
+  overflow-y: auto;
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: #fffefa;
+  scroll-behavior: smooth;
+}
+
+.account-chat-transcript:has(.account-chat-message) {
+  align-items: flex-start;
+}
+
+.account-chat-message {
+  max-width: min(88%, 620px);
+  margin: 0;
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.account-chat-message > span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.account-chat-message-question {
+  align-self: flex-end;
+  background: #f1ece3;
+}
+
+.account-chat-message-answer {
+  border-left: 2px solid var(--accent);
+  background: #f7f4ee;
+}
+
+.account-chat-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.account-chat-prompt {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.account-chat-prompt:hover {
+  border-color: var(--accent);
+  background: #f1ece3;
+}
+
 .account-section-heading {
   margin-bottom: 24px;
 }
@@ -157,6 +283,29 @@
 .account-empty-state {
   border: 1px solid var(--line);
   background: rgb(255 255 255 / 50%);
+}
+
+@media (max-width: 640px) {
+  .account-chat-section {
+    margin-top: 28px;
+  }
+
+  .account-chat-status {
+    display: none;
+  }
+
+  .account-chat-transcript {
+    padding: 10px;
+  }
+
+  .account-chat-message {
+    max-width: 96%;
+  }
+
+  .account-chat-prompt {
+    width: 100%;
+    text-align: left;
+  }
 }
 
 .account-project-card {

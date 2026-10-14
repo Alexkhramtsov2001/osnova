@@ -5,6 +5,7 @@ import { writeFavoriteIds } from "../projects/favorites";
 import { projects } from "../projects/catalog";
 import { readSavedEstimates, writeSavedEstimates } from "../estimate/savedEstimates";
 import type { SavedEstimate } from "../estimate/savedEstimates";
+import DemoProjectChat from "./DemoProjectChat";
 import {
   clearDemoSession,
   DEMO_ACCOUNT_EMAIL,
@@ -166,6 +167,12 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                 {notice}
               </p>
             )}
+
+            <DemoProjectChat
+              projects={favoriteIds
+                .map((id) => projects.find((candidate) => candidate.number === id))
+                .filter((project) => project !== undefined)}
+            />
 
             <section className="account-data-section" aria-labelledby="account-favorites-title">
               <div className="account-section-heading">
