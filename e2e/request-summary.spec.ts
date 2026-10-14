@@ -16,7 +16,7 @@ test("сводка обновляется и копируется без соо�
   await expect(calculator.getByRole("status")).toContainText(
     "Сводка скопирована. Она никому не отправлена.",
   );
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+  expect((await page.evaluate(() => navigator.clipboard.readText())).replace(/\r\n/g, "\n")).toBe(
     await summary.inputValue(),
   );
 

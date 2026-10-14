@@ -1,0 +1,254 @@
+.project-detail-link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+}
+
+.project-detail {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 34px 6.1% 100px;
+}
+
+.project-detail-head {
+  max-width: 940px;
+  margin-bottom: 42px;
+}
+
+.project-detail h1 {
+  margin: 18px 0 16px;
+  font-size: clamp(52px, 7vw, 104px);
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+
+.project-detail-lead {
+  max-width: 600px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.project-detail-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 28px;
+}
+
+.project-detail-facts span {
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.project-detail-image {
+  width: 100%;
+  max-height: 680px;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 2 / 1;
+}
+
+.project-detail-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr);
+  gap: 9%;
+  padding: 40px 0 44px;
+}
+
+.project-detail h2 {
+  margin: 14px 0 20px;
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.project-detail-content p,
+.project-detail-content li,
+.project-detail-section p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.project-detail-content ul {
+  padding-left: 20px;
+}
+
+.project-detail-content aside {
+  padding: 22px 26px;
+  background: #f0ede6;
+}
+
+.project-detail-content aside h2 {
+  font-size: 22px;
+}
+
+.project-detail-note {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.project-detail-section {
+  padding: 32px 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-detail-section > h2,
+.project-detail-section > p:not(.eyebrow) {
+  max-width: 780px;
+}
+
+.project-detail-intro {
+  max-width: 760px;
+}
+
+.project-detail-scenarios,
+.project-detail-specs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 36px;
+}
+
+.project-detail-scenario,
+.project-detail-specs > div {
+  padding: 28px;
+  background: #f0ede6;
+}
+
+.project-detail-scenario span,
+.project-detail-specs small {
+  color: var(--accent-dark);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.project-detail-scenario p {
+  margin-bottom: 0;
+}
+
+.project-detail-specs strong {
+  display: block;
+  margin-top: 13px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.project-detail-specs p {
+  margin-bottom: 0;
+}
+
+.project-detail-caveat {
+  margin-top: 25px;
+}
+
+.project-detail-stages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: stages;
+}
+
+.project-detail-stages li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+  counter-increment: stages;
+  font-size: 14px;
+}
+
+.project-detail-stages li span::before {
+  content: counter(stages, decimal-leading-zero) " / ";
+  color: var(--accent-dark);
+  font-size: 11px;
+}
+
+.project-detail-stages small {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.project-detail-warranty {
+  max-width: 920px;
+}
+
+.project-detail-final {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+  gap: 8%;
+  align-items: start;
+  padding-bottom: 0;
+}
+
+.project-detail-price {
+  padding: 32px;
+  background: #292b25;
+  color: white;
+}
+
+.project-detail-price small {
+  color: #c4c2b8;
+  font-size: 11px;
+}
+
+.project-detail-price strong {
+  display: block;
+  margin: 18px 0;
+  font-size: clamp(23px, 2.5vw, 34px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.project-detail-price p {
+  color: #deddd5;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.project-detail-price .button {
+  margin-top: 12px;
+}
+
+@media (max-width: 760px) {
+  .project-detail {
+    padding: 25px 20px 70px;
+  }
+
+  .project-detail-content,
+  .project-detail-final {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .project-detail-image {
+    aspect-ratio: 1.1 / 1;
+  }
+
+  .project-detail-content {
+    padding: 28px 0 32px;
+  }
+
+  .project-detail-section {
+    padding: 32px 0;
+  }
+
+  .project-detail-scenarios,
+  .project-detail-specs,
+  .project-detail-stages {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail-scenario,
+  .project-detail-specs > div {
+    padding: 22px;
+  }
+}

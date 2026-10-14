@@ -1,7 +1,7 @@
 .estimate-calculator {
   width: min(1440px, 100%);
   margin: 0 auto;
-  padding: 64px 6.1%;
+  padding: 44px 6.1%;
   color: var(--ink, #252621);
 }
 
@@ -607,7 +607,7 @@
 
 @media (max-width: 1000px) {
   .estimate-calculator {
-    padding: 52px 5%;
+    padding: 36px 5%;
   }
 
   .estimate-layout {
@@ -635,7 +635,7 @@
 
 @media (max-width: 760px) {
   .estimate-calculator {
-    padding: 48px 5%;
+    padding: 32px 5%;
   }
 
   .estimate-intro {

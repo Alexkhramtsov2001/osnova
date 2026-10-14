@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
-import { writeFavoriteIds } from "../projects/favorites";
-import { projects } from "../projects/catalog";
-import { readSavedEstimates, writeSavedEstimates } from "../estimate/savedEstimates";
 import type { SavedEstimate } from "../estimate/savedEstimates";
+import { readSavedEstimates, writeSavedEstimates } from "../estimate/savedEstimates";
+import { projects } from "../projects/catalog";
+import { writeFavoriteIds } from "../projects/favorites";
+import "./AccountPage.css";
 import DemoProjectChat from "./DemoProjectChat";
 import {
   clearDemoSession,
@@ -14,7 +15,6 @@ import {
   readDemoSession,
   writeDemoSession,
 } from "./demoSession";
-import "./AccountPage.css";
 
 type AccountPageProps = {
   favoriteIds: string[];
@@ -221,7 +221,9 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
               ) : (
                 <div className="account-empty-state">
                   <p>Пока нет избранных домов.</p>
-                  <Link to="/#projects">Посмотреть каталог</Link>
+                  <Link className="button button-primary" to="/#projects">
+                    Посмотреть каталог
+                  </Link>
                 </div>
               )}
             </section>
@@ -287,7 +289,9 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
               ) : (
                 <div className="account-empty-state">
                   <p>Сохранённых расчётов пока нет.</p>
-                  <Link to="/#calculator">Рассчитать стоимость</Link>
+                  <Link className="button button-primary" to="/#calculator">
+                    Рассчитать стоимость
+                  </Link>
                 </div>
               )}
             </section>

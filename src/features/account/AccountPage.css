@@ -126,7 +126,7 @@
 }
 
 .account-data-section {
-  margin-top: 62px;
+  margin-top: 40px;
 }
 
 .account-chat-section {
@@ -408,10 +408,11 @@
   font-size: 13px;
 }
 
-.account-empty-state a {
-  color: var(--accent-dark);
-  text-decoration: underline !important;
-  text-underline-offset: 3px;
+.account-empty-state .button {
+  min-height: 44px;
+  margin-top: 4px;
+  font-size: 13px;
+  text-decoration: none;
 }
 
 @media (max-width: 760px) {
@@ -438,7 +439,7 @@
   }
 
   .account-data-section {
-    margin-top: 46px;
+    margin-top: 30px;
   }
 
   .account-project-card {

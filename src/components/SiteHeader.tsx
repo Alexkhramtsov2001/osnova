@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
 type SiteHeaderProps = { home?: boolean };
@@ -6,15 +6,61 @@ type SiteHeaderProps = { home?: boolean };
 export default function SiteHeader({ home = false }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const bodyOverflow = document.body.style.overflow;
+    const rootOverflow = document.documentElement.style.overflow;
+    const menuButton = menuButtonRef.current;
+    const content = Array.from(headerRef.current?.parentElement?.children ?? []).filter(
+      (element): element is HTMLElement =>
+        element instanceof HTMLElement && element !== headerRef.current,
+    );
+    const previousInert = content.map((element) => element.inert);
+    window.scrollTo({ top: window.scrollY, behavior: "instant" });
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    content.forEach((element) => {
+      element.inert = true;
+    });
+    headerRef.current?.querySelector<HTMLElement>(".mobile-nav a")?.focus({ preventScroll: true });
+    const desktop = window.matchMedia("(min-width: 761px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMenuOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => {
+      document.body.style.overflow = bodyOverflow;
+      document.documentElement.style.overflow = rootOverflow;
+      content.forEach((element, index) => {
+        element.inert = previousInert[index];
+      });
+      desktop.removeEventListener("change", closeOnDesktop);
+      menuButton?.focus({ preventScroll: true });
+    };
+  }, [menuOpen]);
 
   return (
     <>
       <header
-        className="site-header"
+        ref={headerRef}
+        className={`site-header${menuOpen ? " menu-open" : ""}`}
         onKeyDown={(event) => {
           if (event.key === "Escape" && menuOpen) {
             setMenuOpen(false);
-            menuButtonRef.current?.focus();
+            menuButtonRef.current?.focus({ preventScroll: true });
+          }
+          if (event.key === "Tab" && menuOpen) {
+            const links = headerRef.current?.querySelectorAll<HTMLElement>(".mobile-nav a");
+            const last = links?.[links.length - 1];
+            if (event.shiftKey && document.activeElement === menuButtonRef.current) {
+              event.preventDefault();
+              last?.focus({ preventScroll: true });
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              menuButtonRef.current?.focus({ preventScroll: true });
+            }
           }
         }}
       >
