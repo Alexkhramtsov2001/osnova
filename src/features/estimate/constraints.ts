@@ -15,8 +15,16 @@ export function maximumBedrooms(area: number): number {
   return Math.max(1, Math.min(6, Math.floor(area / 18)));
 }
 
+export function minimumBedrooms(area: number): number {
+  return Math.max(1, Math.min(6, Math.ceil(area / 180)));
+}
+
 export function maximumBathrooms(area: number): number {
   return Math.max(1, Math.min(4, Math.floor(area / 35)));
+}
+
+export function minimumBathrooms(area: number): number {
+  return Math.max(1, Math.min(4, Math.ceil(area / 250)));
 }
 
 export function clampHouseNumber(
@@ -41,8 +49,11 @@ export function normalizeForArea(parameters: HouseParameters): HouseParameters {
   const next = { ...parameters, area };
   return {
     ...next,
-    bedrooms: Math.min(parameters.bedrooms, maximumBedrooms(area)),
-    bathrooms: Math.min(parameters.bathrooms, maximumBathrooms(area)),
+    bedrooms: Math.min(maximumBedrooms(area), Math.max(minimumBedrooms(area), parameters.bedrooms)),
+    bathrooms: Math.min(
+      maximumBathrooms(area),
+      Math.max(minimumBathrooms(area), parameters.bathrooms),
+    ),
     perimeter: Number.isFinite(parameters.perimeter)
       ? clampHouseNumber("perimeter", parameters.perimeter, next)
       : parameters.perimeter,

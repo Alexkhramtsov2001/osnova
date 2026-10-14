@@ -17,6 +17,8 @@ import {
   clampHouseNumber,
   maximumBathrooms,
   maximumBedrooms,
+  minimumBathrooms,
+  minimumBedrooms,
   minimumArea,
   minimumPerimeter,
   normalizeForArea,
@@ -115,6 +117,7 @@ export default function EstimateCalculator({
   const [constructionMode, setConstructionMode] = useState<"turnkey" | "stages">("turnkey");
   const [selectedStageIds, setSelectedStageIds] = useState<EstimateStageId[]>(allStageIds);
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const [breakdownOpen, setBreakdownOpen] = useState(false);
   const [pdfBusy, setPdfBusy] = useState(false);
   const [pdfError, setPdfError] = useState("");
   const [copyFeedback, setCopyFeedback] = useState<{
@@ -457,7 +460,15 @@ export default function EstimateCalculator({
                   aria-invalid={isInvalidNumber("area")}
                   aria-describedby={isInvalidNumber("area") ? "estimate-input-error" : undefined}
                   value={Number.isFinite(parameters.area) ? parameters.area : ""}
-                  onChange={(event) => update("area", event.target.valueAsNumber)}
+                  onChange={(event) => {
+                    const area = event.target.valueAsNumber;
+                    const next = { ...parameters, area };
+                    onParametersChange(
+                      Number.isFinite(area) && area >= minimumArea(parameters.floors)
+                        ? normalizeForArea(next)
+                        : next,
+                    );
+                  }}
                   onBlur={() => finishNumberEdit("area")}
                 />
                 <span>м²</span>
@@ -490,9 +501,17 @@ export default function EstimateCalculator({
                     value: String(value),
                     label: String(value),
                     disabled:
-                      Number.isFinite(parameters.area) && value > maximumBedrooms(parameters.area),
+                      Number.isFinite(parameters.area) &&
+                      (value < minimumBedrooms(parameters.area) ||
+                        value > maximumBedrooms(parameters.area)),
                   }))}
                 />
+                {Number.isFinite(parameters.area) && (
+                  <span className="estimate-field-hint">
+                    Для {number.format(parameters.area)} м²: от {minimumBedrooms(parameters.area)}
+                    до {maximumBedrooms(parameters.area)} спален.
+                  </span>
+                )}
               </Field>
 
               <Field label="Санузлы" group>
@@ -504,9 +523,17 @@ export default function EstimateCalculator({
                     value: String(value),
                     label: String(value),
                     disabled:
-                      Number.isFinite(parameters.area) && value > maximumBathrooms(parameters.area),
+                      Number.isFinite(parameters.area) &&
+                      (value < minimumBathrooms(parameters.area) ||
+                        value > maximumBathrooms(parameters.area)),
                   }))}
                 />
+                {Number.isFinite(parameters.area) && (
+                  <span className="estimate-field-hint">
+                    Для {number.format(parameters.area)} м²: от {minimumBathrooms(parameters.area)}
+                    до {maximumBathrooms(parameters.area)} санузлов.
+                  </span>
+                )}
               </Field>
             </div>
 
@@ -761,8 +788,14 @@ export default function EstimateCalculator({
                 </div>
               )}
 
-              <details className="estimate-breakdown">
-                <summary className="estimate-breakdown-heading">
+              <div className="estimate-breakdown" data-open={breakdownOpen}>
+                <button
+                  className="estimate-breakdown-heading"
+                  type="button"
+                  aria-expanded={breakdownOpen}
+                  aria-controls="estimate-breakdown-panel"
+                  onClick={() => setBreakdownOpen((open) => !open)}
+                >
                   <span>
                     <span className="estimate-overline">03 / ДЕТАЛИЗАЦИЯ</span>
                     <strong>Из чего складывается цена</strong>
@@ -771,100 +804,112 @@ export default function EstimateCalculator({
                     Включено: {includedStageCount} из {estimate.stages.length}
                   </span>
                   <ArrowIcon direction="chevron-down" />
-                </summary>
-                <p className="estimate-breakdown-note">
-                  Региональная поправка уже включена в цены этапов. Доставка показана отдельно после
-                  списка.
-                </p>
+                </button>
+                <div
+                  id="estimate-breakdown-panel"
+                  className="estimate-breakdown-panel"
+                  aria-hidden={!breakdownOpen}
+                  inert={!breakdownOpen}
+                >
+                  <div className="estimate-breakdown-inner">
+                    <p className="estimate-breakdown-note">
+                      Региональная поправка уже включена в цены этапов. Доставка показана отдельно
+                      после списка.
+                    </p>
 
-                <div className="estimate-stages">
-                  {estimate.stages.map((stage, index) => {
-                    const isExpanded = expandedStages.includes(stage.id);
+                    <div className="estimate-stages">
+                      {estimate.stages.map((stage, index) => {
+                        const isExpanded = expandedStages.includes(stage.id);
 
-                    return (
-                      <div
-                        className={`estimate-stage ${stage.included ? "" : "is-excluded"}`}
-                        key={stage.id}
-                      >
-                        <button
-                          type="button"
-                          className="estimate-stage-toggle"
-                          aria-expanded={stage.included && isExpanded}
-                          disabled={!stage.included}
-                          onClick={() => toggleStage(stage.id)}
-                        >
-                          <span className="estimate-stage-index">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
-                          <span className="estimate-stage-copy">
-                            <strong>{stage.name}</strong>
-                            <small>{stage.description}</small>
-                            {stage.included && (
-                              <small className="estimate-stage-duration">
-                                Ориентир: {stage.durationWeeks.min}–{stage.durationWeeks.max} нед.
-                              </small>
-                            )}
-                          </span>
-                          <span className="estimate-stage-price">
-                            {stage.included ? money.format(stage.total) : "Не включён"}
-                          </span>
-                          <span
-                            className={`estimate-chevron ${isExpanded ? "is-open" : ""}`}
-                            aria-hidden="true"
+                        return (
+                          <div
+                            className={`estimate-stage ${stage.included ? "" : "is-excluded"}`}
+                            key={stage.id}
                           >
-                            <ArrowIcon direction="chevron-down" />
-                          </span>
-                        </button>
+                            <button
+                              type="button"
+                              className="estimate-stage-toggle"
+                              aria-expanded={stage.included && isExpanded}
+                              disabled={!stage.included}
+                              onClick={() => toggleStage(stage.id)}
+                            >
+                              <span className="estimate-stage-index">
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
+                              <span className="estimate-stage-copy">
+                                <strong>{stage.name}</strong>
+                                <small>{stage.description}</small>
+                                {stage.included && (
+                                  <small className="estimate-stage-duration">
+                                    Ориентир: {stage.durationWeeks.min}–{stage.durationWeeks.max}{" "}
+                                    нед.
+                                  </small>
+                                )}
+                              </span>
+                              <span className="estimate-stage-price">
+                                {stage.included ? money.format(stage.total) : "Не включён"}
+                              </span>
+                              <span
+                                className={`estimate-chevron ${isExpanded ? "is-open" : ""}`}
+                                aria-hidden="true"
+                              >
+                                <ArrowIcon direction="chevron-down" />
+                              </span>
+                            </button>
 
-                        {stage.included && isExpanded && (
-                          <div className="estimate-stage-details">
-                            <p className="estimate-stage-detail-label">В расчёт этапа входят</p>
-                            {stage.items.map((item) => (
-                              <div className="estimate-line-item" key={item.id}>
-                                <span className="estimate-line-name">{item.name}</span>
-                                <span className="estimate-line-quantity">
-                                  {number.format(item.quantity)} {item.unit}
-                                </span>
-                                <span className="estimate-line-total">
-                                  {money.format(item.quantity * item.unitPrice)}
-                                </span>
+                            {stage.included && isExpanded && (
+                              <div className="estimate-stage-details">
+                                <p className="estimate-stage-detail-label">В расчёт этапа входят</p>
+                                {stage.items.map((item) => (
+                                  <div className="estimate-line-item" key={item.id}>
+                                    <span className="estimate-line-name">{item.name}</span>
+                                    <span className="estimate-line-quantity">
+                                      {number.format(item.quantity)} {item.unit}
+                                    </span>
+                                    <span className="estimate-line-total">
+                                      {money.format(item.quantity * item.unitPrice)}
+                                    </span>
+                                  </div>
+                                ))}
+                                <div className="estimate-stage-explanation">
+                                  <p>
+                                    <strong>Что меняет цену:</strong> {stage.priceFactors}
+                                  </p>
+                                  <p>
+                                    <strong>Допущение:</strong> {stage.assumption}
+                                  </p>
+                                </div>
                               </div>
-                            ))}
-                            <div className="estimate-stage-explanation">
-                              <p>
-                                <strong>Что меняет цену:</strong> {stage.priceFactors}
-                              </p>
-                              <p>
-                                <strong>Допущение:</strong> {stage.assumption}
-                              </p>
-                            </div>
+                            )}
                           </div>
-                        )}
+                        );
+                      })}
+                    </div>
+
+                    {includedStageCount > 0 && parameters.delivery !== "none" && (
+                      <div className="estimate-delivery-row">
+                        <span>
+                          Доставка материалов · {DEMO_DELIVERY[parameters.delivery].label}
+                        </span>
+                        <strong>{money.format(estimate.deliveryCost)}</strong>
                       </div>
-                    );
-                  })}
+                    )}
+
+                    {includedStageCount > 0 && (
+                      <div className="estimate-grand-total">
+                        <span>
+                          {estimate.deliveryCost > 0
+                            ? "Итого с доставкой"
+                            : constructionMode === "turnkey"
+                              ? "Итого по всем этапам"
+                              : "Итого по выбранным этапам"}
+                        </span>
+                        <strong>{money.format(estimate.total)}</strong>
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                {includedStageCount > 0 && parameters.delivery !== "none" && (
-                  <div className="estimate-delivery-row">
-                    <span>Доставка материалов · {DEMO_DELIVERY[parameters.delivery].label}</span>
-                    <strong>{money.format(estimate.deliveryCost)}</strong>
-                  </div>
-                )}
-
-                {includedStageCount > 0 && (
-                  <div className="estimate-grand-total">
-                    <span>
-                      {estimate.deliveryCost > 0
-                        ? "Итого с доставкой"
-                        : constructionMode === "turnkey"
-                          ? "Итого по всем этапам"
-                          : "Итого по выбранным этапам"}
-                    </span>
-                    <strong>{money.format(estimate.total)}</strong>
-                  </div>
-                )}
-              </details>
+              </div>
               {includedStageCount > 0 && (
                 <div className="estimate-pdf-actions">
                   <button

@@ -5,7 +5,7 @@ test("выбранные этапы управляют итогом, сохра�
 }) => {
   await page.goto("/");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
-  await calculator.locator(".estimate-breakdown > summary").click();
+  await calculator.locator(".estimate-breakdown-heading").click();
   const total = calculator.locator(".estimate-grand-total strong");
   const fullTotal = await total.innerText();
   const foundationTotal = await calculator.locator(".estimate-stage-price").first().innerText();
@@ -55,7 +55,7 @@ test("выбор этапов помещается на мобильном эк�
   await page.setViewportSize({ width: 320, height: 900 });
   await page.goto("/");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
-  await calculator.locator(".estimate-breakdown > summary").click();
+  await calculator.locator(".estimate-breakdown-heading").click();
   await calculator.getByRole("button", { name: "Отдельные этапы", exact: true }).click();
   await expect(
     calculator.getByRole("group", { name: "Состав работ" }).getByRole("checkbox"),
@@ -69,7 +69,7 @@ test("выбор этапов помещается на мобильном эк�
 test("стрелки этапов сохраняют стиль и положение на узких экранах", async ({ page }) => {
   await page.goto("/#calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
-  await calculator.locator(".estimate-breakdown > summary").click();
+  await calculator.locator(".estimate-breakdown-heading").click();
   const firstStage = calculator.locator(".estimate-stage-toggle").first();
   const chevron = firstStage.locator(".estimate-chevron");
 

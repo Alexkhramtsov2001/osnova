@@ -999,7 +999,7 @@
   border: 1px solid var(--line, #e4e1d9);
   padding: 0 20px;
 }
-.estimate-breakdown > summary {
+.estimate-breakdown-heading {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -1008,31 +1008,61 @@
   padding: 22px 0;
   margin: 0;
 }
-.estimate-breakdown > summary::-webkit-details-marker {
-  display: none;
+.estimate-breakdown-heading {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
 }
-.estimate-breakdown > summary::marker {
-  content: "";
+.estimate-breakdown-heading:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
-.estimate-breakdown > summary > span:first-child {
+.estimate-breakdown-heading > span:first-child {
   flex: 1;
 }
-.estimate-breakdown > summary strong {
+.estimate-breakdown-heading strong {
   display: block;
   font-size: clamp(19px, 2vw, 24px);
   font-weight: 400;
   margin-top: 8px;
 }
-.estimate-breakdown > summary > svg {
+.estimate-breakdown-heading > svg {
   flex: none;
-  transition: transform 180ms ease;
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.estimate-breakdown[open] > summary > svg {
+.estimate-breakdown[data-open="true"] .estimate-breakdown-heading > svg {
   transform: rotate(180deg);
 }
-.estimate-breakdown > summary:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
+.estimate-breakdown-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 360ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.estimate-breakdown[data-open="true"] .estimate-breakdown-panel {
+  grid-template-rows: 1fr;
+}
+.estimate-breakdown-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 220ms ease,
+    transform 360ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.estimate-breakdown[data-open="true"] .estimate-breakdown-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .estimate-breakdown-panel,
+  .estimate-breakdown-inner,
+  .estimate-breakdown-heading > svg {
+    transition-duration: 0.01ms;
+  }
 }
 .estimate-pdf-actions {
   margin-top: 18px;
@@ -1053,10 +1083,10 @@
   .estimate-breakdown {
     padding: 0 14px;
   }
-  .estimate-breakdown > summary {
+  .estimate-breakdown-heading {
     flex-wrap: wrap;
   }
-  .estimate-breakdown > summary > span:first-child {
+  .estimate-breakdown-heading > span:first-child {
     flex-basis: calc(100% - 40px);
   }
   .estimate-breakdown .estimate-stage-count {

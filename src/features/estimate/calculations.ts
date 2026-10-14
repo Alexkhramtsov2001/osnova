@@ -1,4 +1,11 @@
-import { maximumBathrooms, maximumBedrooms, minimumArea, minimumPerimeter } from "./constraints";
+import {
+  maximumBathrooms,
+  maximumBedrooms,
+  minimumArea,
+  minimumBathrooms,
+  minimumBedrooms,
+  minimumPerimeter,
+} from "./constraints";
 import type {
   EstimateItem,
   EstimateResult,
@@ -93,9 +100,19 @@ function validateHouseParameters(parameters: HouseParameters): void {
       `Для площади ${parameters.area} м² в демо доступно не более ${maximumBedrooms(parameters.area)} спален`,
     );
   }
+  if (parameters.bedrooms < minimumBedrooms(parameters.area)) {
+    throw new RangeError(
+      `Для площади ${parameters.area} м² в демо нужно не менее ${minimumBedrooms(parameters.area)} спален`,
+    );
+  }
   if (parameters.bathrooms > maximumBathrooms(parameters.area)) {
     throw new RangeError(
       `Для площади ${parameters.area} м² в демо доступно не более ${maximumBathrooms(parameters.area)} санузлов`,
+    );
+  }
+  if (parameters.bathrooms < minimumBathrooms(parameters.area)) {
+    throw new RangeError(
+      `Для площади ${parameters.area} м² в демо нужно не менее ${minimumBathrooms(parameters.area)} санузлов`,
     );
   }
   if (parameters.perimeter < minimumPerimeter(parameters.area, parameters.floors)) {

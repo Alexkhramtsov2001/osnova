@@ -5,7 +5,7 @@ test("тип проекта поясняет границы сметы и выб
 }) => {
   await page.goto("/");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
-  await calculator.locator(".estimate-breakdown > summary").click();
+  await calculator.locator(".estimate-breakdown-heading").click();
   const type = calculator.getByRole("combobox", { name: /Тип проекта/ });
   const total = calculator.locator(".estimate-grand-total strong");
   const original = await total.innerText();

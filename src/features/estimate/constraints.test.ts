@@ -5,6 +5,8 @@ import {
   clampHouseNumber,
   maximumBathrooms,
   maximumBedrooms,
+  minimumBathrooms,
+  minimumBedrooms,
   minimumArea,
   minimumPerimeter,
   normalizeForArea,
@@ -47,5 +49,23 @@ describe("ограничения демо-калькулятора", () => {
         RangeError,
       );
     }
+  });
+
+  it("согласует спальни и санузлы с очень большой площадью", () => {
+    const parameters = normalizeForArea({
+      ...DEFAULT_HOUSE_PARAMETERS,
+      area: 1000,
+      bedrooms: 1,
+      bathrooms: 1,
+      perimeter: 126,
+    });
+    expect(parameters.bedrooms).toBe(6);
+    expect(parameters.bathrooms).toBe(4);
+    expect(minimumBedrooms(1000)).toBe(6);
+    expect(minimumBathrooms(1000)).toBe(4);
+    expect(() => calculateHouseEstimate({ ...parameters, bedrooms: 1, bathrooms: 1 })).toThrow(
+      RangeError,
+    );
+    expect(calculateHouseEstimate(parameters).total).toBeGreaterThan(0);
   });
 });

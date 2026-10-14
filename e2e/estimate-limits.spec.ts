@@ -36,3 +36,20 @@ test("числа приводятся к границам после ввода,
   await height.blur();
   await expect(height).toHaveValue("2.4");
 });
+
+test("пересчитывает стоимость сразу после ввода площади и нормализует комнаты большого дома", async ({
+  page,
+}) => {
+  await page.goto("/#calculator");
+  const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
+  const area = calculator.getByRole("spinbutton", { name: /Площадь дома/ });
+  await area.fill("500");
+  await expect(area).toHaveValue("500");
+  await expect(calculator.locator(".estimate-total-value")).toBeVisible();
+  await expect(area).not.toHaveAttribute("aria-invalid", "true");
+
+  await area.fill("1000");
+  await expect(calculator.getByRole("combobox", { name: "Спальни" })).toHaveValue("6");
+  await expect(calculator.getByRole("combobox", { name: "Санузлы" })).toHaveValue("4");
+  await expect(calculator.locator(".estimate-total-value")).toBeVisible();
+});

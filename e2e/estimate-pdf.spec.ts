@@ -4,10 +4,13 @@ import { readFile } from "node:fs/promises";
 test("детализация закрыта по умолчанию, а PDF скачивается с текущим расчётом", async ({ page }) => {
   await page.goto("/?project=02#calculator");
   const details = page.locator(".estimate-breakdown");
-  await expect(details).not.toHaveAttribute("open");
-  await details.locator("summary").click();
+  const toggle = details.getByRole("button", { name: /Из чего складывается цена/ });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator(".estimate-stage-toggle").first()).toBeVisible();
-  await details.locator("summary").click();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
   const downloadEvent = page.waitForEvent("download");
   await page.getByRole("button", { name: "Скачать расчёт в PDF" }).click();
   const download = await downloadEvent;

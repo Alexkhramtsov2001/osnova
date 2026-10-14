@@ -651,12 +651,7 @@ function HomePage({
 
           <div className="projects-footer">
             <p>Это лишь несколько идей. Подберём решение под ваши задачи.</p>
-            <Link
-              className="button button-primary house-finder-link"
-              to="/find-home"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link className="button button-primary house-finder-link" to="/find-home">
               Подобрать свой дом <ArrowIcon />
             </Link>
           </div>

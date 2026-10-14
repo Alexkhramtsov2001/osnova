@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+test("кнопка подбора открывает опросник в текущей вкладке", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Подобрать свой дом" }).click();
+  await expect(page).toHaveURL(/\/find-home$/);
+  await expect(page.getByRole("heading", { name: "Найдём дом под ваш ритм жизни" })).toBeVisible();
+});
+
 test("опрос показывает семь шагов и ровно четыре ответа на каждом", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/find-home");
