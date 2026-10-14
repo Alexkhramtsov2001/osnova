@@ -129,8 +129,7 @@
   border-color: var(--accent-dark);
 }
 
-.header-contact span,
-.projects-footer a .arrow-icon {
+.header-contact span {
   color: var(--accent);
 }
 

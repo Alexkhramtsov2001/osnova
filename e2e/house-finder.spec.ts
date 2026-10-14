@@ -2,6 +2,9 @@ import { expect, test } from "@playwright/test";
 
 test("кнопка подбора открывает опросник в текущей вкладке", async ({ page }) => {
   await page.goto("/");
+  await expect(
+    page.getByRole("link", { name: "Подобрать свой дом" }).locator(".arrow-icon"),
+  ).toHaveCSS("color", "rgb(255, 255, 255)");
   await page.getByRole("link", { name: "Подобрать свой дом" }).click();
   await expect(page).toHaveURL(/\/find-home$/);
   await expect(page.getByRole("heading", { name: "Найдём дом под ваш ритм жизни" })).toBeVisible();
