@@ -473,7 +473,9 @@ export default function EstimateCalculator({
                     const area = event.target.valueAsNumber;
                     const next = { ...parameters, area };
                     onParametersChange(
-                      Number.isFinite(area) && area >= minimumArea(parameters.floors)
+                      Number.isFinite(area) &&
+                        area >= minimumArea(parameters.floors) &&
+                        area <= HOUSE_NUMBER_LIMITS.area.max
                         ? normalizeForArea(next)
                         : next,
                     );

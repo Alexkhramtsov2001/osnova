@@ -54,7 +54,13 @@ test("пересчитывает стоимость сразу после вво
   await expect(area).not.toHaveAttribute("aria-invalid", "true");
 
   await area.fill("1000");
-  await expect(calculator.getByRole("combobox", { name: "Спальни" })).toHaveValue("6");
-  await expect(calculator.getByRole("combobox", { name: "Санузлы" })).toHaveValue("4");
+  await expect(calculator.getByRole("combobox", { name: "Спальни" })).toHaveAttribute(
+    "data-value",
+    "6",
+  );
+  await expect(calculator.getByRole("combobox", { name: "Санузлы" })).toHaveAttribute(
+    "data-value",
+    "4",
+  );
   await expect(calculator.locator(".estimate-total-value")).toBeVisible();
 });

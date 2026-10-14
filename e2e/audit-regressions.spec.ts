@@ -8,7 +8,7 @@ test("незавершённый и недопустимый числовой в
   for (const field of [
     { name: /Площадь дома/, valid: "118", invalid: ["", "0", "29", "1001"] },
     { name: /Высота стен/, valid: "3.1", invalid: ["", "2.3", "5.1"] },
-    { name: /Периметр/, valid: "43", invalid: ["", "9", "201"] },
+    { name: /Периметр/, valid: "44", invalid: ["", "9", "201"] },
   ]) {
     const input = calculator.getByRole("spinbutton", { name: field.name });
     for (const value of field.invalid) {

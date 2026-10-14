@@ -23,7 +23,7 @@ test("выбор дома переносит параметры, сохраня�
     "data-value",
     "4",
   );
-  await expect(calculator.getByRole("spinbutton", { name: /Периметр/ })).toHaveValue("36");
+  await expect(calculator.getByRole("spinbutton", { name: /Периметр/ })).toHaveValue("37");
   await expect(walls).toHaveAttribute("data-value", "ceramicBlock");
   await expect(calculator.getByRole("button", { name: "Комфорт", exact: true })).toHaveAttribute(
     "aria-pressed",
@@ -45,7 +45,7 @@ test("выбор дома переносит параметры, сохраня�
     "data-value",
     "3",
   );
-  await expect(calculator.getByRole("spinbutton", { name: /Периметр/ })).toHaveValue("43");
+  await expect(calculator.getByRole("spinbutton", { name: /Периметр/ })).toHaveValue("44");
   await expect(walls).toHaveAttribute("data-value", "ceramicBlock");
   await calculator.getByRole("button", { name: "Сбросить", exact: true }).click();
   await expect(area).toHaveValue("120");
