@@ -1,6 +1,9 @@
 import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigationType } from "react-router";
+import { normalizeForArea } from "../features/estimate/constraints";
+import { readCalculatorDraft, type CalculatorDraft } from "../features/estimate/calculatorDraft";
+import { DEMO_ESTIMATE_CATALOG } from "../features/estimate/catalog";
 import ArrowIcon from "../components/ArrowIcon";
 import ContactSection from "../components/ContactSection";
 import SiteHeader from "../components/SiteHeader";
@@ -57,24 +60,48 @@ export default function HomePage({
   const startingProject = projects.find(
     (project) => project.number === new URLSearchParams(window.location.search).get("project"),
   );
-  const [houseParameters, setHouseParameters] = useState<HouseParameters>(() =>
-    startingProject ? getProjectParameters(startingProject) : { ...DEFAULT_HOUSE_PARAMETERS },
-  );
+  const navigationType = useNavigationType();
+  const [initialDraft] = useState<CalculatorDraft>(() => {
+    let draft: CalculatorDraft | null = null;
+    try {
+      draft = readCalculatorDraft(window.sessionStorage);
+    } catch {
+      /* Хранилище может быть недоступно. */
+    }
+    if (
+      draft &&
+      (!startingProject ||
+        (navigationType === "POP" && draft.sourceProjectNumber === startingProject.number))
+    )
+      return draft;
+    return {
+      parameters: startingProject
+        ? getProjectParameters(startingProject)
+        : { ...DEFAULT_HOUSE_PARAMETERS },
+      projectName: startingProject?.name ?? null,
+      sourceProjectNumber: startingProject?.number ?? null,
+      mode: "turnkey",
+      stageIds: DEMO_ESTIMATE_CATALOG.map((stage) => stage.id),
+    };
+  });
+  const [houseParameters, setHouseParameters] = useState<HouseParameters>(initialDraft.parameters);
   const [selectedProjectName, setSelectedProjectName] = useState<string | null>(
-    () => startingProject?.name ?? null,
+    initialDraft.projectName,
   );
   const calculatorRef = useRef<HTMLElement>(null);
 
   const selectProject = (project: Project) => {
-    setHouseParameters((current) => ({
-      ...current,
-      projectType: "standard",
-      area: project.area,
-      floors: project.floors,
-      bedrooms: project.bedrooms,
-      // В каталоге нет планов: оцениваем периметр квадратной застройки.
-      perimeter: Math.ceil(4 * Math.sqrt(project.area / project.floors)),
-    }));
+    setHouseParameters((current) =>
+      normalizeForArea({
+        ...current,
+        projectType: "standard",
+        area: project.area,
+        floors: project.floors,
+        bedrooms: project.bedrooms,
+        // В каталоге нет планов: оцениваем периметр квадратной застройки.
+        perimeter: Math.ceil(4 * Math.sqrt(project.area / project.floors)),
+      }),
+    );
     setSelectedProjectName(project.name);
     calculatorRef.current?.focus({ preventScroll: true });
   };
@@ -526,6 +553,13 @@ export default function HomePage({
             onRestore={restoreHouseParameters}
             projectName={selectedProjectName}
             onReset={resetHouseParameters}
+            initialStageIds={initialDraft.stageIds}
+            sourceProjectNumber={startingProject?.number ?? null}
+            initialScope={
+              initialDraft.mode === "turnkey"
+                ? { mode: "turnkey" }
+                : { mode: "stages", stageIds: initialDraft.stageIds }
+            }
           />
         </section>
         <ContactSection

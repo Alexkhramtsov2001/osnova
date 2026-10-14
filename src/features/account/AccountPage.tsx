@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import type { SavedEstimate } from "../estimate/savedEstimates";
-import { readSavedEstimates, writeSavedEstimates } from "../estimate/savedEstimates";
+import { useSavedEstimates } from "../estimate/useSavedEstimates";
 import { projects } from "../projects/catalog";
 import { writeFavoriteIds } from "../projects/favorites";
 import "./AccountPage.css";
@@ -31,9 +31,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
   const [password, setPassword] = useState(DEMO_ACCOUNT_PASSWORD);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [savedEstimates, setSavedEstimates] = useState(() =>
-    readSavedEstimates(window.localStorage),
-  );
+  const { savedEstimates, mutate: mutateSavedEstimates, refresh } = useSavedEstimates();
 
   const signIn = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,13 +61,13 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
     setNotice("Дом удалён из избранного.");
   };
 
-  const removeEstimate = (id: string) => {
-    const next = savedEstimates.filter((estimate) => estimate.id !== id);
-    if (!writeSavedEstimates(window.localStorage, next)) {
+  const removeEstimate = async (id: string) => {
+    if (
+      !(await mutateSavedEstimates((current) => current.filter((estimate) => estimate.id !== id)))
+    ) {
       setNotice("Не удалось удалить расчёт. Проверьте настройки хранилища браузера.");
       return;
     }
-    setSavedEstimates(next);
     setNotice("Сохранённый расчёт удалён.");
   };
 
@@ -83,7 +81,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
   };
 
   const refreshSavedEstimates = () => {
-    setSavedEstimates(readSavedEstimates(window.localStorage));
+    refresh();
     setNotice("Список сохранённых расчётов обновлён.");
   };
 

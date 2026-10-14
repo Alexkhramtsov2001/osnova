@@ -1,3 +1,4 @@
+import { formatDuration } from "../features/estimate/formatters";
 import "./ProjectPage.css";
 import { Link, useParams } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
@@ -142,15 +143,17 @@ export default function ProjectPage() {
               <li key={stage.id}>
                 <span>{stage.name}</span>
                 <small>
-                  {stage.durationWeeks.min}–{stage.durationWeeks.max} нед.
+                  {formatDuration(stage.durationWeeks.min)}–
+                  {formatDuration(stage.durationWeeks.max)} нед.
                 </small>
               </li>
             ))}
           </ol>
           <p className="project-detail-caveat">
-            Общий диапазон модели: {estimate.durationWeeks.min}–{estimate.durationWeeks.max}{" "}
-            календарных недель. Подготовка рабочей документации, обследование участка,
-            разрешительные процедуры и возможные паузы в него не входят.
+            Общий диапазон модели: {formatDuration(estimate.durationWeeks.min)}–
+            {formatDuration(estimate.durationWeeks.max)} календарных недель. Подготовка рабочей
+            документации, обследование участка, разрешительные процедуры и возможные паузы в него не
+            входят.
           </p>
         </section>
         <section
@@ -183,7 +186,8 @@ export default function ProjectPage() {
             <strong>{formatPriceRange(estimate.minTotal, estimate.maxTotal)}</strong>
             <p>
               Средний ориентир: {Math.round(estimate.total).toLocaleString("ru-RU")} ₽. Срок модели:{" "}
-              {estimate.durationWeeks.min}–{estimate.durationWeeks.max} календарных недель.
+              {formatDuration(estimate.durationWeeks.min)}–
+              {formatDuration(estimate.durationWeeks.max)} календарных недель.
             </p>
             <p>
               Версия расчёта {estimate.dataVersion} от {estimate.dataUpdatedAt}. Это не смета и не

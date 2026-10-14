@@ -1,4 +1,5 @@
-import { useMemo, useRef, useState } from "react";
+import { formatDuration } from "./formatters";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ArrowIcon from "../../components/ArrowIcon";
 import ContactIcon from "../../components/ContactIcon";
 import OsnovaSelect from "../../components/OsnovaSelect";
@@ -23,6 +24,7 @@ import {
   minimumBedrooms,
   minimumPerimeter,
   normalizeForArea,
+  isHouseNumberStepValid,
 } from "./constraints";
 import { createDemoRequestPayload, submitDemoRequest } from "./demoRequest";
 import EstimateBreakdown from "./EstimateBreakdown";
@@ -30,13 +32,10 @@ import "./EstimateCalculator.css";
 import EstimatePdfButton from "./EstimatePdfButton";
 import { formatRequestSummary } from "./requestSummary";
 import SavedEstimates from "./SavedEstimateList";
-import {
-  readSavedEstimates,
-  SAVED_ESTIMATES_LIMIT,
-  writeSavedEstimates,
-  type SavedEstimate,
-} from "./savedEstimates";
-import type { EstimateStageId, HouseParameters } from "./types";
+import { SAVED_ESTIMATES_LIMIT, type SavedEstimate } from "./savedEstimates";
+import { useSavedEstimates } from "./useSavedEstimates";
+import { writeCalculatorDraft } from "./calculatorDraft";
+import type { EstimateScope, EstimateStageId, HouseParameters } from "./types";
 
 import { money, number } from "./formatters";
 const allStageIds = DEMO_ESTIMATE_CATALOG.map((stage) => stage.id);
@@ -49,6 +48,9 @@ type EstimateCalculatorProps = {
   onRestore: (parameters: HouseParameters, projectName: string | null) => void;
   projectName: string | null;
   onReset: () => void;
+  initialScope?: EstimateScope;
+  initialStageIds?: EstimateStageId[];
+  sourceProjectNumber?: string | null;
 };
 
 export default function EstimateCalculator({
@@ -57,10 +59,15 @@ export default function EstimateCalculator({
   onRestore,
   projectName,
   onReset,
+  initialScope = { mode: "turnkey" },
+  initialStageIds,
+  sourceProjectNumber = null,
 }: EstimateCalculatorProps) {
   const [expandedStages, setExpandedStages] = useState<string[]>(["foundation"]);
-  const [constructionMode, setConstructionMode] = useState<"turnkey" | "stages">("turnkey");
-  const [selectedStageIds, setSelectedStageIds] = useState<EstimateStageId[]>(allStageIds);
+  const [constructionMode, setConstructionMode] = useState<"turnkey" | "stages">(initialScope.mode);
+  const [selectedStageIds, setSelectedStageIds] = useState<EstimateStageId[]>(
+    initialStageIds ?? (initialScope.mode === "stages" ? initialScope.stageIds : allStageIds),
+  );
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState<{
@@ -68,16 +75,18 @@ export default function EstimateCalculator({
     message: string;
     error: boolean;
   } | null>(null);
-  const [savedEstimates, setSavedEstimates] = useState<SavedEstimate[]>(() =>
-    readSavedEstimates(window.localStorage),
-  );
+  const { savedEstimates, mutate: mutateSavedEstimates } = useSavedEstimates();
   const [savedStatus, setSavedStatus] = useState("");
-  const [demoSubmission, setDemoSubmission] = useState<{
-    signature: string;
-    phase: "sending" | "sent" | "error";
-    message: string;
-  } | null>(null);
-  const demoRequestId = useRef<{ signature: string; id: string } | null>(null);
+  const [demoSubmissions, setDemoSubmissions] = useState<
+    Record<
+      string,
+      {
+        phase: "sending" | "sent" | "error";
+        message: string;
+      }
+    >
+  >({});
+  const demoRequestIds = useRef(new Map<string, string>());
 
   const { estimate, inputError } = useMemo(() => {
     try {
@@ -99,11 +108,26 @@ export default function EstimateCalculator({
       : null;
   const requestSignature = JSON.stringify({
     parameters,
+    projectName,
     constructionMode,
-    selectedStageIds,
+    selectedStageIds: [...(constructionMode === "turnkey" ? allStageIds : selectedStageIds)].sort(),
     total: estimate?.total,
   });
-  const currentSubmission = demoSubmission?.signature === requestSignature ? demoSubmission : null;
+  const currentSubmission = demoSubmissions[requestSignature];
+  useEffect(() => {
+    if (!estimate) return;
+    try {
+      writeCalculatorDraft(window.sessionStorage, {
+        parameters,
+        projectName,
+        mode: constructionMode,
+        stageIds: selectedStageIds,
+        sourceProjectNumber,
+      });
+    } catch {
+      /* Черновик необязателен. */
+    }
+  }, [parameters, projectName, constructionMode, selectedStageIds, estimate, sourceProjectNumber]);
 
   const sendDemoRequest = async () => {
     if (
@@ -113,16 +137,15 @@ export default function EstimateCalculator({
       currentSubmission?.phase === "sent"
     )
       return;
-    const id =
-      demoRequestId.current?.signature === requestSignature
-        ? demoRequestId.current.id
-        : crypto.randomUUID();
-    demoRequestId.current = { signature: requestSignature, id };
-    setDemoSubmission({
-      signature: requestSignature,
-      phase: "sending",
-      message: "Отправляем тестовую заявку…",
-    });
+    const id = demoRequestIds.current.get(requestSignature) ?? crypto.randomUUID();
+    demoRequestIds.current.set(requestSignature, id);
+    setDemoSubmissions((current) => ({
+      ...current,
+      [requestSignature]: {
+        phase: "sending",
+        message: "Отправляем тестовую заявку…",
+      },
+    }));
     try {
       const payload = createDemoRequestPayload(
         parameters,
@@ -132,17 +155,21 @@ export default function EstimateCalculator({
         id,
       );
       const savedId = await submitDemoRequest(payload);
-      setDemoSubmission({
-        signature: requestSignature,
-        phase: "sent",
-        message: `Тестовая заявка сохранена в Supabase. Номер: ${savedId.slice(0, 8)}.`,
-      });
+      setDemoSubmissions((current) => ({
+        ...current,
+        [requestSignature]: {
+          phase: "sent",
+          message: `Тестовая заявка сохранена в Supabase. Номер: ${savedId.slice(0, 8)}.`,
+        },
+      }));
     } catch {
-      setDemoSubmission({
-        signature: requestSignature,
-        phase: "error",
-        message: "Не удалось сохранить тестовую заявку. Попробуйте ещё раз позже.",
-      });
+      setDemoSubmissions((current) => ({
+        ...current,
+        [requestSignature]: {
+          phase: "error",
+          message: "Не удалось сохранить тестовую заявку. Попробуйте ещё раз позже.",
+        },
+      }));
     }
   };
 
@@ -165,7 +192,7 @@ export default function EstimateCalculator({
     }
   };
 
-  const saveEstimate = () => {
+  const saveEstimate = async () => {
     if (!requestSummary || !estimate) return;
     const entry: SavedEstimate = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
@@ -181,22 +208,22 @@ export default function EstimateCalculator({
         projectName,
       },
     };
-    const next = [entry, ...savedEstimates].slice(0, SAVED_ESTIMATES_LIMIT);
-    if (!writeSavedEstimates(window.localStorage, next)) {
+    if (
+      !(await mutateSavedEstimates((current) =>
+        [entry, ...current].slice(0, SAVED_ESTIMATES_LIMIT),
+      ))
+    ) {
       setSavedStatus("Не удалось сохранить расчёт в этом браузере. Скопируйте сводку вручную.");
       return;
     }
-    setSavedEstimates(next);
     setSavedStatus("Расчёт сохранён на этом устройстве. Он останется снимком текущих данных.");
   };
 
-  const deleteSavedEstimate = (id: string) => {
-    const next = savedEstimates.filter((entry) => entry.id !== id);
-    if (!writeSavedEstimates(window.localStorage, next)) {
+  const deleteSavedEstimate = async (id: string) => {
+    if (!(await mutateSavedEstimates((current) => current.filter((entry) => entry.id !== id)))) {
       setSavedStatus("Не удалось удалить расчёт из хранилища браузера.");
       return;
     }
-    setSavedEstimates(next);
     setSavedStatus("Сохранённый расчёт удалён.");
   };
 
@@ -242,13 +269,28 @@ export default function EstimateCalculator({
       key === "perimeter" && Number.isFinite(parameters.area)
         ? maximumPerimeter(parameters.area, parameters.floors)
         : max;
-    return !Number.isFinite(parameters[key]) || parameters[key] < lower || parameters[key] > upper;
+    return (
+      !isHouseNumberStepValid(key, parameters[key]) ||
+      parameters[key] < lower ||
+      parameters[key] > upper
+    );
   };
 
   const update = <K extends keyof HouseParameters>(key: K, value: HouseParameters[K]) => {
     if (key === "bedrooms") {
       onParametersChange(normalizeForArea({ ...parameters, bedrooms: value as number }));
       return;
+    }
+    if (key in HOUSE_NUMBER_LIMITS && typeof value === "number" && Number.isFinite(value)) {
+      const numericKey = key as keyof typeof HOUSE_NUMBER_LIMITS;
+      const limits = HOUSE_NUMBER_LIMITS[numericKey];
+      if (value >= limits.min && value <= limits.max) {
+        onParametersChange({
+          ...parameters,
+          [key]: Number((Math.round(value / limits.step) * limits.step).toFixed(1)),
+        });
+        return;
+      }
     }
     onParametersChange({ ...parameters, [key]: value });
   };
@@ -456,13 +498,14 @@ export default function EstimateCalculator({
                     disabled:
                       Number.isFinite(parameters.area) &&
                       (value < minimumBedrooms(parameters.area) ||
-                        value > maximumBedrooms(parameters.area)),
+                        value > maximumBedrooms(parameters.area, parameters.floors)),
                   }))}
                 />
                 {Number.isFinite(parameters.area) && (
                   <span className="estimate-field-hint">
                     Для {number.format(parameters.area)} м²: от {minimumBedrooms(parameters.area)}
-                    до {maximumBedrooms(parameters.area)} спален.
+                    до {maximumBedrooms(parameters.area, parameters.floors)} спален с запасом на
+                    общие помещения.
                   </span>
                 )}
               </Field>
@@ -478,14 +521,24 @@ export default function EstimateCalculator({
                     disabled:
                       Number.isFinite(parameters.area) &&
                       (value < minimumBathrooms(parameters.area, parameters.bedrooms) ||
-                        value > maximumBathrooms(parameters.area)),
+                        value >
+                          maximumBathrooms(
+                            parameters.area,
+                            parameters.floors,
+                            parameters.bedrooms,
+                          )),
                   }))}
                 />
                 {Number.isFinite(parameters.area) && (
                   <span className="estimate-field-hint">
                     Для {parameters.bedrooms} спален: от{" "}
                     {minimumBathrooms(parameters.area, parameters.bedrooms)}
-                    до {maximumBathrooms(parameters.area)} санузлов.
+                    до {maximumBathrooms(
+                      parameters.area,
+                      parameters.floors,
+                      parameters.bedrooms,
+                    )}{" "}
+                    санузлов.
                   </span>
                 )}
               </Field>
@@ -501,7 +554,7 @@ export default function EstimateCalculator({
                 options={options.wallMaterial}
               />
               <span className="estimate-field-hint">
-                В демо технология влияет на стоимость этапа «Коробка дома».
+                Технология меняет состав коробки, фасада и отделки стен в демо-модели.
               </span>
             </Field>
 
@@ -646,7 +699,8 @@ export default function EstimateCalculator({
                 <div className="estimate-duration-card">
                   <span className="estimate-overline">ОРИЕНТИР ПО СРОКАМ</span>
                   <strong>
-                    {estimate.durationWeeks.min}–{estimate.durationWeeks.max} нед.
+                    {formatDuration(estimate.durationWeeks.min)}–
+                    {formatDuration(estimate.durationWeeks.max)} нед.
                   </strong>
                   <p>
                     Календарные недели. Этапы сложены последовательно; параллельные работы, сезон и

@@ -195,10 +195,10 @@ describe("Проверка параметров дома", () => {
     }
   });
 
-  it("считает фундамент и кровлю от пятна застройки для двух этажей", () => {
-    const oneFloor = calculateHouseEstimate(DEFAULT_HOUSE_PARAMETERS);
+  it("считает плитный фундамент и кровлю от пятна застройки для двух этажей", () => {
+    const oneFloor = calculateHouseEstimate({ ...DEFAULT_HOUSE_PARAMETERS, foundation: "slab" });
     const twoFloors = calculateHouseEstimate(
-      normalizeForArea({ ...DEFAULT_HOUSE_PARAMETERS, floors: 2 }),
+      normalizeForArea({ ...DEFAULT_HOUSE_PARAMETERS, foundation: "slab", floors: 2 }),
     );
     const quantity = (
       result: ReturnType<typeof calculateHouseEstimate>,

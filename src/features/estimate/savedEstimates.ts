@@ -2,6 +2,7 @@ import { DEMO_ESTIMATE_CATALOG } from "./catalog";
 import { calculateHouseEstimate } from "./calculations";
 import { normalizeForArea } from "./constraints";
 import type { EstimateStageId, HouseParameters } from "./types";
+import { withStorageTransaction } from "./storageLock";
 
 export const SAVED_ESTIMATES_STORAGE_KEY = "osnova.saved-estimates.v1";
 export const SAVED_ESTIMATES_LIMIT = 8;
@@ -40,9 +41,10 @@ const parameterKeys: (keyof HouseParameters)[] = [
 ];
 const stageIds = new Set(DEMO_ESTIMATE_CATALOG.map((stage) => stage.id));
 
-function normalizeConfiguration(
+export function normalizeConfiguration(
   value: unknown,
   mode: SavedEstimate["mode"],
+  allowEmptyStages = false,
 ): SavedEstimateConfiguration | undefined {
   if (!value || typeof value !== "object") return undefined;
   const candidate = value as Partial<SavedEstimateConfiguration>;
@@ -50,7 +52,7 @@ function normalizeConfiguration(
     !candidate.parameters ||
     typeof candidate.parameters !== "object" ||
     !Array.isArray(candidate.stageIds) ||
-    (mode === "stages" && candidate.stageIds.length === 0) ||
+    (!allowEmptyStages && mode === "stages" && candidate.stageIds.length === 0) ||
     candidate.stageIds.length > stageIds.size ||
     candidate.stageIds.some((id) => !stageIds.has(id)) ||
     new Set(candidate.stageIds).size !== candidate.stageIds.length ||
@@ -150,5 +152,38 @@ export function writeSavedEstimates(
     return true;
   } catch {
     return false;
+  }
+}
+
+let localMutation = Promise.resolve();
+
+export async function updateSavedEstimates(
+  storage: Pick<Storage, "getItem" | "setItem">,
+  update: (current: SavedEstimate[]) => SavedEstimate[],
+): Promise<SavedEstimate[] | null> {
+  const commit = () => {
+    const next = normalizeSavedEstimates(update(readSavedEstimates(storage)));
+    return writeSavedEstimates(storage, next) ? next : null;
+  };
+  try {
+    if (typeof navigator !== "undefined" && navigator.locks) {
+      return await navigator.locks.request(SAVED_ESTIMATES_STORAGE_KEY, commit);
+    }
+    if (typeof indexedDB !== "undefined") return await withStorageTransaction(commit);
+    if (typeof window !== "undefined") return null;
+    // Последовательная обработка для среды без браузера, например unit-тестов.
+    const previous = localMutation;
+    let release!: () => void;
+    localMutation = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    await previous;
+    try {
+      return commit();
+    } finally {
+      release();
+    }
+  } catch {
+    return null;
   }
 }
