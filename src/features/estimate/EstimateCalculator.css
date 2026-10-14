@@ -5,6 +5,12 @@
   color: var(--ink, #252621);
 }
 
+@media (min-width: 1441px) {
+  .estimate-calculator {
+    padding-inline: 88px;
+  }
+}
+
 .estimate-intro {
   max-width: 690px;
   margin-bottom: 46px;
