@@ -4,25 +4,29 @@ import SiteHeader from "../../components/SiteHeader";
 import ArrowIcon from "../../components/ArrowIcon";
 import { formatPriceRange, getProjectEstimate } from "../projects/estimates";
 import {
-  questions,
+  QUESTION_COUNT,
+  nextQuestion,
   recommendProject,
-  availableOptions,
+  questionBank,
   updateAnswer,
   type Answers,
+  type BankQuestion,
 } from "./recommendation";
 import "./HouseFinder.css";
 
 export default function HouseFinder() {
   const [step, setStep] = useState(0);
-  const [noMatch, setNoMatch] = useState(false);
+  const [questionIds, setQuestionIds] = useState<string[]>(["purpose"]);
   const [answers, setAnswers] = useState<Partial<Answers>>({});
   const heading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLLegendElement>(null);
   const previousStep = useRef(0);
-  const completed = step === questions.length;
-  const question = questions[Math.min(step, questions.length - 1)];
-  const recommendation = completed && !noMatch ? recommendProject(answers as Answers) : null;
-  const options = availableOptions(question.id, answers);
+  const completed = step === QUESTION_COUNT;
+  const question = questionBank.find(
+    (item) => item.id === questionIds[Math.min(step, QUESTION_COUNT - 1)],
+  ) as BankQuestion;
+  const recommendation = completed ? recommendProject(answers) : null;
+  const options = question.options;
   const canContinue = options.some((option) => option.value === answers[question.id]);
   const project = recommendation?.project;
   const estimate = project ? getProjectEstimate(project) : null;
@@ -56,23 +60,31 @@ export default function HouseFinder() {
             ? project
               ? "Этот проект соответствует выбранным условиям. Вот почему он подходит."
               : "В каталоге нет типового проекта под ваши пожелания. Перейдите в калькулятор-конфигуратор, чтобы задать параметры своего дома."
-            : "До семи коротких вопросов. Следующие варианты учитывают ваши предыдущие ответы. Без регистрации и контактов."}
+            : `Ровно ${QUESTION_COUNT} коротких вопросов из расширенной подборки. Следующие вопросы учитывают ваши ответы. Без регистрации и контактов.`}
         </p>
         {!completed ? (
           <form
             className="finder-card"
             onSubmit={(event) => {
               event.preventDefault();
-              if (canContinue) setStep(step + 1);
+              if (!canContinue) return;
+              if (step === QUESTION_COUNT - 1) {
+                setStep(QUESTION_COUNT);
+                return;
+              }
+              const next = nextQuestion(answers, questionIds);
+              if (!next) return;
+              setQuestionIds((current) => [...current.slice(0, step + 1), next.id]);
+              setStep(step + 1);
             }}
           >
             <div className="finder-progress-label">
               <span>
-                Вопрос {step + 1} из {questions.length}
+                Вопрос {step + 1} из {QUESTION_COUNT}
               </span>
               <span>Около 2 минут</span>
             </div>
-            <progress aria-label="Прогресс подбора" value={step} max={questions.length} />
+            <progress aria-label="Прогресс подбора" value={step} max={QUESTION_COUNT} />
             <fieldset key={question.id}>
               <legend ref={questionHeading} tabIndex={-1}>
                 {question.title}
@@ -89,20 +101,21 @@ export default function HouseFinder() {
                       name={question.id}
                       value={option.value}
                       checked={answers[question.id] === option.value}
-                      onChange={() =>
-                        setAnswers((current) => updateAnswer(current, question.id, option.value))
-                      }
+                      onChange={() => {
+                        setAnswers((current) => {
+                          const retained = Object.fromEntries(
+                            questionIds.slice(0, step).map((id) => [id, current[id]]),
+                          ) as Partial<Answers>;
+                          return updateAnswer(retained, question.id, option.value);
+                        });
+                        setQuestionIds((current) => current.slice(0, step + 1));
+                      }}
                     />
                     <span>{option.label}</span>
                   </label>
                 ))}
               </div>
             </fieldset>
-            {step > 0 && (
-              <p className="finder-hint">
-                Показаны варианты, совместимые с предыдущими ответами в нашем каталоге.
-              </p>
-            )}
             <div className="finder-actions">
               <button
                 className="button button-secondary"
@@ -113,20 +126,10 @@ export default function HouseFinder() {
                 Назад
               </button>
               <button className="button button-primary" type="submit" disabled={!canContinue}>
-                {step === questions.length - 1 ? "Показать мой дом" : "Продолжить"}
+                {step === QUESTION_COUNT - 1 ? "Показать мой дом" : "Продолжить"}
                 <ArrowIcon />
               </button>
             </div>
-            <button
-              className="finder-restart"
-              type="button"
-              onClick={() => {
-                setNoMatch(true);
-                setStep(questions.length);
-              }}
-            >
-              Ни один вариант не подходит
-            </button>
           </form>
         ) : !project ? (
           <div className="finder-next finder-no-match">
@@ -180,7 +183,7 @@ export default function HouseFinder() {
                 <button
                   className="button button-secondary"
                   type="button"
-                  onClick={() => setStep(questions.length - 1)}
+                  onClick={() => setStep(QUESTION_COUNT - 1)}
                 >
                   Изменить ответы
                 </button>
@@ -188,8 +191,8 @@ export default function HouseFinder() {
                   className="finder-restart"
                   type="button"
                   onClick={() => {
-                    setNoMatch(false);
                     setAnswers({});
+                    setQuestionIds(["purpose"]);
                     setStep(0);
                   }}
                 >
