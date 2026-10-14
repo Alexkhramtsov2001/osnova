@@ -33,7 +33,8 @@ test("демо-вход открывает локальные избранные
 
   await expect(page.getByRole("status")).toContainText("не синхронизируются между устройствами");
   await expect(page.getByRole("heading", { name: "Избранные дома" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Открыть проект Скандинавия" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Скандинавия" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Открыть проект" }).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Сохранённые сметы" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Демо-расчёт Севера" })).toBeVisible();
   await expect(page).toHaveURL(/\/account$/);
@@ -64,7 +65,9 @@ test("чат отвечает по выбранному дому локальн�
   await page.getByRole("button", { name: "Можно изменить планировку?" }).click();
 
   await expect(page.getByLabel("История демо-чата")).toContainText("Для проекта «Скандинавия»");
-  await expect(page.getByLabel("История демо-чата")).toContainText("Это демонстрационный сценарий");
+  await expect(page.getByLabel("История демо-чата")).toContainText(
+    "Здесь это демонстрационный сценарий",
+  );
   expect(networkRequests).toBe(0);
 });
 
