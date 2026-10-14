@@ -42,8 +42,8 @@ export default function SiteHeader({ home = false }: SiteHeaderProps) {
           {home ? <a href="#contacts">Контакты</a> : <Link to="/#contacts">Контакты</Link>}
           {home ? <a href="#demo-chat">Чат</a> : <Link to="/#demo-chat">Чат</Link>}
         </nav>
-        <Link className="header-contact header-account" to="/account">
-          Личный кабинет <small>Демо</small>
+        <Link className="header-contact header-account button button-primary" to="/account">
+          Личный кабинет
         </Link>
         <button
           ref={menuButtonRef}
@@ -105,8 +105,8 @@ export default function SiteHeader({ home = false }: SiteHeaderProps) {
                 Чат
               </Link>
             )}
-            <Link to="/account" onClick={() => setMenuOpen(false)}>
-              Личный кабинет <small>Демо</small>
+            <Link className="mobile-account-link" to="/account" onClick={() => setMenuOpen(false)}>
+              Личный кабинет
             </Link>
           </nav>
         )}

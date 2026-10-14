@@ -83,3 +83,18 @@ test("мобильная ссылка на кабинет открывает в�
   await expect(page).toHaveURL(/\/#demo-chat$/);
   await expect(page.locator("#demo-chat")).toBeInViewport();
 });
+
+test("кнопка кабинета выделена акцентным цветом, а favicon повторяет знак бренда", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const accountLink = page.getByRole("link", { name: "Личный кабинет" }).first();
+  await expect(accountLink).toHaveCSS("background-color", "rgb(185, 94, 67)");
+  await expect(accountLink).not.toContainText("Демо");
+
+  const faviconHref = await page.locator('link[rel="icon"]').getAttribute("href");
+  expect(faviconHref).toContain("favicon.svg");
+  const favicon = await page.request.get(new URL(faviconHref!, page.url()).toString());
+  expect(favicon.ok()).toBeTruthy();
+  expect(await favicon.text()).toContain("#b95e43");
+});

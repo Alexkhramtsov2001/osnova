@@ -115,16 +115,18 @@
 
 .header-account {
   font-family: inherit;
-  color: var(--ink);
-  background: transparent;
+  color: white;
+  background: var(--accent);
+  border-color: var(--accent);
   cursor: pointer;
-  flex-direction: column;
-  gap: 3px;
+  flex-direction: row;
+  gap: 8px;
 }
 
-.header-account small {
-  color: var(--accent);
-  font-size: 9px;
+.header-account:hover {
+  color: white;
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
 }
 
 .catalog-price-note {
@@ -1613,6 +1615,19 @@
     font-size: 14px;
     text-align: left;
     cursor: pointer;
+  }
+
+  .mobile-nav .mobile-account-link {
+    margin-top: 10px;
+    padding: 13px 15px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: white;
+  }
+
+  .mobile-nav .mobile-account-link:hover {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
   }
 
   .mobile-nav small {
