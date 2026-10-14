@@ -28,7 +28,7 @@ export const questions = [
     options: [
       { value: "1", label: "Один этаж, без лестницы" },
       { value: "2", label: "Два этажа" },
-      { value: "any", label: "Готов рассмотреть оба" },
+      { value: "any", label: "Любая доступная этажность" },
     ],
   },
   {
@@ -76,99 +76,90 @@ export type Answers = Record<(typeof questions)[number]["id"], string>;
 export type Recommendation = {
   project: Project;
   reasons: string[];
-  compromises: string[];
-  score: number;
 };
 
-export function recommendProject(answers: Answers): Recommendation {
-  const ranked = projects.map((project): Recommendation => {
-    const reasons: string[] = [];
-    const compromises: string[] = [];
-    let score = 0;
-    const wantedBedrooms = Number(answers.bedrooms);
-    if (project.bedrooms === wantedBedrooms)
-      reasons.push(`Спален: ${wantedBedrooms} — соответствует вашему выбору.`);
-    else if (project.bedrooms < wantedBedrooms) {
-      score += (wantedBedrooms - project.bedrooms) * 35;
-      compromises.push(`Нужно ${wantedBedrooms} спален, здесь — ${project.bedrooms}.`);
-    } else {
-      score += (project.bedrooms - wantedBedrooms) * 8;
-      compromises.push(
-        `Спален больше, чем вы выбрали: ${project.bedrooms} вместо ${wantedBedrooms}.`,
-      );
-    }
-    if (answers.floors !== "any") {
-      if (project.floors === Number(answers.floors))
-        reasons.push(
-          project.floors === 1
-            ? "Один этаж — повседневные маршруты без лестницы."
-            : "Два этажа, как вы предпочли.",
-        );
-      else {
-        score += 45;
-        compromises.push(
-          `Выбранная этажность: ${answers.floors}; у этого дома — ${project.floors}.`,
-        );
-      }
-    }
-    const areaMatch =
-      answers.area === "any" ||
-      (answers.area === "compact"
-        ? project.area <= 120
-        : answers.area === "medium"
-          ? project.area > 120 && project.area <= 160
-          : project.area > 160);
-    if (answers.area !== "any") {
-      if (areaMatch) reasons.push(`${project.area} м² — в выбранном диапазоне площади.`);
-      else {
-        score += 18;
-        compromises.push(`${project.area} м² — вне выбранного диапазона площади.`);
-      }
-    }
-    if (answers.plot === "compact") {
-      if (project.area / project.floors <= 100)
-        reasons.push(
-          "Небольшое расчётное пятно застройки: площадь, делённая на этажность, до 100 м².",
-        );
-      else {
-        score += 20;
-        compromises.push(
-          "Для этого дома потребуется больше места на участке; проверьте размеры по плану.",
-        );
-      }
-    }
-    const estimate = getProjectEstimate(project);
-    if (answers.budget !== "any") {
-      const limit = Number(answers.budget) * 1_000_000;
-      if (estimate.maxTotal <= limit)
-        reasons.push("Верхняя граница демо-оценки укладывается в выбранный бюджет.");
-      else {
-        score += 30 + Math.min(40, (estimate.maxTotal / limit - 1) * 50);
-        compromises.push("Верхняя граница демо-оценки превышает выбранный бюджет.");
-      }
-    }
-    if (answers.purpose === "summer" || answers.purpose === "weekends") {
-      if (["03", "06"].includes(project.number)) {
-        score -= 7;
-        reasons.push(
-          "Концепция с акцентом на загородный отдых подходит вашему сценарию посещений.",
-        );
-      }
-    } else if (project.number === "06") {
-      score += 8;
-      compromises.push(
-        "Концепция рассчитана на сезонный отдых: для постоянного проживания нужно уточнить утепление и отопление.",
-      );
-    }
-    if (answers.priority === "economy") score += project.area / 12;
-    if (answers.priority === "space") score -= project.area / 12;
-    if (answers.priority === "garden" && ["03", "06"].includes(project.number)) {
-      score -= 12;
-      reasons.push("Образ дома связан с садом и отдыхом на террасе.");
-    }
-    return { project, reasons, compromises, score };
+// All explicit requirements are filters. Preference ranking never relaxes them.
+export function matchingProjects(answers: Partial<Answers>): readonly Project[] {
+  return projects.filter((project) => {
+    if (answers.purpose === "permanent" && project.number === "06") return false;
+    if (answers.bedrooms && project.bedrooms !== Number(answers.bedrooms)) return false;
+    if (answers.floors && answers.floors !== "any" && project.floors !== Number(answers.floors))
+      return false;
+    if (answers.area === "compact" && project.area > 120) return false;
+    if (answers.area === "medium" && (project.area <= 120 || project.area > 160)) return false;
+    if (answers.area === "large" && project.area <= 160) return false;
+    if (answers.plot === "compact" && project.area / project.floors > 100) return false;
+    if (
+      answers.budget &&
+      answers.budget !== "any" &&
+      getProjectEstimate(project).maxTotal > Number(answers.budget) * 1_000_000
+    )
+      return false;
+    if (answers.priority === "garden" && !["03", "06"].includes(project.number)) return false;
+    return true;
   });
-  return ranked.sort(
-    (a, b) => a.score - b.score || a.project.number.localeCompare(b.project.number),
-  )[0];
+}
+
+export function answersBefore(
+  answers: Partial<Answers>,
+  questionId: keyof Answers,
+): Partial<Answers> {
+  const prefix: Partial<Answers> = {};
+  for (const question of questions) {
+    if (question.id === questionId) break;
+    if (answers[question.id]) prefix[question.id] = answers[question.id];
+  }
+  return prefix;
+}
+
+export function availableOptions(questionId: keyof Answers, answers: Partial<Answers>) {
+  const question = questions.find((entry) => entry.id === questionId)!;
+  const prefix = answersBefore(answers, questionId);
+  return question.options.filter(
+    (option) => matchingProjects({ ...prefix, [questionId]: option.value }).length > 0,
+  );
+}
+
+export function updateAnswer(
+  answers: Partial<Answers>,
+  questionId: keyof Answers,
+  value: string,
+): Partial<Answers> {
+  if (!availableOptions(questionId, answers).some((option) => option.value === value))
+    return answers;
+  if (answers[questionId] === value) return answers;
+  return { ...answersBefore(answers, questionId), [questionId]: value };
+}
+
+export function recommendProject(answers: Answers): Recommendation | null {
+  if (
+    questions.some(
+      (question) => !question.options.some((option) => option.value === answers[question.id]),
+    )
+  )
+    return null;
+  const ranked = [...matchingProjects(answers)].sort((a, b) => {
+    if (answers.priority === "space") return b.area - a.area;
+    return (
+      getProjectEstimate(a).maxTotal - getProjectEstimate(b).maxTotal ||
+      a.number.localeCompare(b.number)
+    );
+  });
+  const project = ranked[0];
+  if (!project) return null;
+  const reasons = [
+    `Спален: ${project.bedrooms} — соответствует вашему выбору.`,
+    `${project.floors === 1 ? "Один этаж" : "Два этажа"} — подходит по выбранной этажности.`,
+    `${project.area} м² — ${answers.area === "any" ? "площадь выбранного дома" : "в выбранном диапазоне площади"}.`,
+  ];
+  if (answers.plot === "compact")
+    reasons.push("Расчётное пятно застройки до 100 м²: площадь дома, делённая на этажность.");
+  if (answers.budget !== "any")
+    reasons.push("Верхняя граница демо-оценки укладывается в выбранный бюджет.");
+  if (answers.priority === "garden")
+    reasons.push("Концепция с акцентом на отдых рядом с садом и террасой.");
+  if (answers.priority === "economy")
+    reasons.push("Наименьший ориентир стоимости среди подходящих вариантов.");
+  if (answers.priority === "space") reasons.push("Наибольшая площадь среди подходящих вариантов.");
+  return { project, reasons };
 }

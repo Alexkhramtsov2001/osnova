@@ -3,18 +3,27 @@ import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import ArrowIcon from "../../components/ArrowIcon";
 import { formatPriceRange, getProjectEstimate } from "../projects/estimates";
-import { questions, recommendProject, type Answers } from "./recommendation";
+import {
+  questions,
+  recommendProject,
+  availableOptions,
+  updateAnswer,
+  type Answers,
+} from "./recommendation";
 import "./HouseFinder.css";
 
 export default function HouseFinder() {
   const [step, setStep] = useState(0);
+  const [noMatch, setNoMatch] = useState(false);
   const [answers, setAnswers] = useState<Partial<Answers>>({});
   const heading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLLegendElement>(null);
   const previousStep = useRef(0);
   const completed = step === questions.length;
   const question = questions[Math.min(step, questions.length - 1)];
-  const recommendation = completed ? recommendProject(answers as Answers) : null;
+  const recommendation = completed && !noMatch ? recommendProject(answers as Answers) : null;
+  const options = availableOptions(question.id, answers);
+  const canContinue = options.some((option) => option.value === answers[question.id]);
   const project = recommendation?.project;
   const estimate = project ? getProjectEstimate(project) : null;
 
@@ -36,19 +45,25 @@ export default function HouseFinder() {
         </Link>
         <p className="eyebrow">ВАШ ДОМ / ПЕРСОНАЛЬНЫЙ ПОДБОР</p>
         <h1 ref={heading} tabIndex={-1}>
-          {completed ? "Дом, с которого стоит начать" : "Найдём дом под ваш ритм жизни"}
+          {completed
+            ? project
+              ? "Дом, с которого стоит начать"
+              : "Создайте свой вариант дома"
+            : "Найдём дом под ваш ритм жизни"}
         </h1>
         <p className="finder-lead">
           {completed
-            ? "Мы сопоставили ваши ответы с восемью концепциями каталога. Ниже — наиболее близкий вариант и важные компромиссы."
-            : "Семь коротких вопросов — и один подходящий вариант из нашей подборки. Без регистрации и контактов."}
+            ? project
+              ? "Этот проект соответствует выбранным условиям. Вот почему он подходит."
+              : "В каталоге нет типового проекта под ваши пожелания. Перейдите в калькулятор-конфигуратор, чтобы задать параметры своего дома."
+            : "До семи коротких вопросов. Следующие варианты учитывают ваши предыдущие ответы. Без регистрации и контактов."}
         </p>
         {!completed ? (
           <form
             className="finder-card"
             onSubmit={(event) => {
               event.preventDefault();
-              if (answers[question.id]) setStep(step + 1);
+              if (canContinue) setStep(step + 1);
             }}
           >
             <div className="finder-progress-label">
@@ -64,7 +79,7 @@ export default function HouseFinder() {
               </legend>
               {"hint" in question && <p className="finder-hint">{question.hint}</p>}
               <div className="finder-options">
-                {question.options.map((option) => (
+                {options.map((option) => (
                   <label
                     key={option.value}
                     className={answers[question.id] === option.value ? "is-selected" : ""}
@@ -74,13 +89,20 @@ export default function HouseFinder() {
                       name={question.id}
                       value={option.value}
                       checked={answers[question.id] === option.value}
-                      onChange={() => setAnswers({ ...answers, [question.id]: option.value })}
+                      onChange={() =>
+                        setAnswers((current) => updateAnswer(current, question.id, option.value))
+                      }
                     />
                     <span>{option.label}</span>
                   </label>
                 ))}
               </div>
             </fieldset>
+            {step > 0 && (
+              <p className="finder-hint">
+                Показаны варианты, совместимые с предыдущими ответами в нашем каталоге.
+              </p>
+            )}
             <div className="finder-actions">
               <button
                 className="button button-secondary"
@@ -90,16 +112,29 @@ export default function HouseFinder() {
               >
                 Назад
               </button>
-              <button
-                className="button button-primary"
-                type="submit"
-                disabled={!answers[question.id]}
-              >
+              <button className="button button-primary" type="submit" disabled={!canContinue}>
                 {step === questions.length - 1 ? "Показать мой дом" : "Продолжить"}
                 <ArrowIcon />
               </button>
             </div>
+            <button
+              className="finder-restart"
+              type="button"
+              onClick={() => {
+                setNoMatch(true);
+                setStep(questions.length);
+              }}
+            >
+              Ни один вариант не подходит
+            </button>
           </form>
+        ) : !project ? (
+          <div className="finder-next finder-no-match">
+            <Link className="button button-primary" to="/#calculator">
+              Перейти в калькулятор-конфигуратор
+              <ArrowIcon />
+            </Link>
+          </div>
         ) : (
           recommendation &&
           project &&
@@ -107,11 +142,7 @@ export default function HouseFinder() {
             <div className="finder-result">
               <img src={project.image} alt={`Концепция дома «${project.name}»`} />
               <div className="finder-result-copy">
-                <p className="eyebrow">
-                  {recommendation.compromises.length
-                    ? "БЛИЖАЙШИЙ ВАРИАНТ С КОМПРОМИССАМИ"
-                    : "СООТВЕТСТВУЕТ ВЫБРАННЫМ ПАРАМЕТРАМ"}
-                </p>
+                <p className="eyebrow">СООТВЕТСТВУЕТ ВЫБРАННЫМ ПАРАМЕТРАМ</p>
                 <h2>{project.name}</h2>
                 <p>
                   {project.area} м² · {project.floors === 1 ? "Один этаж" : "Два этажа"} · Спален:{" "}
@@ -123,16 +154,6 @@ export default function HouseFinder() {
                     <li key={reason}>{reason}</li>
                   ))}
                 </ul>
-                {recommendation.compromises.length > 0 && (
-                  <div className="finder-compromises">
-                    <h3>Что нужно учесть</h3>
-                    <ul>
-                      {recommendation.compromises.map((reason) => (
-                        <li key={reason}>{reason}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
                 <p>{project.tradeoff}</p>
                 <p className="finder-price">
                   <small>Ориентир под ключ · демо</small>
@@ -167,6 +188,7 @@ export default function HouseFinder() {
                   className="finder-restart"
                   type="button"
                   onClick={() => {
+                    setNoMatch(false);
                     setAnswers({});
                     setStep(0);
                   }}
