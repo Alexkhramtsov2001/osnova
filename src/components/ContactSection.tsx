@@ -1,12 +1,12 @@
 import { CONTACTS, contactLinks } from "../features/contact/links";
-import ContactIcon from "./ContactIcon";
 import ArrowIcon from "./ArrowIcon";
+import ContactIcon from "./ContactIcon";
 import DemoChat from "./DemoChat";
 
 type ContactSectionProps = {
   id?: string;
   title: string;
-  description: string;
+  description?: string;
   subject: string;
   message?: string;
 };
@@ -30,7 +30,7 @@ export default function ContactSection({
           <p className="eyebrow">КОНТАКТЫ ПРОЕКТА</p>
           <h2 id="contact-section-title">{title}</h2>
         </div>
-        <p>{description}</p>
+        {description && <p>{description}</p>}
       </div>
       <div className="contact-options">
         <a className="contact-option contact-channel-email" href={links.email}>

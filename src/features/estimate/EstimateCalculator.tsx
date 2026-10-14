@@ -1,32 +1,35 @@
 import { useMemo, useRef, useState } from "react";
-import OsnovaSelect from "../../components/OsnovaSelect";
-import ContactIcon from "../../components/ContactIcon";
 import ArrowIcon from "../../components/ArrowIcon";
+import ContactIcon from "../../components/ContactIcon";
+import OsnovaSelect from "../../components/OsnovaSelect";
+import { contactLinks } from "../contact/links";
+import { calculateHouseEstimate } from "./calculations";
 import {
-  DEMO_PRICES_NOTICE,
-  WALL_MATERIALS,
-  HOUSE_NUMBER_LIMITS,
+  DEMO_DELIVERY,
   DEMO_ESTIMATE_CATALOG,
   DEMO_ESTIMATE_DATA,
-  PROJECT_TYPES,
+  DEMO_PRICES_NOTICE,
   DEMO_REGIONS,
-  DEMO_DELIVERY,
+  HOUSE_NUMBER_LIMITS,
+  PROJECT_TYPES,
 } from "./catalog";
-import { calculateHouseEstimate } from "./calculations";
 import {
   clampHouseNumber,
   maximumBathrooms,
   maximumBedrooms,
   maximumPerimeter,
+  minimumArea,
   minimumBathrooms,
   minimumBedrooms,
-  minimumArea,
   minimumPerimeter,
   normalizeForArea,
 } from "./constraints";
-import { formatRequestSummary } from "./requestSummary";
 import { createDemoRequestPayload, submitDemoRequest } from "./demoRequest";
-import { contactLinks } from "../contact/links";
+import EstimateBreakdown from "./EstimateBreakdown";
+import "./EstimateCalculator.css";
+import EstimatePdfButton from "./EstimatePdfButton";
+import { formatRequestSummary } from "./requestSummary";
+import SavedEstimates from "./SavedEstimateList";
 import {
   readSavedEstimates,
   SAVED_ESTIMATES_LIMIT,
@@ -34,71 +37,12 @@ import {
   type SavedEstimate,
 } from "./savedEstimates";
 import type { EstimateStageId, HouseParameters } from "./types";
-import "./EstimateCalculator.css";
 
-const money = new Intl.NumberFormat("ru-RU", {
-  style: "currency",
-  currency: "RUB",
-  maximumFractionDigits: 0,
-});
-
-const number = new Intl.NumberFormat("ru-RU", {
-  maximumFractionDigits: 2,
-});
-
+import { money, number } from "./formatters";
 const allStageIds = DEMO_ESTIMATE_CATALOG.map((stage) => stage.id);
 
-const options = {
-  wallMaterial: Object.entries(WALL_MATERIALS).map(([value, material]) => ({
-    value,
-    label: material.label,
-  })),
-  foundation: [
-    { value: "strip", label: "Ленточный" },
-    { value: "slab", label: "Плитный" },
-    { value: "piles", label: "Свайный" },
-  ],
-  roof: [
-    { value: "metal", label: "Металлочерепица" },
-    { value: "soft", label: "Мягкая кровля" },
-  ],
-  finish: [
-    { value: "standard", label: "Стандарт" },
-    { value: "comfort", label: "Комфорт" },
-  ],
-} as const;
-
-function Field({
-  label,
-  hint,
-  children,
-  group = false,
-}: {
-  label: string;
-  hint?: string;
-  children: React.ReactNode;
-  group?: boolean;
-}) {
-  if (group) {
-    return (
-      <div className="estimate-field" role="group" aria-label={label}>
-        <span className="estimate-field-label" aria-hidden="true">
-          {label}
-        </span>
-        {children}
-      </div>
-    );
-  }
-
-  return (
-    <label className="estimate-field">
-      <span className="estimate-field-label">{label}</span>
-      {children}
-      {hint && <span className="estimate-field-hint">{hint}</span>}
-    </label>
-  );
-}
-
+import Field from "./EstimateField";
+import { options } from "./options";
 type EstimateCalculatorProps = {
   parameters: HouseParameters;
   onParametersChange: (parameters: HouseParameters) => void;
@@ -119,8 +63,6 @@ export default function EstimateCalculator({
   const [selectedStageIds, setSelectedStageIds] = useState<EstimateStageId[]>(allStageIds);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
-  const [pdfBusy, setPdfBusy] = useState(false);
-  const [pdfError, setPdfError] = useState("");
   const [copyFeedback, setCopyFeedback] = useState<{
     text: string;
     message: string;
@@ -666,7 +608,7 @@ export default function EstimateCalculator({
 
                 <p className="estimate-total-label">
                   {constructionMode === "turnkey" ? "Под ключ" : "Отдельные этапы"} ·
-                  ориентировочный диапазон
+                  Ориентировочный диапазон
                 </p>
                 {includedStageCount > 0 ? (
                   <>
@@ -805,157 +747,23 @@ export default function EstimateCalculator({
                 </div>
               )}
 
-              <div className="estimate-breakdown" data-open={breakdownOpen}>
-                <button
-                  className="estimate-breakdown-heading"
-                  type="button"
-                  aria-expanded={breakdownOpen}
-                  aria-controls="estimate-breakdown-panel"
-                  onClick={() => setBreakdownOpen((open) => !open)}
-                >
-                  <span>
-                    <span className="estimate-overline">03 / ДЕТАЛИЗАЦИЯ</span>
-                    <strong>Из чего складывается цена</strong>
-                  </span>
-                  <span className="estimate-stage-count">
-                    Включено: {includedStageCount} из {estimate.stages.length}
-                  </span>
-                  <ArrowIcon direction="chevron-down" />
-                </button>
-                <div
-                  id="estimate-breakdown-panel"
-                  className="estimate-breakdown-panel"
-                  aria-hidden={!breakdownOpen}
-                  inert={!breakdownOpen}
-                >
-                  <div className="estimate-breakdown-inner">
-                    <p className="estimate-breakdown-note">
-                      Региональная поправка уже включена в цены этапов. Доставка показана отдельно
-                      после списка.
-                    </p>
-
-                    <div className="estimate-stages">
-                      {estimate.stages.map((stage, index) => {
-                        const isExpanded = expandedStages.includes(stage.id);
-
-                        return (
-                          <div
-                            className={`estimate-stage ${stage.included ? "" : "is-excluded"}`}
-                            key={stage.id}
-                          >
-                            <button
-                              type="button"
-                              className="estimate-stage-toggle"
-                              aria-expanded={stage.included && isExpanded}
-                              disabled={!stage.included}
-                              onClick={() => toggleStage(stage.id)}
-                            >
-                              <span className="estimate-stage-index">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
-                              <span className="estimate-stage-copy">
-                                <strong>{stage.name}</strong>
-                                <small>{stage.description}</small>
-                                {stage.included && (
-                                  <small className="estimate-stage-duration">
-                                    Ориентир: {stage.durationWeeks.min}–{stage.durationWeeks.max}{" "}
-                                    нед.
-                                  </small>
-                                )}
-                              </span>
-                              <span className="estimate-stage-price">
-                                {stage.included ? money.format(stage.total) : "Не включён"}
-                              </span>
-                              <span
-                                className={`estimate-chevron ${isExpanded ? "is-open" : ""}`}
-                                aria-hidden="true"
-                              >
-                                <ArrowIcon direction="chevron-down" />
-                              </span>
-                            </button>
-
-                            {stage.included && isExpanded && (
-                              <div className="estimate-stage-details">
-                                <p className="estimate-stage-detail-label">В расчёт этапа входят</p>
-                                {stage.items.map((item) => (
-                                  <div className="estimate-line-item" key={item.id}>
-                                    <span className="estimate-line-name">{item.name}</span>
-                                    <span className="estimate-line-quantity">
-                                      {number.format(item.quantity)} {item.unit}
-                                    </span>
-                                    <span className="estimate-line-total">
-                                      {money.format(item.quantity * item.unitPrice)}
-                                    </span>
-                                  </div>
-                                ))}
-                                <div className="estimate-stage-explanation">
-                                  <p>
-                                    <strong>Что меняет цену:</strong> {stage.priceFactors}
-                                  </p>
-                                  <p>
-                                    <strong>Допущение:</strong> {stage.assumption}
-                                  </p>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {includedStageCount > 0 && parameters.delivery !== "none" && (
-                      <div className="estimate-delivery-row">
-                        <span>
-                          Доставка материалов · {DEMO_DELIVERY[parameters.delivery].label}
-                        </span>
-                        <strong>{money.format(estimate.deliveryCost)}</strong>
-                      </div>
-                    )}
-
-                    {includedStageCount > 0 && (
-                      <div className="estimate-grand-total">
-                        <span>
-                          {estimate.deliveryCost > 0
-                            ? "Итого с доставкой"
-                            : constructionMode === "turnkey"
-                              ? "Итого по всем этапам"
-                              : "Итого по выбранным этапам"}
-                        </span>
-                        <strong>{money.format(estimate.total)}</strong>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <EstimateBreakdown
+                estimate={estimate}
+                parameters={parameters}
+                includedStageCount={includedStageCount}
+                constructionMode={constructionMode}
+                breakdownOpen={breakdownOpen}
+                onToggle={() => setBreakdownOpen((open) => !open)}
+                expandedStages={expandedStages}
+                toggleStage={toggleStage}
+              />
               {includedStageCount > 0 && (
-                <div className="estimate-pdf-actions">
-                  <button
-                    type="button"
-                    className="button button-primary"
-                    disabled={pdfBusy}
-                    onClick={async () => {
-                      setPdfBusy(true);
-                      setPdfError("");
-                      try {
-                        const { downloadEstimatePdf } = await import("./exportPdf");
-                        await downloadEstimatePdf(
-                          parameters,
-                          estimate,
-                          projectName,
-                          constructionMode,
-                        );
-                      } catch {
-                        setPdfError("Не удалось подготовить PDF. Попробуйте скачать ещё раз.");
-                      } finally {
-                        setPdfBusy(false);
-                      }
-                    }}
-                  >
-                    {pdfBusy ? "Готовим PDF…" : "Скачать расчёт в PDF"}
-                    <ArrowIcon direction="down" />
-                  </button>
-                  {pdfError && <p role="alert">{pdfError}</p>}
-                </div>
+                <EstimatePdfButton
+                  parameters={parameters}
+                  estimate={estimate}
+                  projectName={projectName}
+                  constructionMode={constructionMode}
+                />
               )}
 
               <p className="estimate-disclaimer">
@@ -976,82 +784,13 @@ export default function EstimateCalculator({
           )}
         </div>
       </div>
-      <section className="estimate-saved" aria-labelledby="estimate-saved-title">
-        <div className="estimate-saved-heading">
-          <div>
-            <span className="estimate-overline">НА ЭТОМ УСТРОЙСТВЕ</span>
-            <h3 id="estimate-saved-title">Сохранённые расчёты</h3>
-          </div>
-          <span>
-            {savedEstimates.length} из {SAVED_ESTIMATES_LIMIT}
-          </span>
-        </div>
-        <p>
-          Сохраняется снимок сводки с версией демо-данных. Он не меняется при последующих правках
-          калькулятора. Новые записи можно загрузить в поля для повторного расчёта по текущей
-          демо-базе. Данные доступны только в этом браузере; записи сверх лимита заменяют самые
-          старые.
-        </p>
-        {savedStatus && (
-          <p className="estimate-saved-status" role="status">
-            {savedStatus}
-          </p>
-        )}
-        {savedEstimates.length === 0 ? (
-          <p className="estimate-saved-empty">
-            Пока ничего не сохранено. Настройте расчёт и нажмите «Сохранить расчёт».
-          </p>
-        ) : (
-          <div className="estimate-saved-list">
-            {savedEstimates.map((entry) => (
-              <article className="estimate-saved-item" key={entry.id}>
-                <div className="estimate-saved-item-head">
-                  <div>
-                    <strong>{entry.title}</strong>
-                    <span>
-                      {new Intl.DateTimeFormat("ru-RU", {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      }).format(new Date(entry.savedAt))}{" "}
-                      · {entry.mode === "turnkey" ? "Под ключ" : "Отдельные этапы"} ·{" "}
-                      {number.format(entry.area)} м²
-                    </span>
-                    <small>Версия данных: {entry.dataVersion}</small>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => deleteSavedEstimate(entry.id)}
-                    aria-label={`Удалить сохранённый расчёт ${entry.title}`}
-                  >
-                    Удалить
-                  </button>
-                </div>
-                {entry.configuration && (
-                  <button
-                    type="button"
-                    onClick={() => restoreSavedEstimate(entry)}
-                    aria-label={`Загрузить параметры расчёта ${entry.title}`}
-                  >
-                    Загрузить параметры
-                  </button>
-                )}
-                <details>
-                  <summary>Посмотреть сохранённую сводку</summary>
-                  <textarea
-                    aria-label={`Сводка расчёта ${entry.title}`}
-                    readOnly
-                    value={entry.summary}
-                    rows={10}
-                  />
-                  <button type="button" onClick={() => copySavedEstimate(entry)}>
-                    Копировать сводку
-                  </button>
-                </details>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
+      <SavedEstimates
+        savedEstimates={savedEstimates}
+        savedStatus={savedStatus}
+        deleteSavedEstimate={deleteSavedEstimate}
+        restoreSavedEstimate={restoreSavedEstimate}
+        copySavedEstimate={copySavedEstimate}
+      />
     </section>
   );
 }
