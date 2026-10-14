@@ -185,12 +185,42 @@ describe("Проверка параметров дома", () => {
 
   it("общая площадь потолков не удваивается при выборе двух этажей", () => {
     for (const floors of [1, 2] as const) {
-      const result = calculateHouseEstimate({ ...DEFAULT_HOUSE_PARAMETERS, floors });
+      const result = calculateHouseEstimate(
+        normalizeForArea({ ...DEFAULT_HOUSE_PARAMETERS, floors }),
+      );
       const ceiling = result.stages
         .find((stage) => stage.id === "interior")!
         .items.find((item) => item.id === "interior-ceiling")!;
       expect(ceiling.quantity).toBe(DEFAULT_HOUSE_PARAMETERS.area);
     }
+  });
+
+  it("считает фундамент и кровлю от пятна застройки для двух этажей", () => {
+    const oneFloor = calculateHouseEstimate(DEFAULT_HOUSE_PARAMETERS);
+    const twoFloors = calculateHouseEstimate(
+      normalizeForArea({ ...DEFAULT_HOUSE_PARAMETERS, floors: 2 }),
+    );
+    const quantity = (
+      result: ReturnType<typeof calculateHouseEstimate>,
+      stageId: string,
+      itemId: string,
+    ) =>
+      result.stages.find((stage) => stage.id === stageId)!.items.find((item) => item.id === itemId)!
+        .quantity;
+
+    for (const itemId of [
+      "foundation-earthworks",
+      "foundation-cushion",
+      "foundation-reinforcement",
+      "foundation-concrete",
+    ]) {
+      expect(quantity(twoFloors, "foundation", itemId)).toBe(
+        quantity(oneFloor, "foundation", itemId) / 2,
+      );
+    }
+    expect(quantity(twoFloors, "roof", "roof-structure")).toBe(
+      quantity(oneFloor, "roof", "roof-structure") / 2,
+    );
   });
 
   it("керамический блок даёт конечную вилку и меняет только стоимость стен", () => {

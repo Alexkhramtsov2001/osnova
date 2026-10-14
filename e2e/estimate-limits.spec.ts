@@ -23,7 +23,12 @@ test("числа приводятся к границам после ввода,
   await area.fill("1001");
   await area.blur();
   await expect(area).toHaveValue("1000");
-  await expect(calculator.getByRole("spinbutton", { name: /Периметр/ })).toHaveValue("126");
+  const perimeter = calculator.getByRole("spinbutton", { name: /Периметр/ });
+  await expect(perimeter).toHaveValue("127");
+  await expect(perimeter).toHaveAttribute("max", "159");
+  await perimeter.fill("200");
+  await perimeter.blur();
+  await expect(perimeter).toHaveValue("159");
   await expect(calculator.locator(".estimate-total-value")).toBeVisible();
 
   await area.fill("30");

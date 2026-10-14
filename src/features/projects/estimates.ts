@@ -9,7 +9,7 @@ export function getProjectParameters(project: Project) {
     area: project.area,
     floors: project.floors,
     bedrooms: project.bedrooms,
-    perimeter: Math.round(4 * Math.sqrt(project.area / project.floors)),
+    perimeter: Math.ceil(4 * Math.sqrt(project.area / project.floors)),
   };
 }
 

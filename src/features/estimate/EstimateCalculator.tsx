@@ -17,6 +17,7 @@ import {
   clampHouseNumber,
   maximumBathrooms,
   maximumBedrooms,
+  maximumPerimeter,
   minimumBathrooms,
   minimumBedrooms,
   minimumArea,
@@ -295,10 +296,18 @@ export default function EstimateCalculator({
         : key === "perimeter" && Number.isFinite(parameters.area)
           ? minimumPerimeter(parameters.area, parameters.floors)
           : min;
-    return !Number.isFinite(parameters[key]) || parameters[key] < lower || parameters[key] > max;
+    const upper =
+      key === "perimeter" && Number.isFinite(parameters.area)
+        ? maximumPerimeter(parameters.area, parameters.floors)
+        : max;
+    return !Number.isFinite(parameters[key]) || parameters[key] < lower || parameters[key] > upper;
   };
 
   const update = <K extends keyof HouseParameters>(key: K, value: HouseParameters[K]) => {
+    if (key === "bedrooms") {
+      onParametersChange(normalizeForArea({ ...parameters, bedrooms: value as number }));
+      return;
+    }
     onParametersChange({ ...parameters, [key]: value });
   };
 
@@ -524,13 +533,14 @@ export default function EstimateCalculator({
                     label: String(value),
                     disabled:
                       Number.isFinite(parameters.area) &&
-                      (value < minimumBathrooms(parameters.area) ||
+                      (value < minimumBathrooms(parameters.area, parameters.bedrooms) ||
                         value > maximumBathrooms(parameters.area)),
                   }))}
                 />
                 {Number.isFinite(parameters.area) && (
                   <span className="estimate-field-hint">
-                    Для {number.format(parameters.area)} м²: от {minimumBathrooms(parameters.area)}
+                    Для {parameters.bedrooms} спален: от{" "}
+                    {minimumBathrooms(parameters.area, parameters.bedrooms)}
                     до {maximumBathrooms(parameters.area)} санузлов.
                   </span>
                 )}
@@ -613,8 +623,8 @@ export default function EstimateCalculator({
                 <div className="estimate-number-wrap">
                   <input
                     type="number"
-                    min={HOUSE_NUMBER_LIMITS.perimeter.min}
-                    max={HOUSE_NUMBER_LIMITS.perimeter.max}
+                    min={minimumPerimeter(parameters.area, parameters.floors)}
+                    max={maximumPerimeter(parameters.area, parameters.floors)}
                     step={HOUSE_NUMBER_LIMITS.perimeter.step}
                     aria-invalid={isInvalidNumber("perimeter")}
                     aria-describedby={
@@ -626,6 +636,11 @@ export default function EstimateCalculator({
                   />
                   <span>м</span>
                 </div>
+                <span className="estimate-field-hint">
+                  Для выбранной площади: {minimumPerimeter(parameters.area, parameters.floors)}–
+                  {maximumPerimeter(parameters.area, parameters.floors)} м по условной модели
+                  контура.
+                </span>
               </Field>
             </div>
           </div>

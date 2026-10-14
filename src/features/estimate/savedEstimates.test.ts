@@ -57,6 +57,24 @@ describe("сохранённые расчёты", () => {
     expect(normalizeSavedEstimates([damaged])).toEqual([sample]);
   });
 
+  it("сохраняет старую конфигурацию, нормализуя геометрию по новым правилам", () => {
+    const olderGeometry = {
+      ...withConfiguration,
+      area: 100,
+      configuration: {
+        ...withConfiguration.configuration,
+        parameters: {
+          ...DEFAULT_HOUSE_PARAMETERS,
+          area: 100,
+          floors: 2 as const,
+          perimeter: 44,
+        },
+      },
+    };
+    const result = normalizeSavedEstimates([olderGeometry]);
+    expect(result[0].configuration?.parameters.perimeter).toBe(36);
+  });
+
   it("сообщает, когда браузер не разрешает запись", () => {
     expect(
       writeSavedEstimates(

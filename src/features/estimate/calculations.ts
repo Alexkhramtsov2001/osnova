@@ -1,6 +1,7 @@
 import {
   maximumBathrooms,
   maximumBedrooms,
+  maximumPerimeter,
   minimumArea,
   minimumBathrooms,
   minimumBedrooms,
@@ -110,14 +111,19 @@ function validateHouseParameters(parameters: HouseParameters): void {
       `Для площади ${parameters.area} м² в демо доступно не более ${maximumBathrooms(parameters.area)} санузлов`,
     );
   }
-  if (parameters.bathrooms < minimumBathrooms(parameters.area)) {
+  if (parameters.bathrooms < minimumBathrooms(parameters.area, parameters.bedrooms)) {
     throw new RangeError(
-      `Для площади ${parameters.area} м² в демо нужно не менее ${minimumBathrooms(parameters.area)} санузлов`,
+      `Для выбранного числа спален в демо нужно не менее ${minimumBathrooms(parameters.area, parameters.bedrooms)} санузлов`,
     );
   }
   if (parameters.perimeter < minimumPerimeter(parameters.area, parameters.floors)) {
     throw new RangeError(
       `Для выбранной площади ориентировочный периметр не меньше ${minimumPerimeter(parameters.area, parameters.floors)} м`,
+    );
+  }
+  if (parameters.perimeter > maximumPerimeter(parameters.area, parameters.floors)) {
+    throw new RangeError(
+      `Для выбранной площади ориентировочный периметр не больше ${maximumPerimeter(parameters.area, parameters.floors)} м`,
     );
   }
 
@@ -146,32 +152,30 @@ function getWallArea(parameters: HouseParameters): number {
 
 function getRoofArea(parameters: HouseParameters): number {
   const slopeFactor = parameters.roof === "soft" ? 1.2 : 1.15;
-
-  // Для двух этажей площадь застройки условно меньше.
-  const floorFactor = parameters.floors === 2 ? 0.65 : 1;
-
-  return roundMoney(parameters.area * slopeFactor * floorFactor);
+  const footprintArea = parameters.area / parameters.floors;
+  return roundMoney(footprintArea * slopeFactor);
 }
 
 function getQuantity(item: EstimateItem, parameters: HouseParameters): number {
   const wallArea = getWallArea(parameters);
   const roofArea = getRoofArea(parameters);
   const floorArea = parameters.area;
+  const footprintArea = floorArea / parameters.floors;
   const plumbingPoints = parameters.bathrooms * 4 + 2;
   const lightingPoints = Math.ceil(parameters.area / 8);
   const interiorDoors = parameters.bedrooms + parameters.bathrooms + 1;
 
   switch (item.id) {
     case "foundation-earthworks":
-      return roundMoney(floorArea * 0.35);
+      return roundMoney(footprintArea * 0.35);
     case "foundation-cushion":
-      return roundMoney(floorArea * 0.15);
+      return roundMoney(footprintArea * 0.15);
     case "foundation-formwork":
       return roundMoney(parameters.perimeter * 1.2);
     case "foundation-reinforcement":
-      return roundMoney(floorArea * 0.012);
+      return roundMoney(footprintArea * 0.012);
     case "foundation-concrete":
-      return roundMoney(floorArea * 0.3);
+      return roundMoney(footprintArea * 0.3);
     case "foundation-waterproofing":
       return roundMoney(parameters.perimeter * 1.5);
 

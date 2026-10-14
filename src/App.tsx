@@ -257,7 +257,7 @@ function HomePage({
       floors: project.floors,
       bedrooms: project.bedrooms,
       // В каталоге нет планов: оцениваем периметр квадратной застройки.
-      perimeter: Math.round(4 * Math.sqrt(project.area / project.floors)),
+      perimeter: Math.ceil(4 * Math.sqrt(project.area / project.floors)),
     }));
     setSelectedProjectName(project.name);
     calculatorRef.current?.focus({ preventScroll: true });

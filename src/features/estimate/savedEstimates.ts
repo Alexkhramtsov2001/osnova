@@ -1,5 +1,6 @@
 import { DEMO_ESTIMATE_CATALOG } from "./catalog";
 import { calculateHouseEstimate } from "./calculations";
+import { normalizeForArea } from "./constraints";
 import type { EstimateStageId, HouseParameters } from "./types";
 
 export const SAVED_ESTIMATES_STORAGE_KEY = "osnova.saved-estimates.v1";
@@ -60,9 +61,18 @@ function normalizeConfiguration(
   )
     return undefined;
 
-  const parameters = Object.fromEntries(
+  const rawParameters = Object.fromEntries(
     parameterKeys.map((key) => [key, candidate.parameters![key]]),
   ) as HouseParameters;
+  if (
+    !Number.isFinite(rawParameters.area) ||
+    rawParameters.area < 30 ||
+    rawParameters.area > 1000 ||
+    (rawParameters.floors !== 1 && rawParameters.floors !== 2)
+  ) {
+    return undefined;
+  }
+  const parameters = normalizeForArea(rawParameters);
   try {
     calculateHouseEstimate(
       parameters,
