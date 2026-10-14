@@ -27,7 +27,7 @@ test("демо-заявка отправляет параметры без ко�
     p_project_number: "01",
     p_project_type: "standard",
     p_construction_mode: "turnkey",
-    p_data_version: "demo-2026.10.14-1",
+    p_data_version: "demo-2026.10.14-2",
   });
   expect(Object.keys(payload!)).toEqual([
     "p_client_request_id",

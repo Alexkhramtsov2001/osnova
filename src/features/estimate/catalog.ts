@@ -6,7 +6,7 @@ export const DEMO_PRICES_NOTICE =
 // Повышать версию и дату при изменении ставок, коэффициентов, сроков или формул.
 // Это дата текущего демо-набора, а не дата актуальности цен подрядчиков.
 export const DEMO_ESTIMATE_DATA = {
-  version: "demo-2026.10.14-1",
+  version: "demo-2026.10.14-2",
   updatedAt: "2026-10-14",
 } as const;
 
@@ -52,9 +52,9 @@ export const PROJECT_TYPES = {
 } as const;
 
 export const HOUSE_NUMBER_LIMITS = {
-  area: { min: 30, max: 1000, step: 1, label: "Площадь дома" },
+  area: { min: 30, max: 1000, step: 0.1, label: "Площадь дома" },
   wallHeight: { min: 2.4, max: 5, step: 0.1, label: "Высота стен" },
-  perimeter: { min: 10, max: 200, step: 1, label: "Периметр" },
+  perimeter: { min: 10, max: 200, step: 0.1, label: "Периметр" },
 } as const;
 
 // Условные поправки только для этапа стен, а не подтверждённые рыночные тарифы.
@@ -62,7 +62,7 @@ export const WALL_MATERIALS = {
   aeratedConcrete: { label: "Газобетон", wallPriceMultiplier: 1 },
   ceramicBlock: { label: "Керамический блок", wallPriceMultiplier: 1.1 },
   brick: { label: "Кирпич", wallPriceMultiplier: 1.3 },
-  frame: { label: "Каркас", wallPriceMultiplier: 0.85 },
+  frame: { label: "Каркас", wallPriceMultiplier: 1 },
 } satisfies Record<HouseParameters["wallMaterial"], { label: string; wallPriceMultiplier: number }>;
 
 export const DEMO_ESTIMATE_CATALOG: EstimateStage[] = [

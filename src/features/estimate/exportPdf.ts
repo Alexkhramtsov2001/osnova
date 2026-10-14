@@ -1,3 +1,4 @@
+import { formatDuration } from "./formatters";
 import { jsPDF } from "jspdf";
 import { formatRequestSummary } from "./requestSummary";
 import type { EstimateResult, HouseParameters } from "./types";
@@ -34,7 +35,8 @@ export async function downloadEstimatePdf(
   const margin = 18;
   const width = 174;
   let y = 24;
-  const money = (value: number) => `${Math.round(value).toLocaleString("ru-RU")} руб.`;
+  const money = (value: number) =>
+    `${value.toLocaleString("ru-RU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} руб.`;
   const normalize = (text: string) =>
     text.replace(/[\u2011\u2013\u2014]/g, "-").replace(/\u00a0/g, " ");
   function pageBreak(height: number) {
@@ -68,7 +70,9 @@ export async function downloadEstimatePdf(
     paragraph(`${stage.name} - ${stage.included ? money(stage.total) : "не включён"}`, 13, true);
     if (!stage.included) continue;
     paragraph(stage.description);
-    paragraph(`Ориентир: ${stage.durationWeeks.min}-${stage.durationWeeks.max} нед.`);
+    paragraph(
+      `Ориентир: ${formatDuration(stage.durationWeeks.min)}-${formatDuration(stage.durationWeeks.max)} нед.`,
+    );
     for (const item of stage.items) {
       const quantity = item.quantity.toLocaleString("ru-RU", { maximumFractionDigits: 2 });
       paragraph(

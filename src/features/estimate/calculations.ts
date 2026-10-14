@@ -6,7 +6,9 @@ import {
   minimumBathrooms,
   minimumBedrooms,
   minimumPerimeter,
+  isHouseNumberStepValid,
 } from "./constraints";
+import { getStageDefinition } from "./stageDefinitions";
 import type {
   EstimateItem,
   EstimateResult,
@@ -42,7 +44,9 @@ function validateNonNegativeFinite(value: number, field: string): void {
 export function calculateItemTotal(item: EstimateItem): number {
   validateNonNegativeFinite(item.quantity, "Количество");
   validateNonNegativeFinite(item.unitPrice, "Цена");
-  return roundMoney(item.quantity * item.unitPrice);
+  const total = roundMoney(item.quantity * item.unitPrice);
+  validateNonNegativeFinite(total, "Сумма позиции");
+  return total;
 }
 
 export function calculateEstimateTotal(items: EstimateItem[]): number {
@@ -70,6 +74,9 @@ function validateHouseParameters(parameters: HouseParameters): void {
     if (parameters[key] < min || parameters[key] > max) {
       throw new RangeError(`${label}: допустимое значение от ${min} до ${max}`);
     }
+    if (!isHouseNumberStepValid(key, parameters[key])) {
+      throw new RangeError(`${label}: используйте шаг ${HOUSE_NUMBER_LIMITS[key].step}`);
+    }
   }
 
   if (parameters.area <= 0) {
@@ -96,9 +103,9 @@ function validateHouseParameters(parameters: HouseParameters): void {
       `Для двух этажей в демо нужна площадь от ${minimumArea(parameters.floors)} м²`,
     );
   }
-  if (parameters.bedrooms > maximumBedrooms(parameters.area)) {
+  if (parameters.bedrooms > maximumBedrooms(parameters.area, parameters.floors)) {
     throw new RangeError(
-      `Для площади ${parameters.area} м² в демо доступно не более ${maximumBedrooms(parameters.area)} спален`,
+      `Для площади ${parameters.area} м² в демо доступно не более ${maximumBedrooms(parameters.area, parameters.floors)} спален`,
     );
   }
   if (parameters.bedrooms < minimumBedrooms(parameters.area)) {
@@ -106,9 +113,11 @@ function validateHouseParameters(parameters: HouseParameters): void {
       `Для площади ${parameters.area} м² в демо нужно не менее ${minimumBedrooms(parameters.area)} спален`,
     );
   }
-  if (parameters.bathrooms > maximumBathrooms(parameters.area)) {
+  if (
+    parameters.bathrooms > maximumBathrooms(parameters.area, parameters.floors, parameters.bedrooms)
+  ) {
     throw new RangeError(
-      `Для площади ${parameters.area} м² в демо доступно не более ${maximumBathrooms(parameters.area)} санузлов`,
+      `Для площади ${parameters.area} м² в демо доступно не более ${maximumBathrooms(parameters.area, parameters.floors, parameters.bedrooms)} санузлов`,
     );
   }
   if (parameters.bathrooms < minimumBathrooms(parameters.area, parameters.bedrooms)) {
@@ -164,31 +173,68 @@ function getQuantity(item: EstimateItem, parameters: HouseParameters): number {
   const plumbingPoints = parameters.bathrooms * 4 + 2;
   const lightingPoints = Math.ceil(parameters.area / 8);
   const interiorDoors = parameters.bedrooms + parameters.bathrooms + 1;
+  const partitionArea = roundMoney(
+    (floorArea * 0.12 + (parameters.bedrooms + parameters.bathrooms) * 3) * parameters.wallHeight,
+  );
+  const interiorWallArea = roundMoney(
+    Math.max(wallArea, wallArea + partitionArea * 2 - interiorDoors * 1.8 * 2),
+  );
+  const pileCount = Math.max(
+    4,
+    Math.ceil(footprintArea / 6),
+    Math.ceil(parameters.perimeter / 2.5),
+  );
 
   switch (item.id) {
     case "foundation-earthworks":
-      return roundMoney(footprintArea * 0.35);
+      return roundMoney(
+        parameters.foundation === "strip" ? parameters.perimeter * 0.5 * 0.8 : footprintArea * 0.35,
+      );
     case "foundation-cushion":
-      return roundMoney(footprintArea * 0.15);
+      return roundMoney(
+        parameters.foundation === "strip" ? parameters.perimeter * 0.5 * 0.2 : footprintArea * 0.2,
+      );
     case "foundation-formwork":
-      return roundMoney(parameters.perimeter * 1.2);
+      return roundMoney(parameters.perimeter * (parameters.foundation === "strip" ? 1.2 : 0.3));
     case "foundation-reinforcement":
-      return roundMoney(footprintArea * 0.012);
+      return roundMoney(
+        parameters.foundation === "strip" ? parameters.perimeter * 0.018 : footprintArea * 0.012,
+      );
     case "foundation-concrete":
-      return roundMoney(footprintArea * 0.3);
+      return roundMoney(
+        parameters.foundation === "strip" ? parameters.perimeter * 0.5 * 0.6 : footprintArea * 0.3,
+      );
     case "foundation-waterproofing":
-      return roundMoney(parameters.perimeter * 1.5);
+      return roundMoney(
+        parameters.foundation === "strip" ? parameters.perimeter * 1.2 : footprintArea * 1.1,
+      );
+    case "foundation-layout":
+      return 1;
+    case "foundation-piles":
+    case "foundation-pile-installation":
+      return pileCount;
+    case "foundation-grillage":
+      return parameters.perimeter;
 
     case "walls-blocks":
+    case "walls-frame":
+    case "walls-sheathing":
+    case "walls-insulation":
+    case "walls-barrier":
       return wallArea;
     case "walls-partitions":
-      return roundMoney(floorArea * 1.1);
+      return partitionArea;
     case "walls-lintel":
+    case "walls-openings":
       return parameters.bedrooms + parameters.bathrooms + 3;
     case "walls-armored-belt":
       return roundMoney(parameters.perimeter * parameters.floors);
     case "walls-mortar":
       return wallArea;
+    case "walls-intermediate-floor":
+      return footprintArea;
+    case "walls-staircase":
+      return 1;
 
     case "roof-structure":
     case "roof-membrane":
@@ -212,6 +258,8 @@ function getQuantity(item: EstimateItem, parameters: HouseParameters): number {
     case "facade-insulation":
     case "facade-mesh":
     case "facade-finish":
+    case "facade-windproofing":
+    case "facade-batten":
       return wallArea;
 
     case "engineering-electricity":
@@ -224,8 +272,9 @@ function getQuantity(item: EstimateItem, parameters: HouseParameters): number {
       return Math.max(1, parameters.bathrooms + 1);
 
     case "interior-plaster":
+    case "interior-lining":
     case "interior-walls-finish":
-      return roundMoney(wallArea * 1.8);
+      return interiorWallArea;
     case "interior-screed":
     case "interior-floor-finish":
       return floorArea;
@@ -249,23 +298,15 @@ function getQuantity(item: EstimateItem, parameters: HouseParameters): number {
   }
 }
 
-function getPriceMultiplier(stageId: StageId, parameters: HouseParameters): number {
+function getPriceMultiplier(stageId: StageId, parameters: HouseParameters, itemId: string): number {
   let multiplier = 1;
 
-  if (stageId === "foundation") {
-    multiplier *= {
-      strip: 1,
-      slab: 1.2,
-      piles: 0.85,
-    }[parameters.foundation];
-  }
-
-  if (stageId === "walls") {
+  if (
+    stageId === "walls" &&
+    parameters.wallMaterial !== "frame" &&
+    !["walls-intermediate-floor", "walls-staircase"].includes(itemId)
+  ) {
     multiplier *= WALL_MATERIALS[parameters.wallMaterial].wallPriceMultiplier;
-
-    if (parameters.floors === 2) {
-      multiplier *= 1.12;
-    }
   }
 
   if (stageId === "roof" && parameters.roof === "soft") {
@@ -281,7 +322,11 @@ function getPriceMultiplier(stageId: StageId, parameters: HouseParameters): numb
 
 function getStageDurationWeeks(stage: EstimateStage, parameters: HouseParameters) {
   // Условная шкала для дома 120 м²; сроки не выводятся из стоимости.
-  let factor = Math.sqrt(parameters.area / 120);
+  const workArea =
+    stage.id === "foundation" || stage.id === "roof"
+      ? parameters.area / parameters.floors
+      : parameters.area;
+  let factor = Math.sqrt(workArea / 120);
 
   if (stage.id === "walls") {
     if (parameters.floors === 2) factor *= 1.1;
@@ -294,11 +339,12 @@ function getStageDurationWeeks(stage: EstimateStage, parameters: HouseParameters
   }
 
   if (stage.id === "foundation" && parameters.foundation === "slab") factor *= 1.15;
+  if (stage.id === "foundation" && parameters.foundation === "piles") factor *= 0.65;
   if (stage.id === "interior" && parameters.finish === "comfort") factor *= 1.15;
 
   return {
-    min: Math.max(1, Math.ceil(stage.durationWeeks.min * factor)),
-    max: Math.max(1, Math.ceil(stage.durationWeeks.max * factor)),
+    min: Math.max(0.1, Math.round(stage.durationWeeks.min * factor * 10) / 10),
+    max: Math.max(0.1, Math.round(stage.durationWeeks.max * factor * 10) / 10),
   };
 }
 
@@ -322,15 +368,15 @@ export function calculateHouseEstimate(
     throw new RangeError("Недопустимый этап строительства");
   }
 
-  const stages = DEMO_ESTIMATE_CATALOG.map((stage) => {
-    const multiplier = getPriceMultiplier(stage.id, parameters);
+  const stages = DEMO_ESTIMATE_CATALOG.map((baseStage) => {
+    const stage = getStageDefinition(baseStage, parameters);
 
     const items = stage.items.map((item) => ({
       ...item,
       quantity: getQuantity(item, parameters),
       unitPrice: roundMoney(
         item.unitPrice *
-          multiplier *
+          getPriceMultiplier(stage.id, parameters, item.id) *
           DEMO_PRICE_CALIBRATION *
           DEMO_REGIONS[parameters.region].multiplier,
       ),
@@ -361,8 +407,12 @@ export function calculateHouseEstimate(
     deliveryCost,
     deliveryLeadWeeks,
     durationWeeks: {
-      min: includedStages.reduce((sum, stage) => sum + stage.durationWeeks.min, deliveryLeadWeeks),
-      max: includedStages.reduce((sum, stage) => sum + stage.durationWeeks.max, deliveryLeadWeeks),
+      min: roundMoney(
+        includedStages.reduce((sum, stage) => sum + stage.durationWeeks.min, deliveryLeadWeeks),
+      ),
+      max: roundMoney(
+        includedStages.reduce((sum, stage) => sum + stage.durationWeeks.max, deliveryLeadWeeks),
+      ),
     },
     total: roundMoney(includedStages.reduce((sum, stage) => sum + stage.total, deliveryCost)),
     minTotal: roundMoney(includedStages.reduce((sum, stage) => sum + stage.minTotal, deliveryCost)),

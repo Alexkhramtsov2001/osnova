@@ -1,3 +1,4 @@
+import { formatDuration } from "./formatters";
 import {
   DEMO_DELIVERY,
   DEMO_PRICES_NOTICE,
@@ -47,7 +48,7 @@ export function formatRequestSummary(
     `Включённые этапы: ${includedStages.map((stage) => stage.name).join(", ")}`,
     `Регион: ${DEMO_REGIONS[parameters.region].label}; доставка: ${DEMO_DELIVERY[parameters.delivery].label} (${money.format(estimate.deliveryCost)})`,
     `Ориентир стоимости: ${money.format(estimate.minTotal)} — ${money.format(estimate.maxTotal)}; средний ориентир: ${money.format(estimate.total)}`,
-    `Ориентир срока: ${estimate.durationWeeks.min}–${estimate.durationWeeks.max} календарных недель`,
+    `Ориентир срока: ${formatDuration(estimate.durationWeeks.min)}–${formatDuration(estimate.durationWeeks.max)} календарных недель`,
     `Демо-данные: ${estimate.dataVersion} от ${estimate.dataUpdatedAt.split("-").reverse().join(".")}`,
     DEMO_PRICES_NOTICE,
     "Проектирование и проверка чертежей в стоимость строительных этапов не включены. Сроки, регион и доставка условные.",

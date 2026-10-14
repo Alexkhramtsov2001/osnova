@@ -1,3 +1,4 @@
+import { formatDuration } from "./formatters";
 import ArrowIcon from "../../components/ArrowIcon";
 import { DEMO_DELIVERY } from "./catalog";
 import { money, number } from "./formatters";
@@ -78,7 +79,8 @@ export default function EstimateBreakdown({
                       <small>{stage.description}</small>
                       {stage.included && (
                         <small className="estimate-stage-duration">
-                          Ориентир: {stage.durationWeeks.min}–{stage.durationWeeks.max} нед.
+                          Ориентир: {formatDuration(stage.durationWeeks.min)}–
+                          {formatDuration(stage.durationWeeks.max)} нед.
                         </small>
                       )}
                     </span>
