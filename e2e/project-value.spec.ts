@@ -67,7 +67,7 @@ test("мобильная ссылка на кабинет открывает в�
   const pagesBeforeClick = page.context().pages().length;
   await page
     .getByRole("navigation", { name: "Мобильная навигация" })
-    .getByRole("link", { name: "Личный кабинет Демо" })
+    .getByRole("link", { name: "Личный кабинет" })
     .click();
   await expect(page).toHaveURL(/\/account$/);
   await expect(page.getByRole("heading", { name: "Ваши проекты" })).toBeVisible();
