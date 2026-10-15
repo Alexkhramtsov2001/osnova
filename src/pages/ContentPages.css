@@ -143,6 +143,11 @@
   justify-content: center;
   margin-top: 32px;
 }
+.home-popular-action .button {
+  min-width: 210px;
+  min-height: 56px;
+  font-size: 15px;
+}
 .review-card {
   display: flex;
   flex-direction: column;
@@ -229,6 +234,7 @@
   color: var(--accent-dark);
   font-size: 13px;
   font-weight: 600;
+  transition: color 180ms ease;
 }
 .home-discover-card a:hover {
   color: var(--accent);
@@ -496,7 +502,9 @@
   font-weight: 400;
   font-size: clamp(20px, 2vw, 26px);
   line-height: 1.25;
-  margin: 14px 0 24px;
+  margin: 14px 0 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #cda993;
 }
 .partner-cases dl {
   display: grid;
@@ -594,6 +602,7 @@
   display: block;
   min-width: 0;
   line-height: 1.4;
+  transition: color 180ms ease;
 }
 .site-footer nav a:focus-visible,
 .footer-brand:focus-visible,
@@ -706,6 +715,10 @@
   }
 }
 @media (max-width: 760px) {
+  .home-popular-action .button {
+    min-height: 52px;
+    font-size: 14px;
+  }
   .home-discover {
     grid-template-columns: 1fr;
     gap: 12px;

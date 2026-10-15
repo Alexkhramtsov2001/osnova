@@ -70,6 +70,10 @@
   gap: 24px;
 }
 
+.estimate-side {
+  min-width: 0;
+}
+
 .estimate-settings,
 .estimate-results {
   min-width: 0;
@@ -107,9 +111,10 @@
   color: var(--muted, #77786f);
   background: transparent;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   text-decoration: underline;
   text-underline-offset: 4px;
+  transition: color 180ms ease;
 }
 
 .estimate-reset:hover {
@@ -197,13 +202,13 @@
 
 .estimate-choice {
   flex: 1;
-  min-height: 43px;
+  min-height: 46px;
   padding: 8px 10px;
   border: 1px solid var(--line, #e4e1d9);
   color: var(--ink, #252621);
   background: transparent;
   font: inherit;
-  font-size: 11px;
+  font-size: 13px;
   transition:
     color 160ms ease,
     background 160ms ease,
@@ -435,9 +440,14 @@
   color: inherit;
   background: transparent;
   text-align: left;
+  transition: background-color 180ms ease;
 }
 
-.estimate-stage-toggle:hover .estimate-stage-copy strong {
+.estimate-stage-toggle:hover:not(:disabled) {
+  background: #f7f4ed;
+}
+
+.estimate-stage-toggle:hover:not(:disabled) .estimate-stage-copy strong {
   color: var(--accent, #b95e43);
 }
 
@@ -740,14 +750,24 @@
 .estimate-request-copy,
 .estimate-demo-submit,
 .estimate-save-button {
-  min-height: 42px;
+  min-height: 46px;
   padding: 10px 16px;
   border: 1px solid var(--accent, #b95e43);
   color: #fff;
   background: var(--accent, #b95e43);
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.estimate-request-toggle:hover:not(:disabled),
+.estimate-request-copy:hover:not(:disabled) {
+  border-color: var(--accent-dark, #98462f);
+  background: var(--accent-dark, #98462f);
 }
 
 .estimate-request-toggle:focus-visible,
@@ -829,7 +849,7 @@
   border: 1px solid var(--channel-color);
   background: var(--channel-tint);
   color: var(--channel-color);
-  font-size: 12px;
+  font-size: 13px;
   text-decoration: none;
   transition:
     background 180ms ease,
@@ -946,8 +966,14 @@
 .estimate-saved-item summary {
   color: var(--accent-dark, #98462f);
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.estimate-saved-item button:hover,
+.estimate-saved-item summary:hover {
+  color: var(--accent, #b95e43);
 }
 
 .estimate-saved-item button {
@@ -1021,6 +1047,10 @@
   color: inherit;
   font: inherit;
   text-align: left;
+  transition: color 180ms ease;
+}
+.estimate-breakdown-heading:hover {
+  color: var(--accent-dark, #98462f);
 }
 .estimate-breakdown-heading:focus-visible {
   outline: 2px solid var(--accent);

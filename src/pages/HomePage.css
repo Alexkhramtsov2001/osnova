@@ -144,6 +144,11 @@
   color: white;
   font-size: 14px;
   font-weight: 500;
+  transition: opacity 180ms ease;
+}
+
+.hero-slide-caption a:hover {
+  opacity: 0.8;
 }
 
 .hero-side-arrow {
@@ -308,6 +313,14 @@
   letter-spacing: -0.04em;
 }
 
+.project-info h3 a {
+  transition: color 180ms ease;
+}
+
+.project-info h3 a:hover {
+  color: var(--accent-dark);
+}
+
 .project-info p {
   margin: 8px 0 18px;
   color: var(--muted);
@@ -349,9 +362,9 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 18px;
   color: #fff;
 }
@@ -667,15 +680,19 @@
 }
 
 .project-compare-toggle {
-  min-height: 44px;
+  min-height: 48px;
   margin-top: 18px;
   padding: 8px 16px;
   border: 1px solid var(--line);
   color: var(--ink);
   background: transparent;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease;
 }
 
 .project-compare-toggle:hover:not(:disabled),
@@ -753,18 +770,23 @@
 }
 
 .project-calculate-link {
-  min-height: 44px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 8px 14px;
   border: 1px solid var(--accent);
   color: var(--accent-dark) !important;
-  font-size: 12px;
+  font-size: 13px;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .project-calculate-link:hover {
   background: #f5eee7;
+  transform: translateY(-2px);
 }
 
 .favorites-workspace {
