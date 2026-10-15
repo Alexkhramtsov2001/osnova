@@ -152,9 +152,6 @@ export default function HomePage() {
                 С чего начинается <span>ваш дом.</span>
               </h2>
             </div>
-            <Link className="button button-secondary" to="/projects">
-              Все проекты <ArrowIcon />
-            </Link>
           </div>
           <div className="project-grid">
             {projects.slice(0, 3).map((project) => {
@@ -184,6 +181,11 @@ export default function HomePage() {
                 </article>
               );
             })}
+          </div>
+          <div className="home-popular-action">
+            <Link className="button button-primary" to="/projects">
+              Все проекты <ArrowIcon />
+            </Link>
           </div>
         </section>
         <section className="approach-section" id="advantages">

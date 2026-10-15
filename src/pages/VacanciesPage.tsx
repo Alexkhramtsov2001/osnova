@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
+import ArrowIcon from "../components/ArrowIcon";
+import OsnovaSelect from "../components/OsnovaSelect";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import { vacancies, vacancyRegions, vacancyRoles } from "../features/company/vacancies";
@@ -74,48 +76,46 @@ export default function VacanciesPage() {
           <div className="vacancy-filters">
             <label>
               Регион
-              <select
-                aria-label="Регион"
-                value={region}
-                onChange={(event) => updateFilters(event.target.value, role, minimum)}
-              >
-                <option value="">Все регионы</option>
-                {vacancyRegions.map((item) => (
-                  <option key={item.name} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+              <OsnovaSelect
+                ariaLabel="Регион"
+                value={region || "all"}
+                onValueChange={(value) =>
+                  updateFilters(value === "all" ? "" : value, role, minimum)
+                }
+                options={[
+                  { value: "all", label: "Все регионы" },
+                  ...vacancyRegions.map((item) => ({ value: item.name, label: item.name })),
+                ]}
+              />
             </label>
             <label>
               Вакансия
-              <select
-                aria-label="Вакансия"
-                value={role}
-                onChange={(event) => updateFilters(region, event.target.value, minimum)}
-              >
-                <option value="">Все вакансии</option>
-                {vacancyRoles.map((item) => (
-                  <option key={item.title} value={item.title}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
+              <OsnovaSelect
+                ariaLabel="Вакансия"
+                value={role || "all"}
+                onValueChange={(value) =>
+                  updateFilters(region, value === "all" ? "" : value, minimum)
+                }
+                options={[
+                  { value: "all", label: "Все вакансии" },
+                  ...vacancyRoles.map((item) => ({ value: item.title, label: item.title })),
+                ]}
+              />
             </label>
             <label>
               Зарплата от
-              <select
-                aria-label="Зарплата от"
-                value={minimum}
-                onChange={(event) => updateFilters(region, role, Number(event.target.value))}
-              >
-                <option value={0}>Любая</option>
-                {[90000, 110000, 130000, 150000, 180000, 200000].map((value) => (
-                  <option key={value} value={value}>
-                    {money(value)} ₽
-                  </option>
-                ))}
-              </select>
+              <OsnovaSelect
+                ariaLabel="Зарплата от"
+                value={String(minimum)}
+                onValueChange={(value) => updateFilters(region, role, Number(value))}
+                options={[
+                  { value: "0", label: "Любая" },
+                  ...[90000, 110000, 130000, 150000, 180000, 200000].map((value) => ({
+                    value: String(value),
+                    label: `${money(value)} ₽`,
+                  })),
+                ]}
+              />
             </label>
             <button type="button" onClick={() => updateFilters("", "", 0)}>
               Сбросить фильтры
@@ -151,7 +151,8 @@ export default function VacanciesPage() {
                       setChatOpen(true);
                     }}
                   >
-                    Откликнуться в демо-чате →
+                    Откликнуться в демо-чате
+                    <ArrowIcon />
                   </button>
                 </article>
               ))}
@@ -189,7 +190,10 @@ export default function VacanciesPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Открыть hh.ru ↗
+              <span>Открыть hh.ru</span>
+              <span className="vacancy-action-icon">
+                <ArrowIcon />
+              </span>
             </a>
             <button
               className="button button-primary"
@@ -199,7 +203,10 @@ export default function VacanciesPage() {
                 setChatOpen(true);
               }}
             >
-              Открыть демо-чат
+              <span>Открыть демо-чат</span>
+              <span className="vacancy-action-icon">
+                <ArrowIcon />
+              </span>
             </button>
           </div>
         </section>

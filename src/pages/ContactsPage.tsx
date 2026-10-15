@@ -8,7 +8,7 @@ export default function ContactsPage() {
     <div className="site-shell">
       <SiteHeader />
       <main>
-        <div className="section-wrap page-intro">
+        <div className="section-wrap page-intro contacts-page-intro">
           <p className="eyebrow">КОНТАКТЫ</p>
           <h1>
             Начнём <span>с разговора.</span>
