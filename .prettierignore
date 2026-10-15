@@ -4,3 +4,7 @@ dist/
 coverage/
 package-lock.json
 test-results/
+
+# Supplied OSNOVA PLAN source files kept byte-for-byte
+docs/OSNOVA_PLAN/docs/11_CONTRACTS.md
+docs/OSNOVA_PLAN/SOURCE_AGENTS.md

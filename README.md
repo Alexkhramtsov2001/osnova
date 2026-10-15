@@ -67,10 +67,9 @@ docs/archive/         Исторические отчёты и прежняя д
 
 ## Документация
 
+- [OSNOVA PLAN — исходное ТЗ v2.1–v2.14](docs/OSNOVA_PLAN/README.md)
 - [Назначение и сценарии](docs/PROJECT_SPEC.md)
-- [Документация будущего демо-генератора чертежей](docs/DRAWING_GENERATOR_SPEC.md)
 - [Краткая дорожная карта](ROADMAP.md)
-- [Работа с репозиторием, проверки и публикация](docs/PROJECT_OPERATIONS.md)
 - [Последний сохранённый аудит — 14.10.2026](docs/AUDIT_2026-10-14.md)
 - [Демонстрационные заявки и чат Supabase](docs/SUPABASE_APPLICATIONS.md)
 - [Источники ценовых ориентиров](docs/PRICING_RESEARCH.md) и [шаблон исходных данных](docs/PRICING_DATA_TEMPLATE.md)
