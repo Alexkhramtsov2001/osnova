@@ -56,6 +56,10 @@
 .page-intro {
   padding-bottom: 24px;
 }
+.page-intro + .content-section,
+.about-timeline-section {
+  padding-top: 24px;
+}
 .page-intro h1,
 .company-hero h1 {
   max-width: 770px;
@@ -90,8 +94,8 @@
 .partner-card p,
 .review-card p {
   color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
+  font-size: 13px;
+  line-height: 1.7;
 }
 .calculator-promo,
 .final-cta {
@@ -125,10 +129,16 @@
 .review-card {
   display: flex;
   flex-direction: column;
-  min-height: 320px;
   padding: 26px;
   border: 1px solid var(--line);
   background: #f9f8f4;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.review-card:hover {
+  border-color: #cbb8aa;
+  transform: translateY(-2px);
 }
 .review-card-top {
   display: flex;
@@ -146,7 +156,7 @@
   letter-spacing: 0;
 }
 .review-card blockquote {
-  margin: 36px 0 26px;
+  margin: 28px 0 26px;
   font-size: 15px;
   line-height: 1.75;
 }
@@ -190,7 +200,6 @@
 }
 .home-discover-card > p:not(.eyebrow) {
   max-width: 520px;
-  min-height: 88px;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.75;
@@ -203,6 +212,9 @@
   color: var(--accent-dark);
   font-size: 13px;
   font-weight: 600;
+}
+.home-discover-card a:hover {
+  color: var(--accent);
 }
 .company-hero {
   display: grid;
@@ -315,7 +327,7 @@
 .company-timeline dd {
   margin: 5px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.65;
 }
 .stat-grid {
@@ -330,7 +342,7 @@
   letter-spacing: -0.05em;
 }
 .stat-grid p {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 .demo-label {
@@ -359,13 +371,21 @@
   color: var(--accent);
 }
 .partner-card {
-  padding: 28px;
+  min-width: 0;
+  padding: 24px;
   border: 1px solid var(--line);
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.partner-card:hover {
+  border-color: #cbb8aa;
+  transform: translateY(-2px);
 }
 .partner-logo {
   display: flex;
   align-items: center;
-  min-height: 80px;
+  min-height: 56px;
   font-size: clamp(17px, 2vw, 25px);
   letter-spacing: 0.06em;
   overflow-wrap: anywhere;
@@ -376,30 +396,49 @@
 }
 .partner-cases {
   display: grid;
-  gap: 28px;
-  margin-top: 36px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 28px;
 }
 .partner-cases article {
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid #d9d6cd;
+  background: #f7f6f2;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.partner-cases article:hover {
+  border-color: #bba08f;
+  transform: translateY(-2px);
 }
 .partner-cases h3 {
   font-weight: 400;
-  font-size: 24px;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.25;
+  margin: 14px 0 24px;
 }
 .partner-cases dl {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 14px 28px;
+  gap: 7px;
+  margin: 0;
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 1.65;
 }
 .partner-cases dt {
   color: var(--accent-dark);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .partner-cases dd {
-  margin: 0;
+  margin: 0 0 16px;
   color: var(--muted);
+}
+.partner-cases dd:last-child {
+  margin-bottom: 0;
 }
 .contact-form-layout {
   display: grid;
@@ -442,31 +481,61 @@
 }
 .site-footer {
   display: grid;
-  grid-template-columns: minmax(190px, 1fr) minmax(0, 1.7fr);
+  width: min(1440px, 100%);
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.5fr);
   align-items: start;
-  gap: 24px 40px;
+  gap: 42px 64px;
+  margin: 0 auto;
+  padding: 48px 88px 32px;
+  border-top: 1px solid var(--line);
+}
+.footer-brand {
+  width: max-content;
+  max-width: 100%;
+}
+.footer-brand .brand-mark {
+  width: 44px;
+  height: 44px;
+  font-size: 29px;
+}
+.footer-brand .brand-copy strong {
+  font-size: 17px;
+}
+.footer-brand .brand-copy small {
+  font-size: 9px;
 }
 .site-footer nav {
   display: grid;
+  width: min(100%, 650px);
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px 28px;
-  font-size: 12px;
+  gap: 20px 28px;
+  font-size: 14px;
 }
 .site-footer nav a {
   display: block;
   min-width: 0;
+  line-height: 1.4;
+}
+.site-footer nav a:focus-visible,
+.footer-brand:focus-visible,
+.home-discover-card a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 .site-footer > p {
   grid-column: 1 / -1;
+  max-width: none;
   margin: 0;
-  max-width: 900px;
-  font-size: 10px;
-  line-height: 1.8;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  line-height: 1.65;
   color: var(--muted);
 }
-.footer-logo {
-  font-size: 22px;
-  letter-spacing: 0.12em;
+@media (max-width: 1150px) {
+  .site-footer {
+    padding-inline: 4%;
+  }
 }
 @media (min-width: 1441px) {
   .page-intro,
@@ -491,6 +560,9 @@
   }
 }
 @media (max-width: 1000px) {
+  .partner-cases {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .principle-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -505,6 +577,54 @@
     align-items: flex-start;
     flex-direction: column;
   }
+  .company-timeline {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    max-width: 780px;
+    margin-inline: auto;
+  }
+  .company-timeline li {
+    display: block;
+    padding: 22px;
+  }
+  .company-timeline li:nth-child(n + 4) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .company-timeline li:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -24px;
+    left: 50%;
+    width: 1px;
+    height: 24px;
+  }
+  .company-timeline li:not(:last-child)::before {
+    top: auto;
+    right: auto;
+    bottom: -24px;
+    left: calc(50% - 2px);
+    transform: rotate(135deg);
+  }
+  .company-timeline li:nth-child(3)::after,
+  .company-timeline li:nth-child(4)::after,
+  .company-timeline li:nth-child(5)::after {
+    top: auto;
+    right: auto;
+    bottom: -24px;
+    left: 50%;
+    width: 1px;
+    height: 24px;
+  }
+  .company-timeline li:nth-child(3)::before,
+  .company-timeline li:nth-child(4)::before,
+  .company-timeline li:nth-child(5)::before {
+    top: auto;
+    right: auto;
+    bottom: -24px;
+    left: calc(50% - 2px);
+    transform: rotate(135deg);
+  }
 }
 @media (max-width: 760px) {
   .home-discover {
@@ -515,11 +635,10 @@
   .home-discover-card {
     padding: 26px;
   }
-  .home-discover-card > p:not(.eyebrow) {
-    min-height: 0;
-  }
   .site-footer {
     grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 20px 24px;
   }
   .page-intro,
   .content-section,
@@ -539,50 +658,6 @@
   .partner-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .company-timeline {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-  .company-timeline li {
-    display: block;
-    grid-column: auto;
-    grid-row: auto;
-    padding: 22px;
-  }
-  .company-timeline li:not(:last-child)::after {
-    top: auto;
-    right: auto;
-    bottom: -12px;
-    left: 50%;
-    width: 1px;
-    height: 12px;
-  }
-  .company-timeline li:not(:last-child)::before {
-    top: auto;
-    right: auto;
-    bottom: -13px;
-    left: calc(50% - 2px);
-    transform: rotate(135deg);
-  }
-  .company-timeline li:nth-child(3)::after,
-  .company-timeline li:nth-child(4)::after,
-  .company-timeline li:nth-child(5)::after {
-    top: auto;
-    right: auto;
-    bottom: -12px;
-    left: 50%;
-    width: 1px;
-    height: 12px;
-  }
-  .company-timeline li:nth-child(3)::before,
-  .company-timeline li:nth-child(4)::before,
-  .company-timeline li:nth-child(5)::before {
-    top: auto;
-    right: auto;
-    bottom: -13px;
-    left: calc(50% - 2px);
-    transform: rotate(135deg);
-  }
   .stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
@@ -597,11 +672,11 @@
     font-size: 15px;
   }
   .partner-cases dl {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
+    gap: 7px;
   }
-  .partner-cases dd {
-    margin-bottom: 14px;
+  .partner-cases {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
   }
   .final-cta {
     align-items: flex-start;
@@ -612,6 +687,7 @@
     height: 320px;
   }
   .site-footer nav {
+    width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px 22px;
   }
@@ -629,5 +705,10 @@
 @media (prefers-reduced-motion: reduce) {
   .site-shell * {
     scroll-behavior: auto;
+  }
+  .review-card:hover,
+  .partner-card:hover,
+  .partner-cases article:hover {
+    transform: none;
   }
 }

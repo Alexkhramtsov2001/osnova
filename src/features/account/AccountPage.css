@@ -468,3 +468,11 @@
     flex-wrap: wrap;
   }
 }
+.account-storage-note {
+  margin: 32px 0 0;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}

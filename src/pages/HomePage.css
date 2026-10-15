@@ -309,7 +309,6 @@
 }
 
 .project-info p {
-  min-height: 40px;
   margin: 8px 0 18px;
   color: var(--muted);
   font-size: 11px;

@@ -53,6 +53,8 @@ test("пустые состояния кабинета показывают ак
   for (const name of ["Посмотреть каталог", "Рассчитать стоимость"]) {
     const link = page.getByRole("link", { name, exact: true });
     await expect(link).toHaveClass(/button-primary/);
+    await link.scrollIntoViewIfNeeded();
+    await page.mouse.move(0, 0);
     await expect(link).toHaveCSS("background-color", "rgb(185, 94, 67)");
     await expect(link).toHaveCSS("color", "rgb(255, 255, 255)");
   }

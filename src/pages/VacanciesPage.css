@@ -9,7 +9,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   align-items: end;
   gap: 14px;
-  padding: 22px;
+  padding: 24px;
   background: #eeece5;
 }
 .vacancy-filters label,
@@ -18,31 +18,48 @@
   gap: 8px;
   min-width: 0;
   color: var(--ink);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
 }
 .vacancy-filters select,
 .vacancy-chat select {
   width: 100%;
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 12px;
   border: 1px solid var(--line);
   border-radius: 0;
   background: #fff;
   color: var(--ink);
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
 }
 .vacancy-filters button,
 .vacancy-more {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 16px;
   border: 1px solid var(--line);
   background: #faf9f6;
   color: var(--ink);
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+.vacancy-filters button:hover,
+.vacancy-more:hover {
+  border-color: var(--accent);
+  background: #fff;
+}
+.vacancy-filters select:focus-visible,
+.vacancy-filters button:focus-visible,
+.vacancy-more:focus-visible,
+.vacancy-card > button:focus-visible,
+.vacancy-chat button:focus-visible,
+.vacancy-chat select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 .vacancy-count {
   margin: 20px 0;
@@ -61,6 +78,13 @@
   padding: 26px;
   border: 1px solid var(--line);
   background: #faf9f6;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+.vacancy-card:hover {
+  border-color: #cbb8aa;
+  transform: translateY(-2px);
 }
 .vacancy-card-top {
   display: flex;
@@ -81,7 +105,6 @@
   letter-spacing: -0.03em;
 }
 .vacancy-card > p {
-  min-height: 62px;
   margin: 0 0 18px;
   color: var(--muted);
   font-size: 13px;
@@ -113,6 +136,9 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+}
+.vacancy-card > button:hover {
+  color: var(--accent);
 }
 .vacancy-more {
   display: block;
@@ -267,14 +293,22 @@
   .vacancy-card {
     padding: 22px;
   }
-  .vacancy-card > p {
-    min-height: 0;
+  .vacancy-filters {
+    gap: 16px;
+    padding: 20px;
+  }
+  .vacancy-filters select {
+    font-size: 16px;
+  }
+  .vacancy-filters button {
+    width: 100%;
   }
   .vacancy-follow-actions {
     width: 100%;
+    flex-direction: column;
   }
   .vacancy-follow-actions .button {
-    flex: 1;
+    width: 100%;
   }
   .vacancy-chat-backdrop {
     padding: 0;
@@ -282,5 +316,10 @@
   .vacancy-chat {
     width: 100%;
     max-height: 100dvh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vacancy-card:hover {
+    transform: none;
   }
 }
