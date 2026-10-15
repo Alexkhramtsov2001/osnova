@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/SiteFooter";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
@@ -44,7 +45,7 @@ export default function HouseFinder() {
     <div className="site-shell">
       <SiteHeader />
       <main className="house-finder section-wrap">
-        <Link className="finder-back" to="/#projects">
+        <Link className="finder-back" to="/projects">
           <ArrowIcon direction="left" /> К подборке домов
         </Link>
         <p className="eyebrow">ВАШ ДОМ / ПЕРСОНАЛЬНЫЙ ПОДБОР</p>
@@ -133,7 +134,7 @@ export default function HouseFinder() {
           </form>
         ) : !project ? (
           <div className="finder-next finder-no-match">
-            <Link className="button button-primary" to="/#calculator">
+            <Link className="button button-primary" to="/calculator">
               Перейти в калькулятор-конфигуратор
               <ArrowIcon />
             </Link>
@@ -175,7 +176,7 @@ export default function HouseFinder() {
                 </p>
                 <Link
                   className="button button-primary"
-                  to={`/?project=${project.number}#calculator`}
+                  to={`/calculator?project=${project.number}`}
                 >
                   Настроить дом в конфигураторе
                   <ArrowIcon />
@@ -203,6 +204,7 @@ export default function HouseFinder() {
           )
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("числа приводятся к границам после ввода, а комнаты согласуются с площадью", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   const area = calculator.getByRole("spinbutton", { name: /Площадь дома/ });
   await area.fill("29");

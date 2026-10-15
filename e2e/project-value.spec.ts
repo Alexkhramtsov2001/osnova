@@ -3,7 +3,7 @@ import { projects } from "../src/features/projects/catalog";
 import { formatPriceRange, getProjectEstimate } from "../src/features/projects/estimates";
 
 test("сравнение объясняет выбор и ведёт к расчёту дома", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await expect(page.locator(".project-price strong")).toHaveCount(8);
   for (const name of ["Компакт", "Простор"])
     await page.getByRole("button", { name: `Добавить в избранное: ${name}`, exact: true }).click();
@@ -32,7 +32,7 @@ test("сравнение объясняет выбор и ведёт к расч
   await comparison
     .getByRole("link", { name: "Рассчитать стоимость проекта Компакт", exact: true })
     .click();
-  await expect(page).toHaveURL(/\?project=04#calculator$/);
+  await expect(page).toHaveURL(/\/calculator\?project=04$/);
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   await expect(calculator.getByRole("spinbutton", { name: /Площадь дома/ })).toHaveValue("90");
   const money = new Intl.NumberFormat("ru-RU", {
@@ -61,7 +61,7 @@ test("мобильная ссылка на кабинет открывает в�
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto("/");
+  await page.goto("/projects");
   const button = page.getByRole("button", { name: "Открыть меню" });
   await button.click();
   const pagesBeforeClick = page.context().pages().length;
@@ -78,16 +78,16 @@ test("мобильная ссылка на кабинет открывает в�
   await page.getByRole("button", { name: "Открыть меню" }).click();
   await page
     .getByRole("navigation", { name: "Мобильная навигация" })
-    .getByRole("link", { name: "Чат" })
+    .getByRole("link", { name: "Контакты" })
     .click();
-  await expect(page).toHaveURL(/\/#demo-chat$/);
-  await expect(page.locator("#demo-chat")).toBeInViewport();
+  await expect(page).toHaveURL(/\/contacts$/);
+  await expect(page.locator("#demo-chat")).toBeVisible();
 });
 
 test("кнопка кабинета выделена акцентным цветом, а favicon повторяет знак бренда", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   const accountLink = page.getByRole("link", { name: "Личный кабинет" }).first();
   await expect(accountLink).toHaveCSS("background-color", "rgb(185, 94, 67)");
   await expect(accountLink).not.toContainText("Демо");

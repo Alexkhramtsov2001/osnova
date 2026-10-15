@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("кнопка подбора открывает опросник в текущей вкладке", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await expect(
     page.getByRole("link", { name: "Подобрать свой дом" }).locator(".arrow-icon"),
   ).toHaveCSS("color", "rgb(255, 255, 255)");

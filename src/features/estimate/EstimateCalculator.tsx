@@ -327,9 +327,9 @@ export default function EstimateCalculator({
           <span className="estimate-status-dot" />
           ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ
         </p>
-        <h2>
+        <h1>
           Дом начинается <span>с расчёта</span>
-        </h2>
+        </h1>
         <p className="estimate-lead">
           Настройте параметры будущего дома и посмотрите, как меняется ориентировочная стоимость
           строительства под ключ или отдельных этапов.
@@ -341,7 +341,7 @@ export default function EstimateCalculator({
           <div className="estimate-panel-heading">
             <div>
               <span className="estimate-overline">01 / ПАРАМЕТРЫ</span>
-              <h3>Ваш будущий дом</h3>
+              <h2>Ваш будущий дом</h2>
             </div>
             <button className="estimate-reset" type="button" onClick={reset}>
               Сбросить
@@ -715,7 +715,7 @@ export default function EstimateCalculator({
               {requestSummary && (
                 <div className="estimate-request-card">
                   <span className="estimate-overline">СЛЕДУЮЩИЙ ШАГ</span>
-                  <h3>Проверить отправку заявки</h3>
+                  <h2>Проверить отправку заявки</h2>
                   <p>
                     Тестовая заявка сохранит в Supabase только параметры дома и расчёта. Имя,
                     телефон, email и сообщения посетителей не запрашиваются.

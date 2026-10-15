@@ -8,7 +8,7 @@ test("слайд шоу показывает локальные экстерье
   const images = await page
     .locator(".project-image")
     .evaluateAll((nodes) => nodes.map((node) => (node as HTMLImageElement).getAttribute("src")));
-  expect(new Set(images).size).toBe(8);
+  expect(new Set(images).size).toBe(3);
   for (const src of images) {
     expect(src).toMatch(/^\/images\/projects\/.+\.jpg$/);
     const response = await request.get(src!);
@@ -20,8 +20,8 @@ test("слайд шоу показывает локальные экстерье
   await page.getByRole("button", { name: "Следующий проект" }).click();
   await expect(page.locator(".hero-slide-caption")).toContainText("Проект «Север»");
   await page.locator(".hero-slide-caption a").click();
-  await expect(page).toHaveURL(/#project-02$/);
-  await expect(page.locator("#project-02")).toBeInViewport();
+  await expect(page).toHaveURL(/\/projects\/02$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Север" })).toBeVisible();
 });
 
 test("при уменьшенной анимации слайды не переключаются автоматически", async ({ page }) => {

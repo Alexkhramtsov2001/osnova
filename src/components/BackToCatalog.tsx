@@ -7,7 +7,7 @@ export default function BackToCatalog() {
   return (
     <Link
       className="project-detail-back"
-      to="/#projects"
+      to="/projects"
       onClick={(event) => {
         if (
           location.state?.fromCatalog &&
