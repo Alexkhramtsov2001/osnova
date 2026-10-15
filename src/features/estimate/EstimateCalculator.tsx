@@ -647,204 +647,217 @@ export default function EstimateCalculator({
           </p>
         </div>
 
-        <div className="estimate-results">
-          {estimate ? (
-            <>
-              <div className="estimate-total-card">
-                <div className="estimate-total-top">
-                  <span className="estimate-overline">02 / СТОИМОСТЬ ПРОЕКТА</span>
-                  <span className="estimate-live">
-                    <span className="estimate-status-dot" />
-                    Расчёт обновлён
-                  </span>
+        <div className="estimate-side">
+          <div className="estimate-results">
+            {estimate ? (
+              <>
+                <div className="estimate-total-card">
+                  <div className="estimate-total-top">
+                    <span className="estimate-overline">02 / СТОИМОСТЬ ПРОЕКТА</span>
+                    <span className="estimate-live">
+                      <span className="estimate-status-dot" />
+                      Расчёт обновлён
+                    </span>
+                  </div>
+
+                  <p className="estimate-total-label">
+                    {constructionMode === "turnkey" ? "Под ключ" : "Отдельные этапы"} ·
+                    Ориентировочный диапазон
+                  </p>
+                  {includedStageCount > 0 ? (
+                    <>
+                      <p className="estimate-total-value">
+                        {money.format(estimate.minTotal)} — {money.format(estimate.maxTotal)}
+                      </p>
+                      <p className="estimate-estimate-midpoint">
+                        Средний ориентир: {money.format(estimate.total)}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="estimate-empty-scope" role="status">
+                      Выберите хотя бы один этап, чтобы увидеть стоимость.
+                    </p>
+                  )}
+
+                  <div className="estimate-total-meta">
+                    <span>{PROJECT_TYPES[parameters.projectType].label}</span>
+                    <span>
+                      {DEMO_REGIONS[parameters.region].label} · ×
+                      {number.format(DEMO_REGIONS[parameters.region].multiplier)}
+                    </span>
+                    <span>Площадь: {number.format(parameters.area)} м²</span>
+                    <span>
+                      {parameters.floors} {parameters.floors === 1 ? "этаж" : "этажа"}
+                    </span>
+                  </div>
+                  <p className="estimate-data-meta">
+                    Версия данных: {estimate.dataVersion} · от{" "}
+                    {estimate.dataUpdatedAt.split("-").reverse().join(".")}
+                  </p>
                 </div>
 
-                <p className="estimate-total-label">
-                  {constructionMode === "turnkey" ? "Под ключ" : "Отдельные этапы"} ·
-                  Ориентировочный диапазон
-                </p>
-                {includedStageCount > 0 ? (
-                  <>
-                    <p className="estimate-total-value">
-                      {money.format(estimate.minTotal)} — {money.format(estimate.maxTotal)}
+                {includedStageCount > 0 && (
+                  <div className="estimate-duration-card">
+                    <span className="estimate-overline">ОРИЕНТИР ПО СРОКАМ</span>
+                    <strong>
+                      {formatDuration(estimate.durationWeeks.min)}–
+                      {formatDuration(estimate.durationWeeks.max)} нед.
+                    </strong>
+                    <p>
+                      Календарные недели. Этапы сложены последовательно; параллельные работы, сезон
+                      и условия участка не учтены.
                     </p>
-                    <p className="estimate-estimate-midpoint">
-                      Средний ориентир: {money.format(estimate.total)}
-                    </p>
-                  </>
-                ) : (
-                  <p className="estimate-empty-scope" role="status">
-                    Выберите хотя бы один этап, чтобы увидеть стоимость.
-                  </p>
+                    {estimate.deliveryLeadWeeks > 0 && (
+                      <p>Включён условный запас на доставку: {estimate.deliveryLeadWeeks} нед.</p>
+                    )}
+                  </div>
                 )}
 
-                <div className="estimate-total-meta">
-                  <span>{PROJECT_TYPES[parameters.projectType].label}</span>
-                  <span>
-                    {DEMO_REGIONS[parameters.region].label} · ×
-                    {number.format(DEMO_REGIONS[parameters.region].multiplier)}
-                  </span>
-                  <span>Площадь: {number.format(parameters.area)} м²</span>
-                  <span>
-                    {parameters.floors} {parameters.floors === 1 ? "этаж" : "этажа"}
-                  </span>
-                </div>
-                <p className="estimate-data-meta">
-                  Версия данных: {estimate.dataVersion} · от{" "}
-                  {estimate.dataUpdatedAt.split("-").reverse().join(".")}
-                </p>
-              </div>
-
-              {includedStageCount > 0 && (
-                <div className="estimate-duration-card">
-                  <span className="estimate-overline">ОРИЕНТИР ПО СРОКАМ</span>
-                  <strong>
-                    {formatDuration(estimate.durationWeeks.min)}–
-                    {formatDuration(estimate.durationWeeks.max)} нед.
-                  </strong>
-                  <p>
-                    Календарные недели. Этапы сложены последовательно; параллельные работы, сезон и
-                    условия участка не учтены.
-                  </p>
-                  {estimate.deliveryLeadWeeks > 0 && (
-                    <p>Включён условный запас на доставку: {estimate.deliveryLeadWeeks} нед.</p>
-                  )}
-                </div>
-              )}
-
-              {requestSummary && (
-                <div className="estimate-request-card">
-                  <span className="estimate-overline">СЛЕДУЮЩИЙ ШАГ</span>
-                  <h2>Проверить отправку заявки</h2>
-                  <p>
-                    Тестовая заявка сохранит в Supabase только параметры дома и расчёта. Имя,
-                    телефон, email и сообщения посетителей не запрашиваются.
-                  </p>
-                  <button
-                    type="button"
-                    className="estimate-demo-submit"
-                    onClick={sendDemoRequest}
-                    disabled={
-                      currentSubmission?.phase === "sending" || currentSubmission?.phase === "sent"
-                    }
-                  >
-                    {currentSubmission?.phase === "sending"
-                      ? "Отправляем…"
-                      : currentSubmission?.phase === "sent"
-                        ? "Тестовая заявка отправлена"
-                        : "Отправить тестовую заявку"}
-                  </button>
-                  {currentSubmission && (
-                    <p role={currentSubmission.phase === "error" ? "alert" : "status"}>
-                      {currentSubmission.message}
+                {requestSummary && (
+                  <div className="estimate-request-card">
+                    <span className="estimate-overline">СЛЕДУЮЩИЙ ШАГ</span>
+                    <h2>Проверить отправку заявки</h2>
+                    <p>
+                      Тестовая заявка сохранит в Supabase только параметры дома и расчёта. Имя,
+                      телефон, email и сообщения посетителей не запрашиваются.
                     </p>
-                  )}
-                  <p className="estimate-contact-note">
-                    Это проверка работы сайта, а не запрос на строительство. Для связи с автором
-                    используйте контакты ниже.
-                  </p>
-                  <button
-                    type="button"
-                    className="estimate-request-toggle"
-                    aria-expanded={summaryOpen}
-                    aria-controls="estimate-request-summary"
-                    onClick={() => setSummaryOpen((current) => !current)}
-                  >
-                    {summaryOpen ? "Скрыть сводку" : "Подготовить сводку"}
-                  </button>
-                  <button type="button" className="estimate-save-button" onClick={saveEstimate}>
-                    Сохранить расчёт
-                  </button>
-                  {summaryOpen && (
-                    <div id="estimate-request-summary" className="estimate-request-preview">
-                      <label htmlFor="estimate-request-text">Текст сводки</label>
-                      <textarea
-                        id="estimate-request-text"
-                        readOnly
-                        value={requestSummary}
-                        rows={14}
-                      />
-                      <button type="button" className="estimate-request-copy" onClick={copySummary}>
-                        Копировать текст
-                      </button>
-                      <div className="estimate-contact-actions">
-                        <a
-                          className="contact-channel-email"
-                          href={contactLinks("ОСНОВА — вопрос по расчёту", requestSummary).email}
-                        >
-                          <span className="estimate-contact-icon">
-                            <ContactIcon kind="email" />
-                          </span>
-                          Открыть письмо с расчётом <ArrowIcon />
-                        </a>
-                        <a
-                          className="contact-channel-telegram"
-                          href={contactLinks("ОСНОВА — вопрос по расчёту", requestSummary).telegram}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <span className="estimate-contact-icon">
-                            <ContactIcon kind="telegram" />
-                          </span>
-                          Открыть Telegram с расчётом <ArrowIcon />
-                        </a>
-                      </div>
-                      <p className="estimate-contact-note">
-                        Сайт подготовит текст, но не отправит его. Проверьте и отправьте сообщение в
-                        почтовом приложении или Telegram.
+                    <button
+                      type="button"
+                      className="estimate-demo-submit"
+                      onClick={sendDemoRequest}
+                      disabled={
+                        currentSubmission?.phase === "sending" ||
+                        currentSubmission?.phase === "sent"
+                      }
+                    >
+                      {currentSubmission?.phase === "sending"
+                        ? "Отправляем…"
+                        : currentSubmission?.phase === "sent"
+                          ? "Тестовая заявка отправлена"
+                          : "Отправить тестовую заявку"}
+                    </button>
+                    {currentSubmission && (
+                      <p role={currentSubmission.phase === "error" ? "alert" : "status"}>
+                        {currentSubmission.message}
                       </p>
-                      {copyFeedback?.text === requestSummary && (
-                        <p role={copyFeedback.error ? "alert" : "status"}>{copyFeedback.message}</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                    <p className="estimate-contact-note">
+                      Это проверка работы сайта, а не запрос на строительство. Для связи с автором
+                      используйте контакты ниже.
+                    </p>
+                    <button
+                      type="button"
+                      className="estimate-request-toggle"
+                      aria-expanded={summaryOpen}
+                      aria-controls="estimate-request-summary"
+                      onClick={() => setSummaryOpen((current) => !current)}
+                    >
+                      {summaryOpen ? "Скрыть сводку" : "Подготовить сводку"}
+                    </button>
+                    <button type="button" className="estimate-save-button" onClick={saveEstimate}>
+                      Сохранить расчёт
+                    </button>
+                    {summaryOpen && (
+                      <div id="estimate-request-summary" className="estimate-request-preview">
+                        <label htmlFor="estimate-request-text">Текст сводки</label>
+                        <textarea
+                          id="estimate-request-text"
+                          readOnly
+                          value={requestSummary}
+                          rows={14}
+                        />
+                        <button
+                          type="button"
+                          className="estimate-request-copy"
+                          onClick={copySummary}
+                        >
+                          Копировать текст
+                        </button>
+                        <div className="estimate-contact-actions">
+                          <a
+                            className="contact-channel-email"
+                            href={contactLinks("ОСНОВА — вопрос по расчёту", requestSummary).email}
+                          >
+                            <span className="estimate-contact-icon">
+                              <ContactIcon kind="email" />
+                            </span>
+                            Открыть письмо с расчётом <ArrowIcon />
+                          </a>
+                          <a
+                            className="contact-channel-telegram"
+                            href={
+                              contactLinks("ОСНОВА — вопрос по расчёту", requestSummary).telegram
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <span className="estimate-contact-icon">
+                              <ContactIcon kind="telegram" />
+                            </span>
+                            Открыть Telegram с расчётом <ArrowIcon />
+                          </a>
+                        </div>
+                        <p className="estimate-contact-note">
+                          Сайт подготовит текст, но не отправит его. Проверьте и отправьте сообщение
+                          в почтовом приложении или Telegram.
+                        </p>
+                        {copyFeedback?.text === requestSummary && (
+                          <p role={copyFeedback.error ? "alert" : "status"}>
+                            {copyFeedback.message}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
 
-              <EstimateBreakdown
-                estimate={estimate}
-                parameters={parameters}
-                includedStageCount={includedStageCount}
-                constructionMode={constructionMode}
-                breakdownOpen={breakdownOpen}
-                onToggle={() => setBreakdownOpen((open) => !open)}
-                expandedStages={expandedStages}
-                toggleStage={toggleStage}
-              />
-              {includedStageCount > 0 && (
-                <EstimatePdfButton
-                  parameters={parameters}
+                <EstimateBreakdown
                   estimate={estimate}
-                  projectName={projectName}
+                  parameters={parameters}
+                  includedStageCount={includedStageCount}
                   constructionMode={constructionMode}
+                  breakdownOpen={breakdownOpen}
+                  onToggle={() => setBreakdownOpen((open) => !open)}
+                  expandedStages={expandedStages}
+                  toggleStage={toggleStage}
                 />
-              )}
+                {includedStageCount > 0 && (
+                  <EstimatePdfButton
+                    parameters={parameters}
+                    estimate={estimate}
+                    projectName={projectName}
+                    constructionMode={constructionMode}
+                  />
+                )}
 
-              <p className="estimate-disclaimer">
-                {DEMO_PRICES_NOTICE} Вилка условная и построена вокруг среднего ориентира.
-                Региональные коэффициенты и суммы доставки — условные сценарии для портфолио, не
-                проверенные тарифы; доставка добавляется один раз сверх этапов. Участок и
-                индивидуальное проектирование отдельно не оцениваются. Источники базовых ориентиров
-                — в документации.
-                {" Проектирование и проверка чертежей в стоимость строительных этапов не включены."}
-                {constructionMode === "stages" &&
-                  " Расчёт отдельных этапов предполагает, что необходимые предыдущие работы уже выполнены."}
+                <p className="estimate-disclaimer">
+                  {DEMO_PRICES_NOTICE} Вилка условная и построена вокруг среднего ориентира.
+                  Региональные коэффициенты и суммы доставки — условные сценарии для портфолио, не
+                  проверенные тарифы; доставка добавляется один раз сверх этапов. Участок и
+                  индивидуальное проектирование отдельно не оцениваются. Источники базовых
+                  ориентиров — в документации.
+                  {
+                    " Проектирование и проверка чертежей в стоимость строительных этапов не включены."
+                  }
+                  {constructionMode === "stages" &&
+                    " Расчёт отдельных этапов предполагает, что необходимые предыдущие работы уже выполнены."}
+                </p>
+              </>
+            ) : (
+              <p className="estimate-disclaimer" id="estimate-input-error" role="alert">
+                {inputError}. Исправьте параметры — расчёт появится автоматически.
               </p>
-            </>
-          ) : (
-            <p className="estimate-disclaimer" id="estimate-input-error" role="alert">
-              {inputError}. Исправьте параметры — расчёт появится автоматически.
-            </p>
-          )}
+            )}
+          </div>
+          <SavedEstimates
+            savedEstimates={savedEstimates}
+            savedStatus={savedStatus}
+            deleteSavedEstimate={deleteSavedEstimate}
+            restoreSavedEstimate={restoreSavedEstimate}
+            copySavedEstimate={copySavedEstimate}
+          />
         </div>
       </div>
-      <SavedEstimates
-        savedEstimates={savedEstimates}
-        savedStatus={savedStatus}
-        deleteSavedEstimate={deleteSavedEstimate}
-        restoreSavedEstimate={restoreSavedEstimate}
-        copySavedEstimate={copySavedEstimate}
-      />
     </section>
   );
 }

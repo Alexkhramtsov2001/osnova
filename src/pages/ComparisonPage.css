@@ -237,8 +237,16 @@
   color: var(--accent-dark);
   background: transparent;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.comparison-remove:hover {
+  color: var(--accent);
+  background: #f5eee7;
 }
 
 .comparison-calculate {
@@ -247,17 +255,22 @@
   gap: 7px;
   min-height: 44px;
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 13px;
+  transition: color 180ms ease;
+}
+
+.comparison-calculate:hover {
+  color: var(--accent-dark);
 }
 
 .comparison-page {
   min-height: 70vh;
   padding-top: 34px;
-  padding-bottom: 100px;
+  padding-bottom: 60px;
 }
 
 .comparison-page > .project-detail-back {
-  margin-bottom: 58px;
+  margin-bottom: 32px;
 }
 
 .comparison-page h1 {
@@ -276,11 +289,11 @@
 }
 
 .comparison-page .project-comparison {
-  margin-top: 60px;
+  margin-top: 32px;
 }
 
 .comparison-page-empty {
-  margin-top: 65px;
+  margin-top: 40px;
   padding: 45px;
   background: #f0ede6;
 }
@@ -307,11 +320,11 @@
   }
 
   .comparison-page > .project-detail-back {
-    margin-bottom: 36px;
+    margin-bottom: 24px;
   }
 
   .comparison-page .project-comparison {
-    margin-top: 42px;
+    margin-top: 28px;
   }
 
   .comparison-page-empty {

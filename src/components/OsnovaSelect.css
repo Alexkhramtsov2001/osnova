@@ -12,7 +12,7 @@
   color: var(--ink, #252621);
   background: #fff;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
   transition:
@@ -70,10 +70,10 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 40px;
   padding: 8px 30px 8px 11px;
   outline: none;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   cursor: pointer;
 }

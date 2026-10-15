@@ -9,6 +9,10 @@
   align-items: center;
   margin-bottom: 36px;
   font-size: 13px;
+  transition: color 180ms ease;
+}
+.finder-back:hover {
+  color: var(--accent-dark);
 }
 .house-finder h1 {
   max-width: 760px;
@@ -98,6 +102,12 @@
   cursor: pointer;
   font-size: 14px;
   line-height: 1.45;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+.finder-options label:hover {
+  border-color: var(--accent);
 }
 .finder-options label.is-selected {
   border-color: var(--accent);
@@ -191,6 +201,10 @@
   background: none;
   text-decoration: underline;
   color: var(--muted);
+  transition: color 180ms ease;
+}
+.finder-restart:hover {
+  color: var(--accent-dark);
 }
 @media (max-width: 760px) {
   .finder-result {
@@ -213,6 +227,6 @@
   }
   .finder-actions .button {
     padding: 0 12px;
-    font-size: 12px;
+    font-size: 13px;
   }
 }
