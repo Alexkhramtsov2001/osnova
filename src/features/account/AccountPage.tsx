@@ -296,22 +296,10 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
             </section>
           </>
         )}
-      </main>
-      <footer className="site-footer">
-        <div className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            О
-          </span>
-          <span className="brand-copy">
-            <strong>ОСНОВА</strong>
-            <small>СТРОИМ ДЛЯ ЖИЗНИ</small>
-          </span>
-        </div>
-        <p>
-          Демонстрационный проект строительной компании. Данные аккаунта хранятся только в этом
-          браузере.
+        <p className="account-storage-note">
+          Данные демо-кабинета хранятся только в этом браузере.
         </p>
-      </footer>
+      </main>
       <SiteFooter />
     </div>
   );
