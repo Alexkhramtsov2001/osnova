@@ -60,6 +60,18 @@
 .about-timeline-section {
   padding-top: 24px;
 }
+.page-intro.partners-intro {
+  padding-bottom: 0;
+}
+.content-section.partners-directory {
+  padding-top: 18px;
+}
+.page-intro.contacts-page-intro {
+  padding-bottom: 0;
+}
+.contacts-page-intro + .contact-section {
+  padding-top: 24px;
+}
 .page-intro h1,
 .company-hero h1 {
   max-width: 770px;
@@ -125,6 +137,11 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
+}
+.home-popular-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
 }
 .review-card {
   display: flex;
@@ -371,28 +388,90 @@
   color: var(--accent);
 }
 .partner-card {
+  --partner-accent: #a95a43;
+  --partner-surface: #f1e9e1;
   min-width: 0;
-  padding: 24px;
-  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border: 1px solid color-mix(in srgb, var(--partner-accent) 25%, #d7d2c8);
+  border-top: 3px solid var(--partner-accent);
+  background: var(--partner-surface);
   transition:
     border-color 180ms ease,
-    transform 180ms ease;
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+.partner-card:nth-child(6n + 2) {
+  --partner-accent: #77755d;
+  --partner-surface: #eeeee5;
+}
+.partner-card:nth-child(6n + 3) {
+  --partner-accent: #527467;
+  --partner-surface: #e9eee9;
+}
+.partner-card:nth-child(6n + 4) {
+  --partner-accent: #946655;
+  --partner-surface: #f1eae6;
+}
+.partner-card:nth-child(6n + 5) {
+  --partner-accent: #746553;
+  --partner-surface: #ede9e3;
+}
+.partner-card:nth-child(6n + 6) {
+  --partner-accent: #596c60;
+  --partner-surface: #e9ede7;
 }
 .partner-card:hover {
-  border-color: #cbb8aa;
-  transform: translateY(-2px);
+  border-color: var(--partner-accent);
+  box-shadow: 0 12px 26px rgb(44 39 32 / 8%);
+  transform: translateY(-3px);
+}
+.partner-card-top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--partner-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+.partner-card-line {
+  width: 26px;
+  height: 1px;
+  background: currentColor;
 }
 .partner-logo {
   display: flex;
   align-items: center;
-  min-height: 56px;
-  font-size: clamp(17px, 2vw, 25px);
-  letter-spacing: 0.06em;
+  min-height: 75px;
+  color: var(--ink);
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
+.partner-category {
+  align-self: flex-start;
+  margin: 0 0 16px;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--partner-accent) 35%, transparent);
+  color: var(--partner-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
 .partner-card h3 {
-  font-size: 14px;
-  line-height: 1.7;
+  margin: 0 0 16px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.partner-card > p:last-child {
+  margin: auto 0 0;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--partner-accent) 25%, transparent);
 }
 .partner-cases {
   display: grid;

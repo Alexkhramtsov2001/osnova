@@ -1,8 +1,8 @@
-.vacancies-intro {
-  padding-bottom: 22px;
+.page-intro.vacancies-intro {
+  padding-bottom: 0;
 }
-.vacancies-section {
-  padding-top: 26px;
+.content-section.vacancies-section {
+  padding-top: 18px;
 }
 .vacancy-filters {
   display: grid;
@@ -21,19 +21,32 @@
   font-size: 13px;
   font-weight: 600;
 }
-.vacancy-filters select,
+.vacancy-filters .osnova-select-trigger,
 .vacancy-chat select {
   width: 100%;
   min-height: 48px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.vacancy-chat select {
   padding: 0 12px;
   border: 1px solid var(--line);
   border-radius: 0;
   background: #fff;
   color: var(--ink);
-  font: inherit;
-  font-size: 14px;
+  font-family: inherit;
 }
-.vacancy-filters button,
+.vacancy-filters .osnova-select-trigger {
+  transition:
+    border-color 200ms ease,
+    background 200ms ease,
+    box-shadow 200ms ease;
+}
+.vacancy-filters .osnova-select-trigger:hover,
+.vacancy-filters .osnova-select-trigger[data-state="open"] {
+  box-shadow: inset 0 -2px var(--accent);
+}
+.vacancy-filters > button,
 .vacancy-more {
   min-height: 48px;
   padding: 0 16px;
@@ -47,13 +60,13 @@
     border-color 180ms ease,
     background 180ms ease;
 }
-.vacancy-filters button:hover,
+.vacancy-filters > button:hover,
 .vacancy-more:hover {
   border-color: var(--accent);
   background: #fff;
 }
-.vacancy-filters select:focus-visible,
-.vacancy-filters button:focus-visible,
+.vacancy-filters .osnova-select-trigger:focus-visible,
+.vacancy-filters > button:focus-visible,
 .vacancy-more:focus-visible,
 .vacancy-card > button:focus-visible,
 .vacancy-chat button:focus-visible,
@@ -127,18 +140,32 @@
   margin: 0;
 }
 .vacancy-card > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   align-self: flex-start;
+  min-height: 44px;
   padding: 8px 0;
   border: 0;
+  border-bottom: 1px solid currentColor;
   background: transparent;
   color: var(--accent-dark);
-  font: inherit;
-  font-size: 12px;
+  font-family: inherit;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    color 180ms ease,
+    gap 180ms ease;
 }
 .vacancy-card > button:hover {
   color: var(--accent);
+  gap: 18px;
+}
+.vacancy-card > button .arrow-icon {
+  width: 17px;
+  height: 17px;
 }
 .vacancy-more {
   display: block;
@@ -182,8 +209,31 @@
   flex-shrink: 0;
 }
 .vacancy-follow-actions .button {
-  min-height: 46px;
+  min-height: 58px;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 14px 0 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
+}
+.vacancy-action-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: transform 180ms ease;
+}
+.vacancy-follow-actions .button:hover .vacancy-action-icon {
+  transform: translate(2px, -2px);
+}
+.vacancy-action-icon .arrow-icon {
+  width: 16px;
+  height: 16px;
 }
 .vacancy-chat-backdrop {
   position: fixed;
@@ -297,10 +347,10 @@
     gap: 16px;
     padding: 20px;
   }
-  .vacancy-filters select {
+  .vacancy-filters .osnova-select-trigger {
     font-size: 16px;
   }
-  .vacancy-filters button {
+  .vacancy-filters > button {
     width: 100%;
   }
   .vacancy-follow-actions {
@@ -320,6 +370,17 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .vacancy-card:hover {
+    transform: none;
+  }
+  .vacancy-card > button:hover {
+    gap: 12px;
+  }
+  .vacancy-filters .osnova-select-trigger,
+  .vacancy-action-icon,
+  .vacancy-card > button {
+    transition: none;
+  }
+  .vacancy-follow-actions .button:hover .vacancy-action-icon {
     transform: none;
   }
 }

@@ -6,7 +6,7 @@ export default function PartnersPage() {
     <div className="site-shell">
       <SiteHeader />
       <main>
-        <section className="section-wrap page-intro">
+        <section className="section-wrap page-intro partners-intro">
           <p className="eyebrow">ПАРТНЁРЫ / ДЕМОНСТРАЦИОННАЯ ЭКОСИСТЕМА</p>
           <h1>
             Хорошие решения <span>рождаются вместе.</span>
@@ -17,20 +17,27 @@ export default function PartnersPage() {
             Названия, логотипы и истории созданы для портфолио.
           </p>
         </section>
-        <section className="section-wrap content-section">
+        <section className="section-wrap content-section partners-directory">
           <h2>
             От материала <span>до архитектуры.</span>
           </h2>
           <div className="partner-grid">
-            {partners.map((partner) => (
+            {partners.map((partner, index) => (
               <article className="partner-card" key={partner.name}>
+                <div className="partner-card-top" aria-hidden="true">
+                  <span>
+                    {String(index + 1).padStart(2, "0")} /{" "}
+                    {String(partners.length).padStart(2, "0")}
+                  </span>
+                  <span className="partner-card-line" />
+                </div>
                 <div
                   className="partner-logo"
                   aria-label={`Демонстрационный логотип ${partner.name}`}
                 >
                   {partner.name}
                 </div>
-                <p className="demo-label">{partner.category}</p>
+                <p className="demo-label partner-category">{partner.category}</p>
                 <h3>{partner.description}</h3>
                 <p>{partner.history}</p>
               </article>

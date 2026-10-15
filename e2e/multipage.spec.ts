@@ -64,11 +64,14 @@ test("контактная форма проверяет поля без отп�
 test("55 демо-вакансий фильтруются, а отклик остаётся локальным", async ({ page }) => {
   await page.goto("/vacancies");
   await expect(page.locator(".vacancy-count")).toContainText("55 из 55");
-  await page.getByLabel("Регион", { exact: true }).selectOption("Екатеринбург");
+  await page.getByRole("combobox", { name: "Регион" }).click();
+  await page.getByRole("option", { name: "Екатеринбург" }).click();
   await expect(page.locator(".vacancy-count")).toContainText("5 из 55");
-  await page.getByLabel("Вакансия", { exact: true }).selectOption("Архитектор");
+  await page.getByRole("combobox", { name: "Вакансия" }).click();
+  await page.getByRole("option", { name: "Архитектор" }).click();
   await expect(page.locator(".vacancy-card")).toHaveCount(1);
-  await page.getByLabel("Зарплата от").selectOption("200000");
+  await page.getByRole("combobox", { name: "Зарплата от" }).click();
+  await page.getByRole("option", { name: /200\s000 ₽/ }).click();
   await expect(page.locator(".vacancy-card")).toHaveCount(0);
   await page.getByRole("button", { name: "Сбросить фильтры" }).click();
   await expect(page.locator(".vacancy-count")).toContainText("55 из 55");
