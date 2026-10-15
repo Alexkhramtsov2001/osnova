@@ -21,6 +21,7 @@ OSNOVA PLAN описывает локальный браузерный 2D-пла
 - [Дорожная карта](docs/13_ROADMAP.md)
 - [Противоречия и открытые решения](docs/14_CONFLICTS.md)
 - [Интеграция с OSNOVA](references/INTEGRATION.md) и [кандидаты OSS](references/OSS_CANDIDATES.md)
+- [Решения перед реализацией](references/OPEN_DECISIONS.md) и [расширенный поиск открытого кода](references/OSS_RESEARCH.md)
 - [Критерии приёмки](checklists/ACCEPTANCE.md) и [архивный протокол Codex](checklists/CODEX_WORKFLOW.md)
 
 Текст архивного протокола и `SOURCE_AGENTS.md` не является текущим разрешением или запретом на Git-действия. Действуют прямые указания владельца и правила корневого `AGENTS.md`: законченные изменения отправляются в GitHub автоматически. Функциональный код OSNOVA PLAN не начинается без отдельного поручения на конкретный этап.
