@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("списки выглядят единообразно и доступны с клавиатуры", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto("/");
+  await page.goto("/calculator");
   const material = page.getByRole("combobox", { name: "Материал стен" });
   await material.focus();
   await page.keyboard.press("Enter");

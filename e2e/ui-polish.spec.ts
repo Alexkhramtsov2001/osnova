@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("мобильное меню закрывает экран, удерживает фокус и блокирует страницу", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  await page.locator("#projects").scrollIntoViewIfNeeded();
+  await page.locator(".home-popular").scrollIntoViewIfNeeded();
   await page.getByRole("button", { name: "Открыть меню" }).click();
   const nav = page.getByRole("navigation", { name: "Мобильная навигация" });
   await expect(nav).toBeVisible();
@@ -18,7 +18,7 @@ test("мобильное меню закрывает экран, удержив�
     .toEqual({ x: 0, y: 0, width: 390, height: 844 });
   await expect(page.locator("main")).toHaveAttribute("inert", "");
   expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe("hidden");
-  await expect(nav.getByRole("link", { name: "Проекты" })).toBeFocused();
+  await expect(nav.getByRole("link", { name: "Главная", exact: true })).toBeFocused();
   await nav.getByRole("link", { name: "Личный кабинет" }).focus();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "Закрыть меню" })).toBeFocused();
@@ -61,6 +61,6 @@ test("пустые состояния кабинета показывают ак
     "rgb(37, 38, 33)",
   );
   await page.getByRole("link", { name: "Посмотреть каталог", exact: true }).click();
-  await expect(page).toHaveURL(/\/#projects$/);
+  await expect(page).toHaveURL(/\/projects$/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

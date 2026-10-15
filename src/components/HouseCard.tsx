@@ -95,14 +95,25 @@ export default function HouseCard({
           </span>
         </div>
         <div className="project-card-actions">
-          <a
+          <Link
             className="project-calculate-link"
-            href="#calculator"
-            onClick={onCalculate}
+            to={`/calculator?project=${project.number}`}
+            onClick={(event) => {
+              if (
+                event.button === 0 &&
+                !event.ctrlKey &&
+                !event.metaKey &&
+                !event.shiftKey &&
+                !event.altKey
+              ) {
+                event.preventDefault();
+                onCalculate();
+              }
+            }}
             aria-label={`Рассчитать стоимость проекта ${project.name}`}
           >
             Рассчитать <ArrowIcon />
-          </a>
+          </Link>
           {showCompareControl && (
             <button
               className="project-compare-toggle"

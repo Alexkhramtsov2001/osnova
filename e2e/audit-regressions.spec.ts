@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("незавершённый и недопустимый числовой ввод не ломает страницу", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   for (const field of [
     { name: /Площадь дома/, valid: "118", invalid: ["", "0", "29", "1001"] },
@@ -30,7 +30,7 @@ test("незавершённый и недопустимый числовой в
 });
 
 test("избранное, пустая выдача и адаптивная компоновка", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await expect(page.locator("html")).toHaveAttribute("lang", "ru");
   const favorite = page.getByRole("button", { name: "Добавить в избранное: Север", exact: true });
   const cardImage = page.locator("#project-02 .project-image-wrap");

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("дом открывается сразу сверху, а возврат ведёт на точную позицию каталога", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await page.evaluate(() => document.fonts.ready);
   const card = page.locator("#project-06");
   await card.evaluate((node) => node.scrollIntoView({ behavior: "instant", block: "center" }));
@@ -20,7 +20,7 @@ test("дом открывается сразу сверху, а возврат �
   await expect(page.getByRole("heading", { level: 1, name: "Терраса" })).toBeInViewport();
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
   await page.getByRole("link", { name: "К подборке проектов" }).click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/projects$/);
   await expect
     .poll(async () =>
       Math.abs(
@@ -33,13 +33,13 @@ test("дом открывается сразу сверху, а возврат �
 test("кнопка браузера назад возвращает точную позицию, а прямая ссылка ведёт к подборке", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await page.evaluate(() => document.fonts.ready);
   await page
     .getByRole("navigation", { name: "Основная навигация" })
     .getByRole("link", { name: "Проекты" })
     .click();
-  await expect(page).toHaveURL(/\/#projects$/);
+  await expect(page).toHaveURL(/\/projects$/);
   await page.waitForTimeout(700);
   const card = page.locator("#project-05");
   await card.evaluate((node) => node.scrollIntoView({ behavior: "instant", block: "center" }));
@@ -47,7 +47,7 @@ test("кнопка браузера назад возвращает точную
   await card.getByRole("link", { name: "Открыть проект", exact: false }).click();
   await expect(page).toHaveURL(/\/projects\/05$/);
   await page.goBack();
-  await expect(page).toHaveURL(/\/#projects$/);
+  await expect(page).toHaveURL(/\/projects$/);
   await expect
     .poll(async () =>
       Math.abs((await card.evaluate((node) => node.getBoundingClientRect().top)) - originalTop),
@@ -56,14 +56,14 @@ test("кнопка браузера назад возвращает точную
 
   await page.goto("/projects/02");
   await page.getByRole("link", { name: "К подборке проектов" }).click();
-  await expect(page).toHaveURL(/\/#projects$/);
+  await expect(page).toHaveURL(/\/projects$/);
   await expect(page.locator("#projects")).toBeInViewport();
 });
 
 test("сравнение сохраняет место выбора, а навигация к расчёту открывает нужный раздел сразу", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await page.evaluate(() => document.fonts.ready);
   await page.getByRole("button", { name: "Добавить в избранное: Скандинавия" }).click();
   await page.getByRole("button", { name: "Добавить в избранное: Север" }).click();
@@ -86,14 +86,14 @@ test("сравнение сохраняет место выбора, а нави
   await page.goto("/projects/02");
   await page
     .getByRole("navigation", { name: "Основная навигация" })
-    .getByRole("link", { name: "Расчёт стоимости" })
+    .getByRole("link", { name: "Калькулятор" })
     .click();
-  await expect(page).toHaveURL(/\/#calculator$/);
+  await expect(page).toHaveURL(/\/calculator$/);
   await expect(page.locator("#calculator")).toBeInViewport();
 });
 
 test("после просмотра дома фильтры и положение карточки остаются прежними", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await page.evaluate(() => document.fonts.ready);
   const area = page.getByRole("combobox", { name: "Площадь дома" });
   await area.click();
@@ -125,7 +125,7 @@ test("мобильное меню с внутренней страницы от�
     .getByRole("navigation", { name: "Мобильная навигация" })
     .getByRole("link", { name: "Контакты" })
     .click();
-  await expect(page).toHaveURL(/\/#contacts$/);
-  await expect(page.getByRole("heading", { name: "Есть вопрос о проекте?" })).toBeInViewport();
+  await expect(page).toHaveURL(/\/contacts$/);
+  await expect(page.getByRole("heading", { name: "Начнём с разговора." })).toBeInViewport();
   await expect(page.getByRole("navigation", { name: "Мобильная навигация" })).toHaveCount(0);
 });

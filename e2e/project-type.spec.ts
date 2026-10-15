@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("тип проекта поясняет границы сметы и выбор из каталога возвращает типовой сценарий", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   await calculator.locator(".estimate-breakdown-heading").click();
   const type = calculator.getByRole("combobox", { name: /Тип проекта/ });
@@ -21,6 +21,10 @@ test("тип проекта поясняет границы сметы и выб
   await expect(calculator).toContainText("специалист должен проверить их состав и пригодность");
   await expect(total).toHaveText(original);
 
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page.getByRole("link", { name: "Рассчитать стоимость проекта Север", exact: true }).click();
   await expect(type).toHaveAttribute("data-value", "standard");
   await expect(calculator).toContainText("На основе проекта «Север»");

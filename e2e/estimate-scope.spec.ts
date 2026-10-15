@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("выбранные этапы управляют итогом, сохраняются при выборе дома и сбрасываются", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   await calculator.locator(".estimate-breakdown-heading").click();
   const total = calculator.locator(".estimate-grand-total strong");
@@ -24,6 +24,10 @@ test("выбранные этапы управляют итогом, сохра�
   await expect(total).not.toHaveText(foundationTotal);
   await calculator.getByRole("button", { name: "Отдельные этапы", exact: true }).click();
   await expect(total).toHaveText(foundationTotal);
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page.getByRole("link", { name: "Рассчитать стоимость проекта Север", exact: true }).click();
   await expect(scope.getByRole("checkbox", { checked: true })).toHaveCount(1);
   await expect(
@@ -53,7 +57,7 @@ test("выбранные этапы управляют итогом, сохра�
 
 test("выбор этапов помещается на мобильном экране", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   await calculator.locator(".estimate-breakdown-heading").click();
   await calculator.getByRole("button", { name: "Отдельные этапы", exact: true }).click();

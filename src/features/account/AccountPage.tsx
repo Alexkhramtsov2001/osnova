@@ -1,3 +1,4 @@
+import SiteFooter from "../../components/SiteFooter";
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
@@ -178,7 +179,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                   <p className="eyebrow">КОРОТКИЙ СПИСОК</p>
                   <h2 id="account-favorites-title">Избранные дома</h2>
                 </div>
-                <Link className="button button-secondary" to="/#projects">
+                <Link className="button button-secondary" to="/projects">
                   Выбрать дом
                 </Link>
               </div>
@@ -219,7 +220,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
               ) : (
                 <div className="account-empty-state">
                   <p>Пока нет избранных домов.</p>
-                  <Link className="button button-primary" to="/#projects">
+                  <Link className="button button-primary" to="/projects">
                     Посмотреть каталог
                   </Link>
                 </div>
@@ -240,7 +241,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                   >
                     Обновить
                   </button>
-                  <Link className="button button-secondary" to="/#calculator">
+                  <Link className="button button-secondary" to="/calculator">
                     Новый расчёт
                   </Link>
                 </div>
@@ -287,7 +288,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
               ) : (
                 <div className="account-empty-state">
                   <p>Сохранённых расчётов пока нет.</p>
-                  <Link className="button button-primary" to="/#calculator">
+                  <Link className="button button-primary" to="/calculator">
                     Рассчитать стоимость
                   </Link>
                 </div>
@@ -311,6 +312,7 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
           браузере.
         </p>
       </footer>
+      <SiteFooter />
     </div>
   );
 }

@@ -2,14 +2,14 @@ import { expect, test } from "@playwright/test";
 
 test("контакты доступны с главной страницы и в мобильном меню", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/contacts");
   await page.getByRole("button", { name: "Открыть меню" }).click();
   await page
     .getByRole("navigation", { name: "Мобильная навигация" })
     .getByRole("link", { name: "Контакты" })
     .click();
-  await expect(page).toHaveURL(/#contacts$/);
-  const section = page.getByRole("region", { name: "Есть вопрос о проекте?" });
+  await expect(page).toHaveURL(/\/contacts$/);
+  const section = page.getByRole("region", { name: "Контакты автора портфолио" });
   await expect(section).toBeInViewport();
   await expect(section.getByRole("link", { name: /vanya_silorov@mail.ru/ })).toHaveAttribute(
     "href",

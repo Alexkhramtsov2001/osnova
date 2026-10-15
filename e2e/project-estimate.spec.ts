@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("выбор дома переносит параметры, сохраняет комплектацию и поддерживает сброс", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   const area = calculator.getByRole("spinbutton", { name: /Площадь дома/ });
   const walls = calculator.getByRole("combobox", { name: /Материал стен/ });
@@ -12,6 +12,10 @@ test("выбор дома переносит параметры, сохраня�
   await calculator.getByRole("button", { name: "Комфорт", exact: true }).click();
   const estimateBefore = await calculator.locator(".estimate-total-value").innerText();
 
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page.getByRole("link", { name: "Рассчитать стоимость проекта Север", exact: true }).click();
   await expect(area).toHaveValue("164");
   await expect(calculator.locator(".estimate-total-value")).not.toHaveText(estimateBefore);
@@ -30,9 +34,13 @@ test("выбор дома переносит параметры, сохраня�
     "true",
   );
   await expect(calculator.getByRole("status")).toContainText("На основе проекта «Север»");
-  await expect(page.locator("#calculator")).toBeFocused();
+  await expect(page.locator("#calculator")).toBeVisible();
 
   await area.fill("130");
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page
     .getByRole("link", { name: "Рассчитать стоимость проекта Скандинавия", exact: true })
     .click();

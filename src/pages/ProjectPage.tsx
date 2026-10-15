@@ -1,3 +1,4 @@
+import SiteFooter from "../components/SiteFooter";
 import { formatDuration } from "../features/estimate/formatters";
 import "./ProjectPage.css";
 import { Link, useParams } from "react-router";
@@ -25,7 +26,7 @@ export default function ProjectPage() {
         <main className="project-not-found">
           <p className="eyebrow">ПРОЕКТ НЕ НАЙДЕН</p>
           <h1>Такого дома в подборке нет.</h1>
-          <Link className="button button-primary" to="/#projects">
+          <Link className="button button-primary" to="/projects">
             Вернуться к проектам <ArrowIcon />
           </Link>
         </main>
@@ -193,7 +194,7 @@ export default function ProjectPage() {
               Версия расчёта {estimate.dataVersion} от {estimate.dataUpdatedAt}. Это не смета и не
               коммерческое предложение.
             </p>
-            <Link className="button button-primary" to={`/?project=${project.number}#calculator`}>
+            <Link className="button button-primary" to={`/calculator?project=${project.number}`}>
               Рассчитать этот дом <ArrowIcon />
             </Link>
           </div>
@@ -205,6 +206,7 @@ export default function ProjectPage() {
           message={`Хочу обсудить концепцию дома «${project.name}» (${project.area} м², проект ${project.number}).`}
         />
       </main>
+      <SiteFooter />
     </div>
   );
 }

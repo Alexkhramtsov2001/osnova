@@ -40,7 +40,7 @@
   background: var(--accent, #b95e43);
 }
 
-.estimate-intro h2 {
+.estimate-intro h1 {
   margin: 0;
   font-size: clamp(38px, 5vw, 64px);
   font-weight: 400;
@@ -48,7 +48,7 @@
   line-height: 1.08;
 }
 
-.estimate-intro h2 span {
+.estimate-intro h1 span {
   color: var(--accent, #b95e43);
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
@@ -93,7 +93,7 @@
   margin-bottom: 28px;
 }
 
-.estimate-panel-heading h3,
+.estimate-panel-heading h2,
 .estimate-breakdown-heading h3 {
   margin: 10px 0 0;
   font-size: 22px;
@@ -722,7 +722,7 @@
   background: #f5f2eb;
 }
 
-.estimate-request-card h3 {
+.estimate-request-card h2 {
   margin: 8px 0;
   font-size: 22px;
   font-weight: 400;

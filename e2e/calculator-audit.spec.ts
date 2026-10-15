@@ -19,9 +19,13 @@ test("назад к ссылке проекта сохраняет изменё�
 });
 
 test("смена проекта нормализует санузлы в обоих направлениях", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   await calc.getByRole("spinbutton", { name: /Площадь дома/ }).fill("1000");
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page.locator("#project-04 .project-calculate-link").click();
   await expect(calc.getByRole("combobox", { name: "Санузлы", exact: true })).toHaveAttribute(
     "data-value",
@@ -31,6 +35,10 @@ test("смена проекта нормализует санузлы в обо�
   const baths = calc.getByRole("combobox", { name: "Санузлы", exact: true });
   await baths.click();
   await page.getByRole("option", { name: "1", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Проекты", exact: true })
+    .click();
   await page.locator("#project-02 .project-calculate-link").click();
   await expect(baths).toHaveAttribute("data-value", "2");
   await expect(calc.locator(".estimate-total-value")).toBeVisible();
@@ -45,9 +53,9 @@ for (const fallback of [false, true])
       await context.addInitScript(() =>
         Object.defineProperty(navigator, "locks", { value: undefined }),
       );
-    await page.goto("/");
+    await page.goto("/calculator");
     const second = await context.newPage();
-    await second.goto("/");
+    await second.goto("/calculator");
     await calculator(second)
       .getByRole("spinbutton", { name: /Площадь дома/ })
       .fill("200");
@@ -79,7 +87,7 @@ for (const fallback of [false, true])
 test("черновик и отдельные этапы сохраняются после перехода в кабинет и обновления", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   await calc.getByRole("spinbutton", { name: /Площадь дома/ }).fill("160");
   await calc.getByRole("button", { name: "Отдельные этапы", exact: true }).click();
@@ -87,7 +95,10 @@ test("черновик и отдельные этапы сохраняются �
   for (const box of (await checks.all()).slice(1)) await box.uncheck();
   const total = await calc.locator(".estimate-total-value").innerText();
   await page.getByRole("link", { name: "Личный кабинет", exact: true }).first().click();
-  await page.getByRole("link", { name: /На главную/ }).click();
+  await page
+    .getByRole("navigation", { name: "Основная навигация" })
+    .getByRole("link", { name: "Калькулятор" })
+    .click();
   await page.reload();
   await expect(calc.getByRole("spinbutton", { name: /Площадь дома/ })).toHaveValue("160");
   await expect(calc.getByRole("button", { name: "Отдельные этапы", exact: true })).toHaveAttribute(
@@ -99,7 +110,7 @@ test("черновик и отдельные этапы сохраняются �
 });
 
 test("пустой состав работ сохраняется как черновик без ложной цены", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   await calc.getByRole("button", { name: "Отдельные этапы", exact: true }).click();
   for (const box of await calc.getByRole("checkbox").all()) await box.uncheck();
@@ -110,7 +121,7 @@ test("пустой состав работ сохраняется как чер�
 });
 
 test("лишние дробные знаки нормализуются и соответствуют валидности полей", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   for (const [name, input, expected] of [
     ["Площадь дома", "120.123", "120.1"],
@@ -130,7 +141,7 @@ test("лишние дробные знаки нормализуются и со�
 test("каркас и сваи показывают соответствующие работы, два этажа включают лестницу", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   for (const [name, value] of [
     ["Материал стен", "Каркас"],
@@ -172,7 +183,7 @@ test("старый ответ заявки не стирает подтверж�
       body: '"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"',
     });
   });
-  await page.goto("/");
+  await page.goto("/calculator");
   const calc = calculator(page);
   await calc.getByRole("button", { name: "Отправить тестовую заявку", exact: true }).click();
   await firstReceived;

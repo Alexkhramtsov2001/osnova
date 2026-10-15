@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("избранные дома открываются на отдельной странице сравнения", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   for (const name of ["Скандинавия", "Север", "Лесной"]) {
     await page.getByRole("button", { name: `Добавить в избранное: ${name}`, exact: true }).click();
   }
@@ -31,7 +31,7 @@ test("избранные дома открываются на отдельной
 
 test("из большого списка избранного можно выбрать три дома с клавиатуры", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/projects");
   for (const name of ["Скандинавия", "Север", "Лесной", "Компакт"]) {
     await page.getByRole("button", { name: `Добавить в избранное: ${name}`, exact: true }).click();
   }
@@ -58,7 +58,7 @@ test("из большого списка избранного можно выб�
 });
 
 test("избранное сохраняется после обновления страницы на этом устройстве", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/projects");
   await page.getByRole("button", { name: "Добавить в избранное: Север", exact: true }).click();
   await expect(page.getByRole("status").filter({ hasText: "добавлен в избранное" })).toBeVisible();
   await expect(

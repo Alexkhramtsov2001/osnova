@@ -1,3 +1,4 @@
+import SiteFooter from "../components/SiteFooter";
 import "./ComparisonPage.css";
 import { useEffect, useRef } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
@@ -90,7 +91,7 @@ export default function ComparisonPage({
                         <strong className="comparison-project-name">{project.name}</strong>
                         <Link
                           className="comparison-calculate"
-                          to={`/?project=${project.number}#calculator`}
+                          to={`/calculator?project=${project.number}`}
                           aria-label={`Рассчитать стоимость проекта ${project.name}`}
                         >
                           Рассчитать этот дом <ArrowIcon />
@@ -239,7 +240,7 @@ export default function ComparisonPage({
                     </p>
                     <Link
                       className="comparison-calculate"
-                      to={`/?project=${project.number}#calculator`}
+                      to={`/calculator?project=${project.number}`}
                       aria-label={`Рассчитать стоимость проекта ${project.name}`}
                     >
                       Рассчитать этот дом <ArrowIcon />
@@ -262,7 +263,7 @@ export default function ComparisonPage({
               Вернитесь в избранное: сохраните 2–3 дома или выберите до трёх из более длинного
               списка.
             </p>
-            <Link className="button button-primary" to="/#projects">
+            <Link className="button button-primary" to="/projects">
               Выбрать проекты <ArrowIcon />
             </Link>
           </div>
@@ -276,6 +277,7 @@ export default function ComparisonPage({
           />
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router";
 import RouteScrollManager from "./components/RouteScrollManager";
 import SiteHeader from "./components/SiteHeader";
+import SiteFooter from "./components/SiteFooter";
 import AccountPage from "./features/account/AccountPage";
 import HouseFinder from "./features/finder/HouseFinder";
 
@@ -15,7 +16,14 @@ import { defaultCatalogFilters, type CatalogFilters } from "./features/projects/
 
 import "./App.css";
 import ComparisonPage from "./pages/ComparisonPage";
-import HomePage from "./pages/HomePage";
+import HomeEntry from "./components/HomeEntry";
+import ProjectsPage from "./pages/ProjectsPage";
+import CalculatorPage from "./pages/CalculatorPage";
+import AboutPage from "./pages/AboutPage";
+import PartnersPage from "./pages/PartnersPage";
+import ContactsPage from "./pages/ContactsPage";
+import PageMetadata from "./components/PageMetadata";
+import "./pages/ContentPages.css";
 import ProjectPage from "./pages/ProjectPage";
 function App() {
   const [favoriteProjects, setFavoriteProjects] = useState<string[]>(() =>
@@ -40,11 +48,17 @@ function App() {
   return (
     <>
       <RouteScrollManager />
+      <PageMetadata />
       <Routes>
+        <Route path="/" element={<HomeEntry />} />
+        <Route path="/calculator" element={<CalculatorPage key={window.location.search} />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/partners" element={<PartnersPage />} />
+        <Route path="/contacts" element={<ContactsPage />} />
         <Route
-          path="/"
+          path="/projects"
           element={
-            <HomePage
+            <ProjectsPage
               favoriteProjects={favoriteProjects}
               setFavoriteProjects={setFavoriteProjects}
               showFavorites={showFavorites}
@@ -82,6 +96,7 @@ function App() {
                 <h1>Страница не найдена.</h1>
                 <Link to="/">На главную</Link>
               </main>
+              <SiteFooter />
             </div>
           }
         />

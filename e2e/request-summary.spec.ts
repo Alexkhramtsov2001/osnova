@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("сводка обновляется и копируется без сообщения об отправке", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto("/");
+  await page.goto("/calculator");
   const calculator = page.getByRole("region", { name: "Калькулятор сметы", exact: true });
   await calculator.getByRole("button", { name: "Отдельные этапы", exact: true }).click();
   const scope = calculator.getByRole("group", { name: "Состав работ" });
