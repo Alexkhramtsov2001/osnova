@@ -4,5 +4,6 @@ export const navigation = [
   { to: "/calculator", label: "Калькулятор" },
   { to: "/about", label: "О компании" },
   { to: "/partners", label: "Партнёры" },
+  { to: "/vacancies", label: "Вакансии" },
   { to: "/contacts", label: "Контакты" },
 ] as const;

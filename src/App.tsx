@@ -22,6 +22,7 @@ import CalculatorPage from "./pages/CalculatorPage";
 import AboutPage from "./pages/AboutPage";
 import PartnersPage from "./pages/PartnersPage";
 import ContactsPage from "./pages/ContactsPage";
+import VacanciesPage from "./pages/VacanciesPage";
 import PageMetadata from "./components/PageMetadata";
 import "./pages/ContentPages.css";
 import ProjectPage from "./pages/ProjectPage";
@@ -55,6 +56,7 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/partners" element={<PartnersPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
+        <Route path="/vacancies" element={<VacanciesPage />} />
         <Route
           path="/projects"
           element={

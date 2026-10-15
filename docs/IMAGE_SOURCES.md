@@ -14,3 +14,16 @@
 | Терраса     | [Дом с открытой мощёной террасой](https://unsplash.com/photos/tiled-patio-with-potted-plants-3bRxBh2yiVc)                                  |
 | Простор     | [Большой современный дом](https://unsplash.com/photos/modern-house-exterior-glows-with-lights-4vioYQ9Nn9Y)                                 |
 | Гармония    | [Современный дом с участком](https://unsplash.com/photos/a-modern-house-with-a-large-front-yard-URD4NdWyd60)                               |
+
+## Иллюстрации команды
+
+Портреты на странице «О компании» взяты с Pexels и используются как **стоковые иллюстрации вымышленных ролей**. Люди на снимках не являются сотрудниками ОСНОВЫ и не представляют этот проект. [Лицензия Pexels](https://www.pexels.com/license/) допускает использование на сайте без указания авторства; этот список сохраняет ссылки на оригиналы. Файлы сохранены локально в `public/images/team/`.
+
+| Файл           | Источник                                                                                                                           |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `12903019.jpg` | [Портрет мужчины в офисе, Mizuno K](https://www.pexels.com/photo/portrait-of-man-in-office-12903019/)                              |
+| `5582586.jpg`  | [Архитектор за рабочим столом, Thirdman](https://www.pexels.com/photo/female-architect-on-her-workspace-5582586/)                  |
+| `6615080.jpg`  | [Архитектор за чертежами, Tima Miroshnichenko](https://www.pexels.com/photo/man-person-hands-people-6615080/)                      |
+| `8204406.jpg`  | [Портрет женщины в офисе, Kampus Production](https://www.pexels.com/photo/portrait-of-a-young-woman-sitting-in-an-office-8204406/) |
+| `10376034.jpg` | [Портрет мужчины за столом, RDNE Stock project](https://www.pexels.com/photo/smiling-man-sitting-at-desk-in-office-10376034/)      |
+| `8463168.jpg`  | [Портрет женщины в офисе, Kampus Production](https://www.pexels.com/photo/portrait-of-smiling-woman-in-an-office-8463168/)         |

@@ -212,7 +212,9 @@ export default function HomePage() {
               Рассчитайте стоимость <span>будущего дома.</span>
             </h2>
             <p>
-              Сравните материалы и комплектации, изучите этапы и сохраните демонстрационную смету.
+              Задайте площадь, регион и тип дома. Сравните материалы, комплектации и форматы
+              строительства: калькулятор покажет ориентир стоимости, состав этапов и сроки. Расчёт
+              можно сохранить или скачать как демонстрационную смету.
             </p>
           </div>
           <Link className="button button-primary" to="/calculator">
@@ -228,16 +230,50 @@ export default function HomePage() {
             Вымышленные отзывы показывают оформление клиентских историй.
           </p>
           <div className="review-grid">
-            {reviews.map((review) => (
+            {reviews.map((review, index) => (
               <article className="review-card" key={review.name}>
+                <div className="review-card-top">
+                  <span>ИСТОРИЯ / 0{index + 1}</span>
+                  <span aria-hidden="true">“</span>
+                </div>
                 <blockquote>«{review.text}»</blockquote>
-                <h3>{review.name}</h3>
-                <p>
-                  {review.project} · {review.year}
-                </p>
+                <div className="review-card-footer">
+                  <h3>{review.name}</h3>
+                  <p>
+                    {review.project} · {review.year}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
+        </section>
+        <section className="section-wrap home-discover" aria-label="Узнать больше об ОСНОВЕ">
+          <article className="home-discover-card">
+            <p className="eyebrow">О КОМПАНИИ</p>
+            <h2>
+              Люди и принципы <span>за проектом.</span>
+            </h2>
+            <p>
+              Показываем, как устроена вымышленная команда ОСНОВЫ: путь от первой идеи до цифровых
+              инструментов, роли специалистов и подход к работе.
+            </p>
+            <Link to="/about">
+              О компании <ArrowIcon />
+            </Link>
+          </article>
+          <article className="home-discover-card">
+            <p className="eyebrow">ПАРТНЁРЫ</p>
+            <h2>
+              Один дом — <span>много решений.</span>
+            </h2>
+            <p>
+              Материалы, инженерия и архитектура требуют согласованной работы. На примерах
+              показываем, как могли бы соединяться задачи разных партнёров.
+            </p>
+            <Link to="/partners">
+              Партнёры и кейсы <ArrowIcon />
+            </Link>
+          </article>
         </section>
         <section className="section-wrap final-cta">
           <h2>
