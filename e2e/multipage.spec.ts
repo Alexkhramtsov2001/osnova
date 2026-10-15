@@ -9,6 +9,7 @@ for (const width of [320, 375, 768, 1024, 1440])
       "/calculator",
       "/about",
       "/partners",
+      "/vacancies",
       "/contacts",
       "/compare?projects=01,02",
       "/find-home",
@@ -23,7 +24,7 @@ for (const width of [320, 375, 768, 1024, 1440])
       titles.add(await page.title());
       await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /.{30}/);
     }
-    expect(titles.size).toBe(9);
+    expect(titles.size).toBe(10);
   });
 test("главная компактна, корпоративные данные явно демонстрационные", async ({ page }) => {
   await page.goto("/");
@@ -59,6 +60,22 @@ test("контактная форма проверяет поля без отп�
   expect(
     await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage })),
   ).not.toContain("example@example.com");
+});
+test("55 демо-вакансий фильтруются, а отклик остаётся локальным", async ({ page }) => {
+  await page.goto("/vacancies");
+  await expect(page.locator(".vacancy-count")).toContainText("55 из 55");
+  await page.getByLabel("Регион", { exact: true }).selectOption("Екатеринбург");
+  await expect(page.locator(".vacancy-count")).toContainText("5 из 55");
+  await page.getByLabel("Вакансия", { exact: true }).selectOption("Архитектор");
+  await expect(page.locator(".vacancy-card")).toHaveCount(1);
+  await page.getByLabel("Зарплата от").selectOption("200000");
+  await expect(page.locator(".vacancy-card")).toHaveCount(0);
+  await page.getByRole("button", { name: "Сбросить фильтры" }).click();
+  await expect(page.locator(".vacancy-count")).toContainText("55 из 55");
+  await page.getByRole("button", { name: "Откликнуться в демо-чате" }).first().click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.getByRole("button", { name: "Показать учебный отклик" }).click();
+  await expect(page.getByRole("dialog")).toContainText("не отправлен и не сохранён");
 });
 test("старые ссылки перенаправляют к новым инструментам", async ({ page }) => {
   await page.goto("/#projects");
