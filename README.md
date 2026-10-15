@@ -68,7 +68,9 @@ docs/archive/         Исторические отчёты и прежняя д
 ## Документация
 
 - [Назначение и сценарии](docs/PROJECT_SPEC.md)
+- [Требования к будущим рабочим чертежам](docs/WORKING_DRAWINGS_REQUIREMENTS.md)
 - [Краткая дорожная карта](ROADMAP.md)
+- [Работа с репозиторием, проверки и публикация](docs/PROJECT_OPERATIONS.md)
 - [Последний сохранённый аудит — 14.10.2026](docs/AUDIT_2026-10-14.md)
 - [Демонстрационные заявки и чат Supabase](docs/SUPABASE_APPLICATIONS.md)
 - [Источники ценовых ориентиров](docs/PRICING_RESEARCH.md) и [шаблон исходных данных](docs/PRICING_DATA_TEMPLATE.md)
