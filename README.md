@@ -67,7 +67,7 @@ docs/archive/         Исторические отчёты и прежняя д
 
 ## Документация
 
-- [OSNOVA PLAN — исходное ТЗ v2.1–v2.14](docs/OSNOVA_PLAN/README.md)
+- [OSNOVA PLAN — цель браузерного CAD-планировщика, этапы и исходное ТЗ](docs/OSNOVA_PLAN/README.md)
 - [Назначение и сценарии](docs/PROJECT_SPEC.md)
 - [Краткая дорожная карта](ROADMAP.md)
 - [Последний сохранённый аудит — 14.10.2026](docs/AUDIT_2026-10-14.md)
