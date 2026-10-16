@@ -75,7 +75,7 @@
 
 .payment-method-card {
   display: flex;
-  min-height: 225px;
+  min-height: 205px;
   flex-direction: column;
   padding: 24px;
   border: 1px solid var(--line);
@@ -112,26 +112,31 @@
   line-height: 1.65;
 }
 
-.payment-method-card a {
+.payment-maternity-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin: 18px 0 0;
+  padding: 15px 18px;
+  border-left: 2px solid var(--accent);
+  background: #f1efe9;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.payment-maternity-note a {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  width: fit-content;
-  margin-top: auto;
-  padding-top: 14px;
+  gap: 5px;
   color: var(--accent-dark);
-  font-size: 13px;
   font-weight: 600;
-  transition: color 180ms ease;
 }
 
-.payment-method-card a:hover {
-  color: var(--accent);
-}
-
-.payment-method-card a .arrow-icon {
-  width: 15px;
-  height: 15px;
+.payment-maternity-note .arrow-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .payment-bank-strip {
@@ -342,49 +347,6 @@
   line-height: 1.5;
 }
 
-.payment-choice {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin: 0 0 26px;
-  padding: 0;
-  border: 0;
-}
-
-.payment-choice legend {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 0;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.payment-choice label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 48px;
-  padding: 9px 12px;
-  border: 1px solid #62645d;
-  font-size: 12px;
-  line-height: 1.35;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    background-color 180ms ease;
-}
-
-.payment-choice label:hover,
-.payment-choice label.is-selected {
-  border-color: #d9a58e;
-  background: #3d332c;
-}
-
-.payment-choice input {
-  flex-shrink: 0;
-  accent-color: #db9476;
-}
-
 .payment-cost-lines > div {
   display: flex;
   justify-content: space-between;
@@ -533,10 +495,6 @@
     width: 100%;
   }
 
-  .payment-choice {
-    grid-template-columns: 1fr;
-  }
-
   .payment-stage-list li,
   .payment-cost-lines > div {
     flex-wrap: wrap;
@@ -545,9 +503,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .payment-method-card,
-  .payment-method-card a,
   .payment-bank-list a,
-  .payment-choice label,
   .payment-edit-link {
     transition: none;
   }
