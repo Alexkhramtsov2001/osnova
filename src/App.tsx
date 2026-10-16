@@ -23,6 +23,7 @@ import AboutPage from "./pages/AboutPage";
 import PartnersPage from "./pages/PartnersPage";
 import ContactsPage from "./pages/ContactsPage";
 import VacanciesPage from "./pages/VacanciesPage";
+import PaymentPage from "./pages/PaymentPage";
 import PageMetadata from "./components/PageMetadata";
 import "./pages/ContentPages.css";
 import ProjectPage from "./pages/ProjectPage";
@@ -53,6 +54,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeEntry />} />
         <Route path="/calculator" element={<CalculatorPage key={window.location.search} />} />
+        <Route path="/payment" element={<PaymentPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/partners" element={<PartnersPage />} />
         <Route path="/contacts" element={<ContactsPage />} />

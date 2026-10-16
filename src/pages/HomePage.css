@@ -542,12 +542,14 @@
   }
 }
 
-@media (max-width: 390px) {
+@media (max-width: 520px) {
   .hero-actions {
     align-items: stretch;
     flex-direction: column;
   }
+}
 
+@media (max-width: 390px) {
   .hero-bottom {
     gap: 12px;
   }
