@@ -52,11 +52,11 @@ export default function HomePage() {
             </p>
 
             <div className="hero-actions">
-              <Link className="button button-primary" to="/calculator">
-                Рассчитать стоимость <ArrowIcon />
+              <Link className="button button-primary button-center-label" to="/calculator">
+                <span>Рассчитать стоимость</span> <ArrowIcon />
               </Link>
-              <Link className="button button-secondary" to="/projects">
-                Смотреть проекты <ArrowIcon direction="down" />
+              <Link className="button button-secondary button-center-label" to="/projects">
+                <span>Смотреть проекты</span> <ArrowIcon direction="down" />
               </Link>
             </div>
 
@@ -219,8 +219,8 @@ export default function HomePage() {
               можно сохранить или скачать как демонстрационную смету.
             </p>
           </div>
-          <Link className="button button-primary" to="/calculator">
-            Рассчитать стоимость <ArrowIcon />
+          <Link className="button button-primary button-center-label" to="/calculator">
+            <span>Рассчитать стоимость</span> <ArrowIcon />
           </Link>
         </section>
         <section className="section-wrap content-section">
@@ -259,7 +259,7 @@ export default function HomePage() {
               Показываем, как устроена вымышленная команда ОСНОВЫ: путь от первой идеи до цифровых
               инструментов, роли специалистов и подход к работе.
             </p>
-            <Link to="/about">
+            <Link className="button button-secondary" to="/about">
               О компании <ArrowIcon />
             </Link>
           </article>
@@ -272,7 +272,7 @@ export default function HomePage() {
               Материалы, инженерия и архитектура требуют согласованной работы. На примерах
               показываем, как могли бы соединяться задачи разных партнёров.
             </p>
-            <Link to="/partners">
+            <Link className="button button-secondary" to="/partners">
               Партнёры и кейсы <ArrowIcon />
             </Link>
           </article>

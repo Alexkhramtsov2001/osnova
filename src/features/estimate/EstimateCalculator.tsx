@@ -1,5 +1,6 @@
 import { formatDuration } from "./formatters";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router";
 import ArrowIcon from "../../components/ArrowIcon";
 import ContactIcon from "../../components/ContactIcon";
 import OsnovaSelect from "../../components/OsnovaSelect";
@@ -822,12 +823,17 @@ export default function EstimateCalculator({
                   toggleStage={toggleStage}
                 />
                 {includedStageCount > 0 && (
-                  <EstimatePdfButton
-                    parameters={parameters}
-                    estimate={estimate}
-                    projectName={projectName}
-                    constructionMode={constructionMode}
-                  />
+                  <>
+                    <EstimatePdfButton
+                      parameters={parameters}
+                      estimate={estimate}
+                      projectName={projectName}
+                      constructionMode={constructionMode}
+                    />
+                    <Link className="estimate-payment-link" to="/payment">
+                      Посмотреть варианты оплаты <ArrowIcon />
+                    </Link>
+                  </>
                 )}
 
                 <p className="estimate-disclaimer">

@@ -63,22 +63,28 @@ export default function AboutPage() {
             За каждым решением — <span>команда.</span>
           </h2>
           <p className="section-lead">
-            Все персонажи вымышлены. Стоковые фотографии иллюстрируют роли и не изображают
-            сотрудников реальной компании.
+            Персонажи, офисы и достижения в карточках вымышлены. Портреты сгенерированы для этого
+            демонстрационного проекта и не изображают реальных сотрудников.
           </p>
           <div className="team-grid">
             {team.map((person) => (
               <article className="team-card" key={person.name}>
                 <img
                   className="team-portrait"
-                  src={`${import.meta.env.BASE_URL}images/team/${person.photo}.jpg`}
-                  alt={`Стоковый портрет для иллюстрации роли «${person.role}»`}
+                  src={`${import.meta.env.BASE_URL}images/team/${person.photo}`}
+                  alt={`Сгенерированный портрет для иллюстрации роли «${person.role}»`}
                   loading="lazy"
                 />
                 <h3>{person.name}</h3>
                 <p className="team-role">{person.role}</p>
-                <small>Опыт: {person.experience}</small>
+                <p className="team-meta">
+                  Демо-офис: {person.office} · Опыт: {person.experience}
+                </p>
                 <p>{person.bio}</p>
+                <div className="team-achievement">
+                  <small>ДОСТИЖЕНИЕ В ДЕМО-ИСТОРИИ</small>
+                  <p>{person.achievement}</p>
+                </div>
               </article>
             ))}
           </div>

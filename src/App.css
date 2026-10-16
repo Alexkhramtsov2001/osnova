@@ -208,9 +208,39 @@
   font-size: 13px;
 }
 
+@media (min-width: 1151px) and (max-width: 1250px) {
+  .site-header {
+    gap: 20px;
+  }
+
+  .desktop-nav {
+    gap: 18px;
+  }
+
+  .site-header .header-account {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
 .button .arrow-icon {
   width: 17px;
   height: 17px;
+}
+
+.button-center-label {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 18px;
+  justify-items: center;
+}
+
+.button-center-label > span {
+  grid-column: 2;
+  text-align: center;
+}
+
+.button-center-label > .arrow-icon {
+  grid-column: 3;
 }
 
 .button-secondary {

@@ -201,6 +201,9 @@
   padding-bottom: 44px;
 }
 .home-discover-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 34px;
   background: #eeece5;
 }
@@ -222,22 +225,24 @@
 }
 .home-discover-card > p:not(.eyebrow) {
   max-width: 520px;
+  margin-bottom: 20px;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.75;
 }
-.home-discover-card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
+.home-discover-card > .button {
+  flex: none;
+  min-width: 190px;
+  min-height: 50px;
+  margin-top: auto;
+  border-color: var(--accent);
   color: var(--accent-dark);
-  font-size: 13px;
-  font-weight: 600;
-  transition: color 180ms ease;
+  font-size: 14px;
 }
-.home-discover-card a:hover {
-  color: var(--accent);
+.home-discover-card > .button:hover {
+  border-color: var(--accent-dark);
+  color: white;
+  background: var(--accent-dark);
 }
 .company-hero {
   display: grid;
@@ -377,6 +382,11 @@
   margin-top: 30px;
   row-gap: 38px;
 }
+.team-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
 .team-portrait {
   display: block;
   width: 100%;
@@ -387,11 +397,53 @@
 }
 .team-card .team-role {
   color: var(--ink);
-  margin-bottom: 8px;
+  margin: 0 0 5px;
+}
+.team-card .team-meta {
+  margin: 0 0 14px;
+  color: var(--accent-dark);
+  font-size: 12px;
+}
+.team-card > p:not(.team-role, .team-meta) {
+  margin: 0 0 18px;
+}
+.team-achievement {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
 }
 .team-card small {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.team-achievement p {
+  margin: 7px 0 0;
+  color: var(--ink);
+}
+.demo-office-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 24px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.demo-office-grid li {
+  min-width: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.demo-office-grid h3 {
+  margin: 0 0 7px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.demo-office-grid address {
+  color: var(--muted);
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.6;
 }
 .partner-card {
   --partner-accent: #a95a43;
@@ -658,6 +710,9 @@
   .partner-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .demo-office-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .company-hero {
     gap: 28px;
   }
@@ -749,6 +804,10 @@
   .team-grid,
   .partner-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .demo-office-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
   }
   .stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

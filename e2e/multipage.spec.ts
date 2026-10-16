@@ -7,6 +7,7 @@ for (const width of [320, 375, 768, 1024, 1440])
       "/",
       "/projects",
       "/calculator",
+      "/payment",
       "/about",
       "/partners",
       "/vacancies",
@@ -24,7 +25,7 @@ for (const width of [320, 375, 768, 1024, 1440])
       titles.add(await page.title());
       await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /.{30}/);
     }
-    expect(titles.size).toBe(10);
+    expect(titles.size).toBe(11);
   });
 test("главная компактна, корпоративные данные явно демонстрационные", async ({ page }) => {
   await page.goto("/");
