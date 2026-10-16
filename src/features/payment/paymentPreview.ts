@@ -1,6 +1,6 @@
 import type { EstimateResult } from "../estimate/types";
 
-export type PaymentMethod = "ownFunds" | "mortgage" | "loan" | "maternityCapital";
+export type PaymentMethod = "cashFull" | "cashStages" | "credit" | "mortgage";
 
 // Условие существует только для демонстрации интерфейса, это не тариф компании.
 export const DEMO_FULL_PAYMENT_DISCOUNT_RATE = 0.03;
@@ -12,7 +12,7 @@ export function calculatePaymentPreview(estimate: EstimateResult, method: Paymen
   const deliveryCost = Math.round(estimate.deliveryCost);
   const constructionTotal = Math.round(estimate.total);
   const discount =
-    method === "ownFunds" ? Math.round(constructionTotal * DEMO_FULL_PAYMENT_DISCOUNT_RATE) : 0;
+    method === "cashFull" ? Math.round(constructionTotal * DEMO_FULL_PAYMENT_DISCOUNT_RATE) : 0;
 
   return {
     stagesTotal,
@@ -20,5 +20,22 @@ export function calculatePaymentPreview(estimate: EstimateResult, method: Paymen
     constructionTotal,
     discount,
     afterDiscount: constructionTotal - discount,
+  };
+}
+
+export function buildStagePaymentSchedule(estimate: EstimateResult) {
+  const stages = estimate.stages
+    .filter((stage) => stage.included)
+    .map((stage) => ({ id: stage.id, name: stage.name, amount: Math.round(stage.total) }));
+  const deliveryCost = Math.round(estimate.deliveryCost);
+  const constructionTotal = Math.round(estimate.total);
+  const difference =
+    constructionTotal - deliveryCost - stages.reduce((sum, stage) => sum + stage.amount, 0);
+  if (stages.length > 0) stages[stages.length - 1].amount += difference;
+
+  return {
+    stages,
+    deliveryCost,
+    total: constructionTotal,
   };
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { calculateHouseEstimate } from "../estimate/calculations";
 import { DEFAULT_HOUSE_PARAMETERS } from "../estimate/catalog";
-import { calculatePaymentPreview } from "./paymentPreview";
+import { buildStagePaymentSchedule, calculatePaymentPreview } from "./paymentPreview";
 
 describe("демонстрационная сводка оплаты", () => {
   const estimate = calculateHouseEstimate(DEFAULT_HOUSE_PARAMETERS);
@@ -14,11 +14,11 @@ describe("демонстрационная сводка оплаты", () => {
   });
 
   it("даёт условную скидку только при полной оплате своими средствами", () => {
-    const fullPayment = calculatePaymentPreview(estimate, "ownFunds");
+    const fullPayment = calculatePaymentPreview(estimate, "cashFull");
     expect(fullPayment.discount).toBe(Math.round(estimate.total * 0.03));
     expect(fullPayment.afterDiscount).toBe(fullPayment.constructionTotal - fullPayment.discount);
-    expect(calculatePaymentPreview(estimate, "loan").discount).toBe(0);
-    expect(calculatePaymentPreview(estimate, "maternityCapital").discount).toBe(0);
+    expect(calculatePaymentPreview(estimate, "credit").discount).toBe(0);
+    expect(calculatePaymentPreview(estimate, "cashStages").discount).toBe(0);
   });
 
   it("учитывает доставку один раз и выбранные этапы при частичном составе", () => {
@@ -26,7 +26,7 @@ describe("демонстрационная сводка оплаты", () => {
       { ...DEFAULT_HOUSE_PARAMETERS, delivery: "regional" },
       { mode: "stages", stageIds: ["foundation", "roof"] },
     );
-    const preview = calculatePaymentPreview(withDelivery, "ownFunds");
+    const preview = calculatePaymentPreview(withDelivery, "cashFull");
     expect(preview.deliveryCost).toBe(110_000);
     expect(preview.stagesTotal + preview.deliveryCost).toBe(preview.constructionTotal);
     expect(preview.constructionTotal).toBe(Math.round(withDelivery.total));
@@ -37,6 +37,20 @@ describe("демонстрационная сводка оплаты", () => {
       mode: "stages",
       stageIds: [],
     });
-    expect(calculatePaymentPreview(emptyEstimate, "ownFunds").afterDiscount).toBe(0);
+    expect(calculatePaymentPreview(emptyEstimate, "cashFull").afterDiscount).toBe(0);
+  });
+
+  it("график этапов сходится с итогом и учитывает доставку один раз", () => {
+    const withDelivery = calculateHouseEstimate(
+      { ...DEFAULT_HOUSE_PARAMETERS, delivery: "regional" },
+      { mode: "stages", stageIds: ["foundation", "roof"] },
+    );
+    const schedule = buildStagePaymentSchedule(withDelivery);
+    expect(schedule.stages).toHaveLength(2);
+    expect(schedule.deliveryCost).toBe(110_000);
+    expect(
+      schedule.stages.reduce((sum, stage) => sum + stage.amount, 0) + schedule.deliveryCost,
+    ).toBe(schedule.total);
+    expect(schedule.total).toBe(Math.round(withDelivery.total));
   });
 });

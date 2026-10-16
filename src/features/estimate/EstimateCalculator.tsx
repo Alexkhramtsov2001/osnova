@@ -830,8 +830,8 @@ export default function EstimateCalculator({
                       projectName={projectName}
                       constructionMode={constructionMode}
                     />
-                    <Link className="estimate-payment-link" to="/payment">
-                      Посмотреть варианты оплаты <ArrowIcon />
+                    <Link className="estimate-payment-link" to="/payment#payment-checkout">
+                      Оплатить (демо) <ArrowIcon />
                     </Link>
                   </>
                 )}

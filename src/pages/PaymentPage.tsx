@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
@@ -7,6 +7,7 @@ import { calculateHouseEstimate } from "../features/estimate/calculations";
 import { readCalculatorDraft } from "../features/estimate/calculatorDraft";
 import { DEMO_REGIONS, PROJECT_TYPES } from "../features/estimate/catalog";
 import { money, number } from "../features/estimate/formatters";
+import PaymentCheckout from "../features/payment/PaymentCheckout";
 import {
   calculatePaymentPreview,
   DEMO_FULL_PAYMENT_DISCOUNT_RATE,
@@ -16,28 +17,28 @@ import "./PaymentPage.css";
 
 const paymentMethods: { id: PaymentMethod; title: string; description: string }[] = [
   {
-    id: "ownFunds",
-    title: "Собственные средства",
+    id: "cashFull",
+    title: "Наличными полностью",
     description:
-      "При полной оплате одним платежом покажем условную скидку в предварительной сводке.",
+      "Один платёж по договору. В демо-сводке показана условная скидка 3% за полную оплату.",
+  },
+  {
+    id: "cashStages",
+    title: "Наличными по этапам",
+    description:
+      "Работы оплачиваются частями по этапам. Состав, сроки и акты фиксируются договором.",
+  },
+  {
+    id: "credit",
+    title: "Кредит",
+    description:
+      "Потребительский кредит может покрыть часть расходов. Платёж и переплату рассчитывает банк.",
   },
   {
     id: "mortgage",
     title: "Ипотека на строительство",
     description:
       "Банк проверяет заёмщика, участок, подрядчика и документы. Ставка и график зависят от его решения.",
-  },
-  {
-    id: "loan",
-    title: "Кредит",
-    description:
-      "Потребительский кредит может покрыть часть расходов. Платёж и переплату рассчитывает банк.",
-  },
-  {
-    id: "maternityCapital",
-    title: "Материнский капитал",
-    description:
-      "Средства можно направить на строительство при соблюдении правил СФР. Условия зависят от возраста ребёнка; перечисление только безналичное.",
   },
 ];
 
@@ -60,7 +61,7 @@ const bankExamples = [
 ];
 
 export default function PaymentPage() {
-  const [method, setMethod] = useState<PaymentMethod>("ownFunds");
+  const [method, setMethod] = useState<PaymentMethod | null>(null);
   const [draft] = useState(() => {
     try {
       return readCalculatorDraft(window.sessionStorage);
@@ -77,10 +78,19 @@ export default function PaymentPage() {
       )
     : null;
   const hasEstimate = estimate?.stages.some((stage) => stage.included) ?? false;
-  const preview = estimate && hasEstimate ? calculatePaymentPreview(estimate, method) : null;
+  const preview =
+    estimate && hasEstimate ? calculatePaymentPreview(estimate, method ?? "cashStages") : null;
   const projectLabel = draft
     ? (draft.projectName ?? PROJECT_TYPES[draft.parameters.projectType].label)
     : null;
+
+  useEffect(() => {
+    if (window.location.hash !== "#payment-checkout" || !hasEstimate) return;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById("payment-checkout")?.scrollIntoView({ block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [hasEstimate]);
 
   return (
     <div className="site-shell">
@@ -92,9 +102,9 @@ export default function PaymentPage() {
             Дом начинается с плана. <span>Оплата — с ясных условий.</span>
           </h1>
           <p>
-            Здесь можно сравнить варианты финансирования и посмотреть, как выбранный расчёт
-            превращается в предварительную сводку. Это интерфейс портфолио: оплатить дом, оформить
-            кредит или отправить заявку банку на сайте нельзя.
+            Выберите способ оплаты, изучите порядок действий и получите демонстрационное
+            подтверждение с PDF. Это интерфейс портфолио: деньги не списываются, а заявки в банк не
+            отправляются.
           </p>
         </section>
 
@@ -103,7 +113,8 @@ export default function PaymentPage() {
             <p className="eyebrow">01 / ДО РАСЧЁТА</p>
             <h2 id="payment-methods-title">Какие есть варианты</h2>
             <p>
-              Выберите ориентир для обсуждения. Фактические условия определяются договором и банком.
+              Можно выбрать полную оплату, платежи по этапам, кредит или ипотеку. Фактические
+              условия определяются договором и банком.
             </p>
           </div>
           <div className="payment-method-grid">
@@ -112,18 +123,20 @@ export default function PaymentPage() {
                 <span className="payment-card-number">0{index + 1}</span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                {item.id === "maternityCapital" && (
-                  <a
-                    href="https://sfr.gov.ru/grazhdanam/semyam_s_detmi/materinskij_kapital/rasporyazhenije_sredstvami"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Правила СФР <ArrowIcon />
-                  </a>
-                )}
               </article>
             ))}
           </div>
+          <p className="payment-maternity-note">
+            Материнский капитал может участвовать в реальном финансировании при соблюдении правил
+            СФР. В этом демо он не вычитается из сметы и не оформляется.{" "}
+            <a
+              href="https://sfr.gov.ru/grazhdanam/semyam_s_detmi/materinskij_kapital/rasporyazhenije_sredstvami"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Правила СФР <ArrowIcon />
+            </a>
+          </p>
           <div className="payment-bank-strip">
             <div>
               <h3>Примеры банковских программ</h3>
@@ -156,7 +169,7 @@ export default function PaymentPage() {
                 <h3>Пока нет выбранного объёма работ</h3>
                 <p>
                   Рассчитайте типовой или индивидуальный дом. После этого здесь появятся состав
-                  работ, стоимость и сценарий полной оплаты.
+                  работ, стоимость и доступные сценарии оплаты.
                 </p>
               </div>
               <Link className="button button-primary" to="/calculator">
@@ -213,21 +226,6 @@ export default function PaymentPage() {
                   Диапазон модели: {money.format(estimate.minTotal)} —{" "}
                   {money.format(estimate.maxTotal)}
                 </p>
-                <fieldset className="payment-choice">
-                  <legend>Вариант оплаты для просмотра</legend>
-                  {paymentMethods.map((item) => (
-                    <label className={method === item.id ? "is-selected" : ""} key={item.id}>
-                      <input
-                        type="radio"
-                        name="payment-method"
-                        value={item.id}
-                        checked={method === item.id}
-                        onChange={() => setMethod(item.id)}
-                      />
-                      <span>{item.title}</span>
-                    </label>
-                  ))}
-                </fieldset>
                 <dl className="payment-cost-lines">
                   <div>
                     <dt>Выбранные строительные этапы</dt>
@@ -243,7 +241,7 @@ export default function PaymentPage() {
                   </div>
                   <div>
                     <dt>
-                      Условная скидка за оплату полностью своими средствами (
+                      Условная скидка за полную оплату наличными (
                       {DEMO_FULL_PAYMENT_DISCOUNT_RATE * 100}%)
                     </dt>
                     <dd>
@@ -277,16 +275,12 @@ export default function PaymentPage() {
                   .
                 </p>
                 <div className="payment-final">
-                  <span>Ориентир по выбранному сценарию</span>
+                  <span>
+                    {method ? "Ориентир по выбранному сценарию" : "Ориентир до выбора способа"}
+                  </span>
                   <strong>{money.format(preview.afterDiscount)}</strong>
                 </div>
-                {method === "maternityCapital" && (
-                  <p className="payment-method-note">
-                    Сумма сертификата неизвестна, поэтому она не вычтена из ориентира. СФР
-                    перечисляет средства безналично после проверки права и документов.
-                  </p>
-                )}
-                {(method === "mortgage" || method === "loan") && (
+                {(method === "mortgage" || method === "credit") && (
                   <p className="payment-method-note">
                     Первоначальный взнос, ставку, ежемесячный платёж и одобрение определяет банк; в
                     этом демонстрационном расчёте они не моделируются.
@@ -300,6 +294,17 @@ export default function PaymentPage() {
             </div>
           )}
         </section>
+        {preview && draft && estimate && projectLabel && (
+          <PaymentCheckout
+            method={method}
+            onMethodChange={setMethod}
+            estimate={estimate}
+            draft={draft}
+            projectName={projectLabel}
+            total={preview.afterDiscount}
+            discount={preview.discount}
+          />
+        )}
       </main>
       <SiteFooter />
     </div>

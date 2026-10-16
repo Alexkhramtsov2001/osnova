@@ -480,6 +480,13 @@
     margin-top: 24px;
   }
 
+  .hero-actions .button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 52px;
+    font-size: 14px;
+  }
+
   .hero-note {
     margin-top: 22px;
     padding-top: 0;
@@ -546,6 +553,10 @@
   .hero-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .hero-actions .button {
+    width: 100%;
   }
 }
 
