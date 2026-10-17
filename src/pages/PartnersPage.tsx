@@ -1,6 +1,6 @@
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
-import { partners, partnerCases } from "../features/company/partners";
+import { partners } from "../features/company/partners";
 export default function PartnersPage() {
   return (
     <div className="site-shell">
@@ -12,9 +12,8 @@ export default function PartnersPage() {
             Хорошие решения <span>рождаются вместе.</span>
           </h1>
           <p className="interior-intro-copy">
-            Шесть вымышленных организаций иллюстрируют сотрудничество архитекторов, производителей и
-            инженерных команд. Ниже показаны их специализации, затем — примеры совместных задач.
-            Названия, логотипы и истории созданы для портфолио.
+            Материалы для стен, кровля, остекление, инженерные системы и архитектура — у каждого
+            направления своя команда. Шесть организаций и их названия вымышлены для портфолио.
           </p>
         </section>
         <section className="section-wrap content-section partners-directory">
@@ -31,45 +30,12 @@ export default function PartnersPage() {
                   </span>
                   <span className="partner-card-line" />
                 </div>
-                <div
-                  className="partner-logo"
-                  aria-label={`Демонстрационный логотип ${partner.name}`}
-                >
-                  {partner.name}
-                </div>
+                <h3 className="partner-logo">{partner.name}</h3>
                 <p className="demo-label partner-category">{partner.category}</p>
-                <h3>{partner.description}</h3>
-                <p>{partner.history}</p>
+                <p className="partner-description">{partner.description}</p>
+                <p className="partner-scope">{partner.scope}</p>
               </article>
             ))}
-          </div>
-        </section>
-        <section className="approach-section">
-          <div className="section-wrap content-section">
-            <p className="eyebrow">ВЫМЫШЛЕННЫЕ КЕЙСЫ</p>
-            <h2>
-              Общая задача.
-              <br />
-              <span>Согласованное решение.</span>
-            </h2>
-            <div className="partner-cases">
-              {partnerCases.map((item, i) => (
-                <article key={item.title}>
-                  <small>
-                    0{i + 1} / {item.partner}
-                  </small>
-                  <h3>{item.title}</h3>
-                  <dl>
-                    <dt>Задача</dt>
-                    <dd>{item.task}</dd>
-                    <dt>Совместное решение</dt>
-                    <dd>{item.solution}</dd>
-                    <dt>Демонстрационный результат</dt>
-                    <dd>{item.result}</dd>
-                  </dl>
-                </article>
-              ))}
-            </div>
           </div>
         </section>
       </main>

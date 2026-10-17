@@ -2,7 +2,6 @@ import { useState } from "react";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ContactSection from "../components/ContactSection";
-import { vacancyRegions } from "../features/company/vacancies";
 export default function ContactsPage() {
   const [complete, setComplete] = useState(false);
   return (
@@ -16,33 +15,10 @@ export default function ContactsPage() {
           </h1>
           <p className="interior-intro-copy">
             Здесь находятся контакты автора портфолио. Ниже можно открыть демонстрационный чат и
-            попробовать форму: она проверяет поля локально и не отправляет данные. Адреса офисов
-            показывают, как выглядела бы сеть вымышленной компании.
+            попробовать форму: она проверяет поля локально и не отправляет данные.
           </p>
         </div>
         <ContactSection title="Контакты автора портфолио" subject="ОСНОВА — вопрос о проекте" />
-        <section
-          className="section-wrap content-section demo-offices"
-          aria-labelledby="demo-offices-title"
-        >
-          <p className="eyebrow">ГЕОГРАФИЯ / ДЕМОНСТРАЦИЯ</p>
-          <h2 id="demo-offices-title">
-            Офисы в <span>демо-истории.</span>
-          </h2>
-          <p className="section-lead">
-            Эти адреса созданы для иллюстрации интерфейса и совпадают с адресами в карточках
-            вакансий. Реальных офисов ОСНОВЫ по ним нет; они не предназначены для посещения или
-            отправки корреспонденции.
-          </p>
-          <ul className="demo-office-grid">
-            {vacancyRegions.map((region) => (
-              <li key={region.name}>
-                <h3>{region.name}</h3>
-                <address>{region.office}</address>
-              </li>
-            ))}
-          </ul>
-        </section>
         <section className="section-wrap content-section">
           <div className="contact-form-layout">
             <div>

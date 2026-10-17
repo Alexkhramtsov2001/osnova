@@ -185,18 +185,16 @@ export default function VacanciesPage() {
           </div>
           <div className="vacancy-follow-actions">
             <a
-              className="button button-secondary"
+              className="button button-secondary button-center-label"
               href="https://hh.ru/"
               target="_blank"
               rel="noopener noreferrer"
             >
               <span>Открыть hh.ru</span>
-              <span className="vacancy-action-icon">
-                <ArrowIcon />
-              </span>
+              <ArrowIcon />
             </a>
             <button
-              className="button button-primary"
+              className="button button-primary button-center-label"
               type="button"
               onClick={() => {
                 setChatStep("start");
@@ -204,9 +202,7 @@ export default function VacanciesPage() {
               }}
             >
               <span>Открыть демо-чат</span>
-              <span className="vacancy-action-icon">
-                <ArrowIcon />
-              </span>
+              <ArrowIcon />
             </button>
           </div>
         </section>

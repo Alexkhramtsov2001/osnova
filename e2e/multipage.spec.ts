@@ -36,12 +36,16 @@ test("главная компактна, корпоративные данные
   await expect(page.locator(".company-timeline li")).toHaveCount(6);
   await expect(page.locator(".stat-grid>div")).toHaveCount(4);
   await expect(page.locator(".team-card")).toHaveCount(6);
+  await expect(page.locator(".demo-office-grid li")).toHaveCount(11);
+  await expect(page.locator(".principle-number")).toHaveText(["01", "02", "03", "04"]);
   await expect(page.locator(".site-footer")).toContainText(
     "Компания, сотрудники, партнёры, отзывы и показатели",
   );
   await page.goto("/partners");
   await expect(page.locator(".partner-card")).toHaveCount(6);
-  await expect(page.locator(".partner-cases article")).toHaveCount(3);
+  await expect(page.locator(".partner-cases")).toHaveCount(0);
+  await page.goto("/contacts");
+  await expect(page.locator(".demo-offices")).toHaveCount(0);
 });
 test("контактная форма проверяет поля без отправки и хранения", async ({ page }) => {
   await page.goto("/contacts");

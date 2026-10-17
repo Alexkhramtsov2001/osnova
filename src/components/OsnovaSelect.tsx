@@ -10,6 +10,8 @@ type OsnovaSelectProps = {
   value: string;
   onValueChange: (value: string) => void;
   options: readonly Option[];
+  disabled?: boolean;
+  placeholder?: string;
 };
 
 export default function OsnovaSelect({
@@ -17,17 +19,19 @@ export default function OsnovaSelect({
   value,
   onValueChange,
   options,
+  disabled = false,
+  placeholder,
 }: OsnovaSelectProps) {
   const id = useId();
   return (
-    <Select.Root value={value} onValueChange={onValueChange}>
+    <Select.Root value={value} onValueChange={onValueChange} disabled={disabled}>
       <Select.Trigger
         className="osnova-select-trigger"
         aria-label={ariaLabel}
         data-value={value}
         id={id}
       >
-        <Select.Value />
+        <Select.Value placeholder={placeholder} />
         <Select.Icon className="osnova-select-icon" aria-hidden="true">
           <ArrowIcon direction="chevron-down" />
         </Select.Icon>

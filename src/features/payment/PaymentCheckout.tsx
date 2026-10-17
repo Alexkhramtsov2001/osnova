@@ -2,10 +2,17 @@ import { useState } from "react";
 import ArrowIcon from "../../components/ArrowIcon";
 import { vacancyRegions } from "../company/vacancies";
 import type { CalculatorDraft } from "../estimate/calculatorDraft";
-import { DEMO_REGIONS, PROJECT_TYPES } from "../estimate/catalog";
+import { DEMO_REGIONS, PROJECT_TYPES, WALL_MATERIALS } from "../estimate/catalog";
 import { money, number } from "../estimate/formatters";
-import type { EstimateResult, HouseParameters } from "../estimate/types";
-import { downloadPaymentConfirmationPdf } from "./exportPaymentPdf";
+import type { EstimateResult } from "../estimate/types";
+import PaymentOfficeBooking from "./PaymentOfficeBooking";
+import {
+  APPOINTMENT_DURATION_MINUTES,
+  formatAppointmentDate,
+  isValidAppointment,
+  officeTimeZone,
+  type PaymentAppointment,
+} from "./paymentAppointment";
 import { buildStagePaymentSchedule, type PaymentMethod } from "./paymentPreview";
 import "./PaymentCheckout.css";
 
@@ -35,15 +42,6 @@ const bankLinks = {
   ],
 };
 
-const officesByRegion: Record<HouseParameters["region"], readonly string[]> = {
-  central: ["Москва и МО"],
-  northwest: ["Санкт-Петербург и область"],
-  south: ["Краснодар", "Сочи"],
-  ural: ["Екатеринбург", "Челябинск"],
-  siberia: ["Новосибирск", "Красноярск", "Иркутск"],
-  farEast: ["Владивосток"],
-};
-
 type PaymentCheckoutProps = {
   method: PaymentMethod | null;
   onMethodChange: (method: PaymentMethod) => void;
@@ -59,6 +57,7 @@ type Confirmation = {
   createdAt: Date;
   officeId: string;
   method: PaymentMethod;
+  appointment: PaymentAppointment | null;
 };
 
 export default function PaymentCheckout({
@@ -71,36 +70,38 @@ export default function PaymentCheckout({
   discount,
 }: PaymentCheckoutProps) {
   const [officeId, setOfficeId] = useState("");
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [appointmentTime, setAppointmentTime] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
   const [pdfStatus, setPdfStatus] = useState<"idle" | "working" | "error">("idle");
   const schedule = buildStagePaymentSchedule(estimate);
   const isCash = method === "cashFull" || method === "cashStages";
   const office = vacancyRegions.find((item) => item.name === officeId);
-  const suggestedOfficeNames = officesByRegion[draft.parameters.region];
-  const suggestedOffices = vacancyRegions.filter((item) =>
-    suggestedOfficeNames.includes(item.name),
-  );
-  const otherOffices = vacancyRegions.filter((item) => !suggestedOfficeNames.includes(item.name));
-  const canConfirm = Boolean(method && acknowledged && (!isCash || office));
+  const appointmentValid = isValidAppointment(officeId, appointmentDate, appointmentTime);
+  const canConfirm = Boolean(method && acknowledged && (!isCash || (office && appointmentValid)));
 
-  const changeMethod = (next: PaymentMethod) => {
-    onMethodChange(next);
+  const clearConfirmation = () => {
     setAcknowledged(false);
     setConfirmation(null);
     setPdfStatus("idle");
+  };
+
+  const changeMethod = (next: PaymentMethod) => {
+    onMethodChange(next);
+    clearConfirmation();
   };
 
   const createPdf = async (nextConfirmation: Confirmation) => {
     const chosenOffice = vacancyRegions.find((item) => item.name === nextConfirmation.officeId);
     const methodDetails: Record<PaymentMethod, string[]> = {
       cashFull: [
-        "Смоделирована полная оплата собственными средствами в выбранном демо-офисе.",
-        "Условная скидка 3% применена к ориентиру строительства.",
+        "Выбрана полная оплата наличными. Сформирована демо-запись на согласование договора и порядка оплаты.",
+        "Условная скидка 3% отражена в расчёте. Передача денег в этом сценарии не выполняется.",
       ],
       cashStages: [
-        "Выбран демонстрационный график оплаты по этапам.",
-        "Суммы этапов и доставка показаны отдельно; сроки, акты и порядок оплаты определит договор.",
+        "Выбрана оплата наличными по этапам. Сформирована демо-запись на согласование договора и графика.",
+        "Каждый этап и доставка показаны отдельно. Последующие встречи согласуются по готовности этапов; оплаченных этапов пока нет.",
       ],
       credit: [
         "Выбран кредитный маршрут. Заявка в банк с этого сайта не отправлялась.",
@@ -112,6 +113,7 @@ export default function PaymentCheckout({
       ],
     };
 
+    const { downloadPaymentConfirmationPdf } = await import("./exportPaymentPdf");
     await downloadPaymentConfirmationPdf({
       reference: nextConfirmation.reference,
       createdAt: nextConfirmation.createdAt,
@@ -121,7 +123,26 @@ export default function PaymentCheckout({
       region: DEMO_REGIONS[draft.parameters.region].label,
       scope: draft.mode === "turnkey" ? "Под ключ" : "Отдельные этапы",
       method: nextConfirmation.method,
-      office: chosenOffice ? { city: chosenOffice.name, address: chosenOffice.office } : null,
+      office:
+        nextConfirmation.appointment && chosenOffice
+          ? { city: chosenOffice.name, address: chosenOffice.office }
+          : null,
+      appointment: nextConfirmation.appointment,
+      specifications: [
+        { label: "Этажность", value: String(draft.parameters.floors) },
+        {
+          label: "Спальни / санузлы",
+          value: `${draft.parameters.bedrooms} / ${draft.parameters.bathrooms}`,
+        },
+        { label: "Материал стен", value: WALL_MATERIALS[draft.parameters.wallMaterial].label },
+        {
+          label: "Комплектация",
+          value: draft.parameters.finish === "comfort" ? "Комфорт" : "Стандарт",
+        },
+      ],
+      dataVersion: estimate.dataVersion,
+      minTotal: estimate.minTotal,
+      maxTotal: estimate.maxTotal,
       stages: schedule.stages.map((stage) => ({ name: stage.name, amount: stage.amount })),
       deliveryCost: schedule.deliveryCost,
       estimateTotal: Math.round(estimate.total),
@@ -133,11 +154,25 @@ export default function PaymentCheckout({
 
   const completeDemo = async () => {
     if (!method || !canConfirm || pdfStatus === "working") return;
+    const zone = officeTimeZone(officeId);
     const nextConfirmation: Confirmation = {
       reference: `OSNOVA-DEMO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
       createdAt: new Date(),
       method,
       officeId,
+      appointment: isCash
+        ? {
+            date: appointmentDate,
+            time: appointmentTime,
+            timeZone: zone.timeZone,
+            zoneLabel: zone.label,
+            durationMinutes: APPOINTMENT_DURATION_MINUTES,
+            purpose:
+              method === "cashFull"
+                ? "Согласование договора и полной оплаты"
+                : "Согласование договора и графика платежей по этапам",
+          }
+        : null,
     };
     setPdfStatus("working");
     try {
@@ -219,54 +254,44 @@ export default function PaymentCheckout({
               <>
                 <h3>{method === "cashFull" ? "Полная оплата в офисе" : "Оплата каждого этапа"}</h3>
                 <p>
-                  Выберите удобный офис из демонстрационного списка. Адреса придуманы для портфолио;
-                  приезжать по ним не нужно. Список сгруппирован по региону расчёта; точное
-                  расстояние и геолокация не используются.
+                  Выберите демо-офис, дату и время встречи для обсуждения договора и порядка оплаты.
+                  Адреса и часы придуманы для портфолио; настоящая запись не создаётся.
                 </p>
-                <label className="payment-office-label" htmlFor="payment-office">
-                  Удобный демо-офис
-                </label>
-                <select
-                  id="payment-office"
-                  value={officeId}
+                <PaymentOfficeBooking
+                  region={draft.parameters.region}
+                  officeId={officeId}
+                  date={appointmentDate}
+                  time={appointmentTime}
                   disabled={pdfStatus === "working"}
-                  onChange={(event) => {
-                    setOfficeId(event.target.value);
-                    setConfirmation(null);
+                  onOfficeChange={(value) => {
+                    setOfficeId(value);
+                    setAppointmentDate("");
+                    setAppointmentTime("");
+                    clearConfirmation();
                   }}
-                >
-                  <option value="">Выберите город и офис</option>
-                  <optgroup label="По региону расчёта">
-                    {suggestedOffices.map((item) => (
-                      <option key={item.name} value={item.name}>
-                        {item.office}
-                      </option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="Другие демо-офисы">
-                    {otherOffices.map((item) => (
-                      <option key={item.name} value={item.name}>
-                        {item.office}
-                      </option>
-                    ))}
-                  </optgroup>
-                </select>
-                {office && (
-                  <p className="payment-office-note">
-                    Выбран: {office.office}. Это вымышленный адрес.
-                  </p>
-                )}
+                  onDateChange={(value) => {
+                    setAppointmentDate(value);
+                    setAppointmentTime("");
+                    clearConfirmation();
+                  }}
+                  onTimeChange={(value) => {
+                    setAppointmentTime(value);
+                    clearConfirmation();
+                  }}
+                />
                 {method === "cashFull" ? (
                   <ol className="payment-instructions">
-                    <li>Сверить состав работ и предварительный ориентир.</li>
-                    <li>Согласовать договор и окончательную стоимость в реальном проекте.</li>
-                    <li>В демо смоделировать один платёж с условной скидкой 3%.</li>
+                    <li>На встрече сверить состав работ, участок и предварительную цену.</li>
+                    <li>В реальном проекте согласовать окончательную стоимость и договор.</li>
+                    <li>
+                      После договора внести один платёж; здесь он не проводится. Скидка 3% условная.
+                    </li>
                   </ol>
                 ) : (
                   <>
                     <p className="payment-schedule-lead">
                       Условный график строится по выбранным этапам. Реальные сроки, акты и порядок
-                      оплаты определяются договором.
+                      оплаты определяются договором. На демо-встрече можно обсудить эту разбивку.
                     </p>
                     <ol className="payment-stage-schedule">
                       {schedule.stages.map((stage, index) => (
@@ -351,6 +376,16 @@ export default function PaymentCheckout({
                 <dd>{office?.office ?? "Не выбран"}</dd>
               </div>
             )}
+            {isCash && (
+              <div>
+                <dt>Демо-встреча</dt>
+                <dd>
+                  {appointmentValid
+                    ? `${formatAppointmentDate(appointmentDate)}, ${appointmentTime} ${officeTimeZone(officeId).label}`
+                    : "Дата и время не выбраны"}
+                </dd>
+              </div>
+            )}
             {discount > 0 && (
               <div>
                 <dt>Условная скидка</dt>
@@ -377,8 +412,8 @@ export default function PaymentCheckout({
               }}
             />
             <span>
-              Понимаю, что это демонстрация: платёж не проводится, банк не получает заявку, а PDF не
-              является кассовым чеком.
+              Понимаю, что запись и оплата демонстрационные: заявка не отправляется, деньги не
+              списываются, а PDF не является кассовым чеком.
             </span>
           </label>
           <button
@@ -387,12 +422,19 @@ export default function PaymentCheckout({
             disabled={!canConfirm || pdfStatus === "working"}
             onClick={completeDemo}
           >
-            {pdfStatus === "working" ? "Готовим PDF…" : "Завершить демо и скачать PDF"}{" "}
+            {pdfStatus === "working"
+              ? "Готовим PDF…"
+              : isCash
+                ? "Подтвердить демо-запись и скачать PDF"
+                : "Подтвердить маршрут и скачать PDF"}{" "}
             <ArrowIcon />
           </button>
           {!method && <p className="payment-hint">Сначала выберите способ оплаты.</p>}
           {isCash && !office && (
             <p className="payment-hint">Для оплаты наличными выберите демо-офис.</p>
+          )}
+          {isCash && office && !appointmentValid && (
+            <p className="payment-hint">Для демо-записи выберите рабочий день и время.</p>
           )}
           {pdfStatus === "error" && (
             <p role="alert" className="payment-error">
@@ -401,15 +443,18 @@ export default function PaymentCheckout({
           )}
           {confirmation && (
             <div className="payment-success" role="status">
-              <span>ДЕМО-СЦЕНАРИЙ ЗАВЕРШЁН</span>
+              <span>{confirmation.appointment ? "ДЕМО-ЗАПИСЬ СОЗДАНА" : "МАРШРУТ ВЫБРАН"}</span>
               <h4>Спасибо за выбор ОСНОВЫ!</h4>
               <p>
-                Поздравляем: выбор проекта и способа оплаты подтверждён в демонстрации. Деньги не
-                списаны.
+                Поздравляем с выбором проекта.{" "}
+                {confirmation.appointment
+                  ? `В демонстрации выбрана встреча ${formatAppointmentDate(confirmation.appointment.date)} в ${confirmation.appointment.time} ${confirmation.appointment.zoneLabel} по адресу: ${office?.office}.`
+                  : "Выбранный способ финансирования сохранён только в PDF на вашем устройстве."}{" "}
+                Настоящая заявка не отправлена, деньги не списаны.
               </p>
               <small>Номер: {confirmation.reference}</small>
               <button type="button" onClick={downloadAgain} disabled={pdfStatus === "working"}>
-                Скачать PDF снова <ArrowIcon />
+                Скачать подтверждение ещё раз <ArrowIcon />
               </button>
             </div>
           )}

@@ -178,9 +178,9 @@
 }
 .vacancy-follow {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 24px;
   padding-top: 42px;
   padding-bottom: 48px;
   border-top: 1px solid var(--line);
@@ -205,35 +205,15 @@
 .vacancy-follow-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  flex-shrink: 0;
+  gap: 16px;
+  width: 100%;
 }
 .vacancy-follow-actions .button {
-  min-height: 58px;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 0 14px 0 20px;
+  width: 280px;
+  min-height: 56px;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-}
-.vacancy-action-icon {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  flex: none;
-  place-items: center;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  transition: transform 180ms ease;
-}
-.vacancy-follow-actions .button:hover .vacancy-action-icon {
-  transform: translate(2px, -2px);
-}
-.vacancy-action-icon .arrow-icon {
-  width: 16px;
-  height: 16px;
 }
 .vacancy-chat-backdrop {
   position: fixed;
@@ -359,6 +339,8 @@
   }
   .vacancy-follow-actions .button {
     width: 100%;
+    min-height: 52px;
+    font-size: 14px;
   }
   .vacancy-chat-backdrop {
     padding: 0;
@@ -376,11 +358,7 @@
     gap: 12px;
   }
   .vacancy-filters .osnova-select-trigger,
-  .vacancy-action-icon,
   .vacancy-card > button {
     transition: none;
-  }
-  .vacancy-follow-actions .button:hover .vacancy-action-icon {
-    transform: none;
   }
 }
