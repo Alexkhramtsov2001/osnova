@@ -1,7 +1,8 @@
 import { DEMO_ESTIMATE_DATA } from "../features/estimate/catalog";
 import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { demoAccountPath, readDemoProfile, readDemoSession } from "../features/account/demoSession";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
@@ -29,8 +30,17 @@ export default function ProjectsPage({
   setCatalogFilters,
 }: SelectionProps) {
   const navigate = useNavigate();
-  const selectProject = (project: Project) =>
-    navigate(`/calculator?project=${project.number}`, { state: { fromCatalog: true } });
+  const { state } = useLocation();
+  const selectProject = (project: Project) => {
+    const target = `/calculator?project=${project.number}`;
+    if (!readDemoSession(window.sessionStorage)) {
+      navigate(
+        demoAccountPath(target, readDemoProfile(window.localStorage) ? "login" : "register"),
+      );
+      return;
+    }
+    navigate(target, { state: { fromCatalog: true } });
+  };
   const {
     area: areaFilter,
     floors: floorsFilter,
@@ -39,7 +49,8 @@ export default function ProjectsPage({
   } = catalogFilters;
   const catalogResultsRef = useRef<HTMLDivElement>(null);
   const [favoriteNotice, setFavoriteNotice] = useState<{ name: string; added: boolean } | null>(
-    null,
+    () =>
+      typeof state?.favoriteAdded === "string" ? { name: state.favoriteAdded, added: true } : null,
   );
 
   useEffect(() => {
@@ -85,6 +96,15 @@ export default function ProjectsPage({
   });
 
   const toggleFavorite = (project: Project) => {
+    if (!readDemoSession(window.sessionStorage)) {
+      navigate(
+        demoAccountPath(
+          `/projects?favorite=${project.number}`,
+          readDemoProfile(window.localStorage) ? "login" : "register",
+        ),
+      );
+      return;
+    }
     const added = !favoriteProjects.includes(project.number);
     setFavoriteProjects((current) =>
       added ? [...current, project.number] : current.filter((number) => number !== project.number),

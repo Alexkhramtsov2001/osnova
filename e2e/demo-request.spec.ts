@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("демо-заявка отправляет параметры без контактов и показывает подтверждение", async ({
   page,

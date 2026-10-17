@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("выбор дома переносит параметры, сохраняет комплектацию и поддерживает сброс", async ({
   page,

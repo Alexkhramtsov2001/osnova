@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   clearDemoSession,
+  demoAccountPath,
   DEMO_SESSION_KEY,
   DEMO_PROFILE_KEY,
   createDemoCode,
@@ -8,6 +9,7 @@ import {
   readDemoProfile,
   readDemoSession,
   readDemoSessionSource,
+  readDemoReturnPath,
   writeDemoProfile,
   writeDemoSession,
 } from "./demoSession";
@@ -67,5 +69,16 @@ describe("демонстрационная регистрация и вход", 
 
   it("создаёт шестизначный учебный код для одного экрана подтверждения", () => {
     expect(createDemoCode()).toMatch(/^\d{6}$/);
+  });
+
+  it("возвращает после входа только на разрешённую внутреннюю страницу", () => {
+    const path = demoAccountPath("/payment?method=cashFull#payment-checkout", "login");
+    expect(readDemoReturnPath(new URL(path, "https://osnova.demo").search)).toBe(
+      "/payment?method=cashFull#payment-checkout",
+    );
+    expect(readDemoReturnPath("?next=https%3A%2F%2Fevil.example")).toBeNull();
+    expect(readDemoReturnPath("?next=%2F%2Fevil.example")).toBeNull();
+    expect(readDemoReturnPath("?next=%2F%5Cevil.example")).toBeNull();
+    expect(readDemoReturnPath("?next=%2Fabout")).toBeNull();
   });
 });

@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
 import ContactSection from "../components/ContactSection";
 import SiteHeader from "../components/SiteHeader";
+import { demoActionPath } from "../features/account/demoSession";
 
 import { WALL_MATERIALS } from "../features/estimate/catalog";
 import { projects } from "../features/projects/catalog";
@@ -194,7 +195,10 @@ export default function ProjectPage() {
               Версия расчёта {estimate.dataVersion} от {estimate.dataUpdatedAt}. Это не смета и не
               коммерческое предложение.
             </p>
-            <Link className="button button-primary" to={`/calculator?project=${project.number}`}>
+            <Link
+              className="button button-primary"
+              to={demoActionPath(`/calculator?project=${project.number}`)}
+            >
               Рассчитать этот дом <ArrowIcon />
             </Link>
           </div>

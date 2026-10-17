@@ -80,6 +80,7 @@ export default function PaymentCheckout({
   const office = vacancyRegions.find((item) => item.name === officeId);
   const appointmentValid = isValidAppointment(officeId, appointmentDate, appointmentTime);
   const canConfirm = Boolean(method && acknowledged && (!isCash || (office && appointmentValid)));
+  const progressStep = confirmation ? 4 : !method ? 1 : canConfirm ? 3 : 2;
 
   const clearConfirmation = () => {
     setAcknowledged(false);
@@ -211,15 +212,22 @@ export default function PaymentCheckout({
       </div>
 
       <ol className="payment-progress" aria-label="Шаги оформления">
-        <li>
-          <span>01</span> Способ
-        </li>
-        <li>
-          <span>02</span> Условия
-        </li>
-        <li>
-          <span>03</span> Подтверждение
-        </li>
+        {["Способ", "Условия", "Подтверждение"].map((label, index) => {
+          const step = index + 1;
+          const complete = step < progressStep;
+          const current = step === progressStep;
+          return (
+            <li
+              key={label}
+              className={complete ? "is-complete" : current ? "is-current" : ""}
+              aria-current={current ? "step" : undefined}
+              aria-label={`${label}: ${complete ? "выполнено" : current ? "текущий шаг" : "ожидает"}`}
+            >
+              <span aria-hidden="true">{complete ? "✓" : String(step).padStart(2, "0")}</span>
+              {label}
+            </li>
+          );
+        })}
       </ol>
 
       <div className="payment-checkout-layout">

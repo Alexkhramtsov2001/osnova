@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 for (const width of [320, 375, 768, 1024, 1440])
   test(`новые страницы доступны и адаптивны при ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

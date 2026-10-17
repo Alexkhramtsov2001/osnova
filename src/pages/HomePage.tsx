@@ -185,20 +185,12 @@ export default function HomePage() {
             })}
           </div>
           <div className="home-project-actions">
-            <div className="home-project-action">
-              <h3>Выбрать из каталога</h3>
-              <p>Изучите все типовые концепции и сравните параметры.</p>
-              <Link className="button button-primary button-center-label" to="/projects">
-                <span>Все проекты</span> <ArrowIcon />
-              </Link>
-            </div>
-            <div className="home-project-action">
-              <h3>Найти подходящий вариант</h3>
-              <p>Ответьте на вопросы о планировке, площади и бюджете.</p>
-              <Link className="button button-secondary button-center-label" to="/find-home">
-                <span>Подобрать свой дом</span> <ArrowIcon />
-              </Link>
-            </div>
+            <Link className="button button-primary button-center-label" to="/projects">
+              <span>Все проекты</span> <ArrowIcon />
+            </Link>
+            <Link className="button button-secondary button-center-label" to="/find-home">
+              <span>Подобрать свой дом</span> <ArrowIcon />
+            </Link>
           </div>
         </section>
         <section className="approach-section" id="advantages">

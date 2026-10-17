@@ -8,7 +8,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  margin: 0 0 22px;
+  margin: 0 0 14px;
   padding: 0;
   list-style: none;
 }
@@ -17,17 +17,27 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 44px;
-  padding: 8px 14px;
+  min-height: 38px;
+  padding: 7px 12px;
   border-top: 2px solid #c9c4b9;
   color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
 }
 
-.payment-progress li:first-child {
+.payment-progress li.is-current {
   border-color: var(--accent);
+  background: #f8f0eb;
+  color: var(--ink);
+}
+
+.payment-progress li.is-complete {
+  border-color: #6d7969;
   color: var(--ink);
 }
 
@@ -35,6 +45,12 @@
   color: var(--accent-dark);
   font-size: 10px;
   letter-spacing: 0.12em;
+}
+
+.payment-progress li.is-complete span {
+  color: #536750;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .payment-checkout-layout {
@@ -417,7 +433,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 0;
+  padding: 8px 0;
   border-top: 1px solid #d9d5cb;
   font-size: 12px;
   line-height: 1.5;
@@ -436,8 +452,8 @@
 .payment-confirm-total {
   display: grid;
   gap: 8px;
-  margin-top: 14px;
-  padding: 18px 0;
+  margin-top: 8px;
+  padding: 14px 0;
   border-top: 1px solid #aca699;
   border-bottom: 1px solid #aca699;
 }
@@ -615,6 +631,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .payment-progress li,
   .payment-route-grid label,
   .payment-office-booking .osnova-select-trigger,
   .payment-appointment-fields > input,

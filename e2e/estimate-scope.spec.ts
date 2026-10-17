@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("выбранные этапы управляют итогом, сохраняются при выборе дома и сбрасываются", async ({
   page,

@@ -24,12 +24,14 @@ const providerNames = { google: "Google", apple: "Apple" } as const;
 
 export default function DemoAuthPanel({
   onAuthenticated,
+  initialView,
 }: {
   onAuthenticated: (source: DemoSessionSource) => void;
+  initialView?: "login" | "register";
 }) {
   const [localProfile, setLocalProfile] = useState(() => readDemoProfile(window.localStorage));
-  const [view, setView] = useState<AuthView>(() =>
-    readDemoProfile(window.localStorage) ? "login" : "register",
+  const [view, setView] = useState<AuthView>(
+    () => initialView ?? (readDemoProfile(window.localStorage) ? "login" : "register"),
   );
   const [name, setName] = useState("");
   const [email, setEmail] = useState(() => localProfile?.email ?? "");
@@ -356,9 +358,7 @@ export default function DemoAuthPanel({
                 className="account-provider-button"
                 onClick={() => onProvider("google")}
               >
-                <span className="account-provider-mark google-mark" aria-hidden="true">
-                  G
-                </span>{" "}
+                <img src={`${import.meta.env.BASE_URL}images/auth/google.svg`} alt="" />
                 Войти через Google
               </button>
               <button
@@ -366,9 +366,7 @@ export default function DemoAuthPanel({
                 className="account-provider-button"
                 onClick={() => onProvider("apple")}
               >
-                <span className="account-provider-mark" aria-hidden="true">
-                  A
-                </span>{" "}
+                <img src={`${import.meta.env.BASE_URL}images/auth/apple.svg`} alt="" />
                 Войти через Apple
               </button>
             </div>

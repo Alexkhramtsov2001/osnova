@@ -1,0 +1,38 @@
+.demo-access-gate {
+  padding-top: 32px;
+  padding-bottom: 44px;
+  border-top: 1px solid var(--line);
+}
+
+.demo-access-gate h2 {
+  margin: 12px 0;
+  font-size: clamp(30px, 3.6vw, 46px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.demo-access-gate > p:not(.eyebrow) {
+  max-width: 660px;
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.demo-access-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.demo-access-actions .button {
+  min-width: 220px;
+  min-height: 52px;
+}
+
+@media (max-width: 760px) {
+  .demo-access-actions .button {
+    width: 100%;
+    min-width: 0;
+  }
+}

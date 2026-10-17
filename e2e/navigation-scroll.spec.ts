@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("дом открывается сразу сверху, а возврат ведёт на точную позицию каталога", async ({
   page,

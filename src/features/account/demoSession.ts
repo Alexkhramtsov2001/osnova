@@ -87,3 +87,27 @@ export function clearDemoSession(storage: Pick<Storage, "removeItem">): void {
     // The in-memory view can still be closed when browser storage is unavailable.
   }
 }
+
+const returnPaths = new Set(["/projects", "/calculator", "/payment"]);
+
+export function demoAccountPath(next: string, mode: "register" | "login" = "register"): string {
+  const params = new URLSearchParams({ mode, next });
+  return `/account?${params.toString()}`;
+}
+
+export function demoActionPath(next: string): string {
+  if (readDemoSession(window.sessionStorage)) return next;
+  return demoAccountPath(next, readDemoProfile(window.localStorage) ? "login" : "register");
+}
+
+export function readDemoReturnPath(search: string): string | null {
+  const next = new URLSearchParams(search).get("next");
+  if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return null;
+  try {
+    const url = new URL(next, "https://osnova.demo");
+    if (url.origin !== "https://osnova.demo" || !returnPaths.has(url.pathname)) return null;
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return null;
+  }
+}
