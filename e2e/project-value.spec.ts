@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 import { projects } from "../src/features/projects/catalog";
 import { formatPriceRange, getProjectEstimate } from "../src/features/projects/estimates";
 

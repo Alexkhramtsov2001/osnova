@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("незавершённый и недопустимый числовой ввод не ломает страницу", async ({ page }) => {
   const errors: string[] = [];

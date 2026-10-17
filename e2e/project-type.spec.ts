@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("тип проекта поясняет границы сметы и выбор из каталога возвращает типовой сценарий", async ({
   page,

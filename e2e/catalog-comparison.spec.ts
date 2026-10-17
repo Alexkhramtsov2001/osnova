@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("избранные дома открываются на отдельной странице сравнения", async ({ page }) => {
   await page.goto("/projects");

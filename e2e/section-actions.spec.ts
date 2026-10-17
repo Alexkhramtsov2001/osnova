@@ -22,6 +22,7 @@ for (const width of [320, 390, 768, 1440]) {
     const popularCards = await box(page.locator(".home-popular .project-grid"));
     const popularActions = await box(page.locator(".home-project-actions"));
     expect(popularActions.y).toBeGreaterThanOrEqual(popularCards.y + popularCards.height - 1);
+    await expect(page.locator(".home-project-actions h3, .home-project-actions p")).toHaveCount(0);
     const popularLinks = page.locator(".home-project-actions a.button");
     await expect(popularLinks).toHaveCount(2);
     await expect(popularLinks.nth(0)).toHaveAttribute("href", "/projects");

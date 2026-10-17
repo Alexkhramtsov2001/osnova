@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("сводка расчёта сохраняется между посещениями и удаляется пользователем", async ({ page }) => {
   await page.goto("/?project=02#calculator");

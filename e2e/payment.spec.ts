@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 async function chooseDemoAppointment(page: import("@playwright/test").Page, city: string) {
   await page.getByRole("combobox", { name: "Удобный демо-офис" }).click();
@@ -95,7 +95,10 @@ test("калькулятор передаёт смету в оформление
   await expect(
     page.getByRole("button", { name: "Подтвердить маршрут и скачать PDF" }),
   ).toBeDisabled();
+  await expect(page.locator(".payment-progress li.is-current")).toContainText("Способ");
   await page.getByRole("radio", { name: /Наличными полностью/ }).check();
+  await expect(page.locator(".payment-progress li.is-complete")).toHaveCount(1);
+  await expect(page.locator(".payment-progress li.is-current")).toContainText("Условия");
   const confirmButton = page.getByRole("button", {
     name: "Подтвердить демо-запись и скачать PDF",
   });
@@ -104,6 +107,7 @@ test("калькулятор передаёт смету в оформление
   await chooseDemoAppointment(page, "Екатеринбург");
   await expect(page.locator(".payment-confirm-panel")).toContainText("Екатеринбург");
   await page.getByRole("checkbox", { name: /Понимаю, что запись и оплата/ }).check();
+  await expect(page.locator(".payment-progress li.is-current")).toContainText("Подтверждение");
   const downloadPromise = page.waitForEvent("download");
   await confirmButton.click();
   const download = await downloadPromise;
@@ -114,6 +118,7 @@ test("калькулятор передаёт смету в оформление
   await expect(page.getByText("Спасибо за выбор ОСНОВЫ!")).toBeVisible();
   await expect(page.locator(".payment-success")).toContainText("деньги не списаны");
   await expect(page.locator(".payment-success")).toContainText("Екатеринбург");
+  await expect(page.locator(".payment-progress li.is-complete")).toHaveCount(3);
 });
 
 test("поэтапная оплата показывает график, а банк не требует выбора офиса", async ({ page }) => {

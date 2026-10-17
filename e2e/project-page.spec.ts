@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("карточка открывает отдельный проект в текущей вкладке и переносит его в расчёт", async ({
   page,

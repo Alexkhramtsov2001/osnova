@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("кнопка подбора открывает опросник в текущей вкладке", async ({ page }) => {
   await page.goto("/projects");

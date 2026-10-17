@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { useLocation, useNavigationType } from "react-router";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import DemoAccessGate from "../features/account/DemoAccessGate";
+import { readDemoSession } from "../features/account/demoSession";
 import EstimateCalculator from "../features/estimate/EstimateCalculator";
 import { readCalculatorDraft, type CalculatorDraft } from "../features/estimate/calculatorDraft";
 import { normalizeForArea } from "../features/estimate/constraints";
@@ -71,6 +73,22 @@ export default function CalculatorPage() {
     setSelectedProjectName(projectName);
     calculatorRef.current?.focus({ preventScroll: true });
   };
+  if (startingProject && !readDemoSession(window.sessionStorage)) {
+    return (
+      <div className="site-shell">
+        <SiteHeader />
+        <main>
+          <DemoAccessGate
+            eyebrow="ВЫБОР ПРОЕКТА / ДЕМО"
+            title={`Войдите, чтобы выбрать «${startingProject.name}»`}
+            description="Вы сможете продолжить с этим домом в калькуляторе. Учебный вход работает только в браузере и не требует настоящей почты."
+            next={`/calculator?project=${startingProject.number}`}
+          />
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
   return (
     <div className="site-shell">
       <SiteHeader />

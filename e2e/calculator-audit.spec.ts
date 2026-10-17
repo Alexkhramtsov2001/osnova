@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 import { openDemoCabinetViaGoogle } from "./demo-auth";
 
 const calculator = (page: import("@playwright/test").Page) =>
