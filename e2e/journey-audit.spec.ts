@@ -1,15 +1,16 @@
 import { expect, test } from "@playwright/test";
+import { openDemoCabinetViaGoogle } from "./demo-auth";
 
-test("сценарий на главной ведёт к проекту, а страницы компании и партнёров — к расчёту", async ({
+test("блок доверия ведёт к выбору проекта, а страницы компании и партнёров — к расчёту", async ({
   page,
 }) => {
   await page.goto("/");
   await page
     .locator(".review-card")
     .first()
-    .getByRole("link", { name: "Посмотреть концепцию" })
+    .getByRole("link", { name: "Сравнить проекты" })
     .click();
-  await expect(page).toHaveURL(/\/projects\/01$/);
+  await expect(page).toHaveURL(/\/projects$/);
   await page.goto("/about");
   await expect(page.locator(".stat-grid")).toContainText("Концепций для сравнения");
   await page.locator(".journey-next-step").getByRole("link", { name: "Смотреть проекты" }).click();
@@ -29,7 +30,7 @@ test("сохранённый расчёт можно продолжить из �
   await page.getByRole("spinbutton", { name: /Площадь дома/ }).fill("145");
   await page.getByRole("button", { name: "Сохранить расчёт" }).click();
   await page.goto("/account");
-  await page.getByRole("button", { name: "Открыть демо-кабинет" }).click();
+  await openDemoCabinetViaGoogle(page);
   await page
     .locator(".account-estimate-card")
     .getByRole("button", { name: "Продолжить расчёт" })

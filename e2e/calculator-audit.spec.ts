@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openDemoCabinetViaGoogle } from "./demo-auth";
 
 const calculator = (page: import("@playwright/test").Page) =>
   page.getByRole("region", { name: "Калькулятор сметы", exact: true });
@@ -78,7 +79,7 @@ for (const fallback of [false, true])
       "2 из 8",
     );
     await second.goto("/account");
-    await second.getByRole("button", { name: "Открыть демо-кабинет" }).click();
+    await openDemoCabinetViaGoogle(second);
     await second.getByRole("button", { name: "Удалить", exact: true }).first().click();
     await expect.poll(async () => (await entries()).length).toBe(1);
     await expect(page.getByRole("region", { name: "Сохранённые расчёты" })).toContainText("1 из 8");

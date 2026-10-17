@@ -1,4 +1,5 @@
 import { number } from "./formatters";
+import { Link } from "react-router";
 import { SAVED_ESTIMATES_LIMIT, type SavedEstimate } from "./savedEstimates";
 
 type Props = {
@@ -31,7 +32,7 @@ export default function SavedEstimates({
         Сохраняется снимок сводки с версией демо-данных. Он не меняется при последующих правках
         калькулятора. Новые записи можно загрузить в поля для повторного расчёта по текущей
         демо-базе. Данные доступны только в этом браузере; записи сверх лимита заменяют самые
-        старые.
+        старые. <Link to="/account">Открыть все сохранённые расчёты в демо-кабинете</Link>.
       </p>
       {savedStatus && (
         <p className="estimate-saved-status" role="status">

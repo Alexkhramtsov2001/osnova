@@ -212,6 +212,9 @@ export default function ProjectsPage({
               Избранное ({favoriteProjects.length})
             </button>
             <span>Список сохраняется в этом браузере</span>
+            <Link className="catalog-account-link" to="/account">
+              Открыть подборку в демо-кабинете <ArrowIcon />
+            </Link>
           </div>
 
           {showFavorites && (
