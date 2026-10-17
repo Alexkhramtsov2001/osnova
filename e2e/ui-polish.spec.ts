@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openDemoCabinetViaGoogle } from "./demo-auth";
 
 test("мобильное меню закрывает экран, удерживает фокус и блокирует страницу", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -49,7 +50,7 @@ test("пустые состояния кабинета показывают ак
 }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/account");
-  await page.getByRole("button", { name: "Открыть демо-кабинет" }).click();
+  await openDemoCabinetViaGoogle(page);
   for (const name of ["Посмотреть каталог", "Рассчитать стоимость"]) {
     const link = page.getByRole("link", { name, exact: true });
     await expect(link).toHaveClass(/button-primary/);

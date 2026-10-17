@@ -6,7 +6,7 @@ import SiteFooter from "../components/SiteFooter";
 import ArrowIcon from "../components/ArrowIcon";
 import { projects } from "../features/projects/catalog";
 import { formatPriceRange, getProjectEstimate } from "../features/projects/estimates";
-import { advantages, reviews } from "../features/company/content";
+import { advantages, trustMetrics, trustReviews } from "../features/company/content";
 export default function HomePage() {
   const [heroSlide, setHeroSlide] = useState(0);
   const [heroHovered, setHeroHovered] = useState(false);
@@ -236,37 +236,63 @@ export default function HomePage() {
             <span>Рассчитать стоимость</span> <ArrowIcon />
           </Link>
         </section>
-        <section className="section-wrap content-section">
-          <p className="eyebrow">ДЕМОНСТРАЦИОННЫЕ ИСТОРИИ</p>
-          <h2>
-            Дом — это <span>личное.</span>
+        <section
+          className="section-wrap content-section trust-section"
+          aria-labelledby="trust-title"
+        >
+          <p className="eyebrow">НАМ ДОВЕРЯЮТ / ДЕМОНСТРАЦИЯ</p>
+          <h2 id="trust-title">
+            Доверие начинается <span>с проверки.</span>
           </h2>
           <p className="section-lead">
-            Три вымышленных сценария показывают, как потребности семьи помогают выбрать концепцию и
-            следующий шаг. Это примеры выбора, а не отзывы о построенных домах.
+            Так могла бы выглядеть секция результатов и отзывов строительной компании. Все цифры и
+            реплики здесь вымышлены для портфолио: у ОСНОВЫ нет подтверждённой статистики клиентов
+            или построенных домов.
           </p>
-          <div className="review-grid">
-            {reviews.map((review, index) => (
-              <article className="review-card" key={review.name}>
-                <div className="review-card-top">
-                  <span>СЦЕНАРИЙ / 0{index + 1}</span>
+          <div className="trust-metrics" aria-label="Учебные примеры показателей">
+            {trustMetrics.map((metric) => (
+              <article className="trust-metric" key={metric.label}>
+                <span className="trust-metric-tag">УЧЕБНЫЙ ПРИМЕР · НЕ ФАКТИЧЕСКИЙ РЕЗУЛЬТАТ</span>
+                <div className="trust-metric-main">
+                  <strong>{metric.value}</strong>
+                  <h3>{metric.label}</h3>
                 </div>
-                <h3>{review.name}</h3>
-                <p>
-                  <strong>Запрос:</strong> {review.need}
+                <p>{metric.evidence}</p>
+              </article>
+            ))}
+          </div>
+          <div className="trust-reviews-heading">
+            <div>
+              <p className="eyebrow">ОТЗЫВЫ / ДЕМО</p>
+              <h3>Что важно услышать от клиентов</h3>
+            </div>
+            <p>
+              Ниже — образцы вымышленных отзывов и действия, которыми можно проверить каждый тезис
+              на сайте.
+            </p>
+          </div>
+          <div className="review-grid">
+            {trustReviews.map((review, index) => (
+              <article className="review-card trust-review" key={review.topic}>
+                <div className="review-card-top">
+                  <span>ВЫМЫШЛЕННЫЙ ОТЗЫВ / 0{index + 1}</span>
+                </div>
+                <h3>{review.topic}</h3>
+                <blockquote>«{review.quote}»</blockquote>
+                <p className="trust-review-check">
+                  <strong>Что проверить:</strong> {review.check}
                 </p>
-                <p>
-                  <strong>Подходящая концепция:</strong> {review.choice}
-                </p>
-                <p>
-                  <strong>Дальше:</strong> {review.nextStep}
-                </p>
-                <Link className="review-card-action" to={`/projects/${review.projectNumber}`}>
-                  Посмотреть концепцию <ArrowIcon />
+                <Link className="review-card-action" to={review.to}>
+                  {review.action} <ArrowIcon />
                 </Link>
               </article>
             ))}
           </div>
+          <p className="trust-note">
+            Перед реальной оплатой запросите договор, точную смету, подтверждённые объекты и
+            контакты заказчиков с их согласия. Демонстрационный расчёт и PDF на этом сайте не
+            подтверждают выполнение строительных работ.
+          </p>
         </section>
         <section className="section-wrap home-discover" aria-label="Узнать больше об ОСНОВЕ">
           <article className="home-discover-card">

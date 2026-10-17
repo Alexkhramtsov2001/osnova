@@ -1,5 +1,5 @@
 import SiteFooter from "../../components/SiteFooter";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import type { SavedEstimate } from "../estimate/savedEstimates";
@@ -9,13 +9,14 @@ import { projects } from "../projects/catalog";
 import { writeFavoriteIds } from "../projects/favorites";
 import "./AccountPage.css";
 import DemoProjectChat from "./DemoProjectChat";
+import DemoAuthPanel from "./DemoAuthPanel";
 import {
   clearDemoSession,
-  DEMO_ACCOUNT_EMAIL,
-  DEMO_ACCOUNT_PASSWORD,
-  hasDemoCredentials,
+  DEMO_AUTH_CHANGED_EVENT,
+  readDemoProfile,
   readDemoSession,
-  writeDemoSession,
+  readDemoSessionSource,
+  type DemoSessionSource,
 } from "./demoSession";
 
 type AccountPageProps = {
@@ -30,31 +31,24 @@ function formatSavedDate(value: string): string {
 export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountPageProps) {
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(() => readDemoSession(window.sessionStorage));
-  const [email, setEmail] = useState(DEMO_ACCOUNT_EMAIL);
-  const [password, setPassword] = useState(DEMO_ACCOUNT_PASSWORD);
-  const [error, setError] = useState("");
+  const [sessionSource, setSessionSource] = useState(() =>
+    readDemoSessionSource(window.sessionStorage),
+  );
   const [notice, setNotice] = useState("");
   const { savedEstimates, mutate: mutateSavedEstimates, refresh } = useSavedEstimates();
 
-  const signIn = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
-    if (!hasDemoCredentials(email, password)) {
-      setError("Проверьте тестовый email и пароль. Настоящая регистрация здесь отключена.");
-      return;
-    }
-    if (!writeDemoSession(window.sessionStorage)) {
-      setError("Браузер не разрешил сохранить демо-вход. Разрешите хранилище для этой вкладки.");
-      return;
-    }
+  const signIn = (source: DemoSessionSource) => {
     setAuthenticated(true);
+    setSessionSource(source);
+    window.dispatchEvent(new Event(DEMO_AUTH_CHANGED_EVENT));
   };
 
   const signOut = () => {
     clearDemoSession(window.sessionStorage);
     setAuthenticated(false);
+    setSessionSource("guest");
     setNotice("");
-    setPassword(DEMO_ACCOUNT_PASSWORD);
+    window.dispatchEvent(new Event(DEMO_AUTH_CHANGED_EVENT));
   };
 
   const removeFavorite = (id: string) => {
@@ -127,56 +121,17 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
         </div>
 
         {!authenticated ? (
-          <section className="account-login-card" aria-labelledby="account-login-title">
-            <div className="account-demo-note">
-              <strong>Это тестовый вход, не регистрация</strong>
-              <p>
-                Данные не отправляются на сервер. Используйте эти демонстрационные реквизиты; не
-                вводите настоящий email или пароль.
-              </p>
-              <p className="account-demo-credentials">
-                Email: <code>{DEMO_ACCOUNT_EMAIL}</code>
-                <br />
-                Пароль: <code>{DEMO_ACCOUNT_PASSWORD}</code>
-              </p>
-            </div>
-            <form className="account-login-form" onSubmit={signIn}>
-              <h2 id="account-login-title">Войти в демо-кабинет</h2>
-              <label>
-                Email для демонстрации
-                <input
-                  autoComplete="off"
-                  readOnly
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-              </label>
-              <label>
-                Тестовый пароль
-                <input
-                  autoComplete="off"
-                  readOnly
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </label>
-              {error && (
-                <p className="account-message account-error" role="alert">
-                  {error}
-                </p>
-              )}
-              <button className="button button-primary" type="submit">
-                Открыть демо-кабинет
-              </button>
-            </form>
-          </section>
+          <DemoAuthPanel onAuthenticated={signIn} />
         ) : (
           <>
             <div className="account-demo-banner" role="status">
-              Вы вошли в демонстрационный кабинет. Избранное и расчёты читаются только из этого
-              браузера и не синхронизируются между устройствами.
+              {sessionSource === "email"
+                ? `Здравствуйте, ${readDemoProfile(window.localStorage)?.name ?? "гость"}. `
+                : sessionSource === "google" || sessionSource === "apple"
+                  ? `Это имитация входа через ${sessionSource === "google" ? "Google" : "Apple"}; внешний аккаунт не подключён. `
+                  : "Вы вошли в гостевой демо-кабинет. "}
+              Избранное и расчёты читаются только из этого браузера и не синхронизируются между
+              устройствами.
             </div>
             {notice && (
               <p className="account-message" role="status">

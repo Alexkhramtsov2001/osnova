@@ -65,6 +65,303 @@
   font-size: 13px;
 }
 
+.account-auth-card {
+  align-items: start;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 5vw, 72px);
+  padding: clamp(22px, 4vw, 48px);
+}
+
+.account-auth-context h2 {
+  max-width: 480px;
+  margin: 18px 0;
+  font-size: clamp(32px, 3.8vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1.12;
+}
+
+.account-auth-context {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.account-auth-context h2 span {
+  color: var(--accent);
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.account-auth-context > p:not(.eyebrow) {
+  max-width: 510px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.account-auth-context .account-demo-note {
+  max-width: none;
+  margin-top: 28px;
+}
+
+.account-auth-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.account-auth-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  color: var(--accent-dark);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 180ms ease;
+}
+
+.account-auth-links a:hover {
+  color: var(--accent);
+}
+
+.account-auth-panel {
+  min-width: 0;
+  padding: clamp(20px, 3vw, 36px);
+  border: 1px solid var(--line);
+  background: #fbfaf7;
+}
+
+.account-auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.account-auth-tabs button {
+  min-height: 48px;
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+.account-auth-tabs button[aria-selected="true"] {
+  border-color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.account-auth-tabs button:hover {
+  color: var(--accent-dark);
+}
+
+.account-auth-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.account-provider-divider {
+  position: relative;
+  margin: 26px 0 18px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.account-provider-divider span {
+  position: relative;
+  top: -9px;
+  padding: 0 12px;
+  background: #fbfaf7;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.account-provider-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.account-provider-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.account-provider-button:hover {
+  border-color: var(--accent);
+  background: #f8f2ec;
+  transform: translateY(-2px);
+}
+
+.account-provider-mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.google-mark {
+  color: #4285f4;
+}
+
+.account-code-view > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.account-code-view h2 {
+  margin: 12px 0 16px;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.account-demo-mail {
+  display: grid;
+  gap: 8px;
+  margin: 22px 0;
+  padding: 18px;
+  border-left: 2px solid var(--accent);
+  background: #f1ece3;
+}
+
+.account-demo-mail span {
+  color: var(--accent-dark);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.account-demo-mail strong {
+  color: var(--ink);
+  font-size: clamp(27px, 3vw, 38px);
+  font-weight: 400;
+  letter-spacing: 0.17em;
+}
+
+.account-demo-mail small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.account-code-digits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 18px repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(5px, 0.9vw, 12px);
+  margin: 22px 0 26px;
+}
+
+.account-code-digits input {
+  width: 100%;
+  min-width: 0;
+  height: clamp(48px, 5vw, 68px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+  font-size: clamp(20px, 2.4vw, 28px);
+  text-align: center;
+}
+
+.account-code-digits input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.account-code-separator {
+  color: var(--muted);
+  font-size: 22px;
+  text-align: center;
+}
+
+.account-code-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.account-code-actions .button {
+  min-width: 0;
+  min-height: 50px;
+}
+
+.account-code-actions .button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.account-resend {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin-top: 26px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.account-resend button {
+  border: 0;
+  background: transparent;
+  color: var(--accent-dark);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.account-resend button:hover {
+  color: var(--accent);
+}
+
+.account-code-notice {
+  margin: 12px 0 0;
+  color: var(--accent-dark);
+  font-size: 12px;
+  text-align: center;
+}
+
 .account-login-form {
   display: grid;
   gap: 17px;
@@ -440,6 +737,21 @@
 }
 
 @media (max-width: 760px) {
+  .account-auth-card {
+    grid-template-columns: 1fr;
+  }
+
+  .account-auth-panel {
+    order: -1;
+  }
+
+  .account-auth-context .account-demo-note {
+    margin-top: 18px;
+  }
+
+  .account-provider-actions {
+    grid-template-columns: 1fr;
+  }
   .account-page {
     padding-top: 26px;
     padding-bottom: 64px;

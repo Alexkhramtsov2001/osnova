@@ -6,7 +6,7 @@ async function box(locator: Locator) {
   return dimensions!;
 }
 
-for (const width of [390, 1440]) {
+for (const width of [320, 390, 768, 1440]) {
   test(`кнопки главной находятся внизу своих секций при ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
@@ -26,6 +26,23 @@ for (const width of [390, 1440]) {
     await expect(popularLinks).toHaveCount(2);
     await expect(popularLinks.nth(0)).toHaveAttribute("href", "/projects");
     await expect(popularLinks.nth(1)).toHaveAttribute("href", "/find-home");
+    const firstPopularLink = await box(popularLinks.nth(0));
+    const secondPopularLink = await box(popularLinks.nth(1));
+
+    if (width > 520) {
+      const popularSection = await box(page.locator(".home-popular"));
+      const linksCenter = (firstPopularLink.x + secondPopularLink.x + secondPopularLink.width) / 2;
+      const sectionCenter = popularSection.x + popularSection.width / 2;
+      expect(Math.abs(linksCenter - sectionCenter)).toBeLessThan(2);
+      expect(Math.abs(firstPopularLink.width - secondPopularLink.width)).toBeLessThan(2);
+      expect(Math.abs(firstPopularLink.y - secondPopularLink.y)).toBeLessThan(2);
+      expect(secondPopularLink.x - firstPopularLink.x - firstPopularLink.width).toBeLessThanOrEqual(
+        24,
+      );
+    } else {
+      expect(secondPopularLink.y).toBeGreaterThan(firstPopularLink.y + firstPopularLink.height);
+      expect(Math.abs(firstPopularLink.width - secondPopularLink.width)).toBeLessThan(2);
+    }
 
     for (const [sectionSelector, headingSelector] of [
       [".calculator-promo", ".calculator-promo h2"],
