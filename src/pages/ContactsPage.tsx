@@ -2,8 +2,9 @@ import { useState } from "react";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ContactSection from "../components/ContactSection";
+import { contactLinks } from "../features/contact/links";
 export default function ContactsPage() {
-  const [complete, setComplete] = useState(false);
+  const [draft, setDraft] = useState<string | null>(null);
   return (
     <div className="site-shell">
       <SiteHeader />
@@ -26,14 +27,14 @@ export default function ContactsPage() {
                 Ваша идея <span>будущего дома.</span>
               </h2>
               <p className="section-lead">
-                Демонстрационная форма. Данные не отправляются, не сохраняются и не передаются
-                менеджеру.
+                Проверьте поля и откройте подготовленное письмо автору портфолио. Отправку вы
+                подтвердите в почтовом приложении; сайт ничего не сохраняет.
               </p>
             </div>
             <form
               className="demo-contact-form"
               onInput={(event) => {
-                setComplete(false);
+                setDraft(null);
                 const target = event.target;
                 if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)
                   target.setCustomValidity("");
@@ -42,6 +43,7 @@ export default function ContactsPage() {
                 event.preventDefault();
                 const form = event.currentTarget;
                 const name = form.elements.namedItem("name") as HTMLInputElement;
+                const email = form.elements.namedItem("email") as HTMLInputElement;
                 const message = form.elements.namedItem("message") as HTMLTextAreaElement;
                 name.setCustomValidity(
                   name.value.trim().length < 2 ? "Введите имя из двух или более символов" : "",
@@ -51,7 +53,10 @@ export default function ContactsPage() {
                     ? "Опишите идею: минимум 10 символов без пробелов по краям"
                     : "",
                 );
-                if (form.reportValidity()) setComplete(true);
+                if (form.reportValidity())
+                  setDraft(
+                    `Имя: ${name.value.trim()}\nEmail для ответа: ${email.value.trim()}\n\nИдея проекта:\n${message.value.trim()}`,
+                  );
               }}
             >
               <label>
@@ -76,10 +81,19 @@ export default function ContactsPage() {
               <button className="button button-primary" type="submit">
                 Проверить заполнение
               </button>
-              {complete && (
-                <p role="status">
-                  Форма заполнена корректно. Это демонстрация: данные никуда не отправлены.
-                </p>
+              {draft && (
+                <div className="contact-draft-ready" role="status">
+                  <p>
+                    Форма заполнена корректно: данные никуда не отправлены. Проверьте письмо в
+                    почтовом приложении перед отправкой.
+                  </p>
+                  <a
+                    className="button button-secondary"
+                    href={contactLinks("ОСНОВА — идея проекта", draft).email}
+                  >
+                    Открыть подготовленное письмо
+                  </a>
+                </div>
               )}
             </form>
           </div>

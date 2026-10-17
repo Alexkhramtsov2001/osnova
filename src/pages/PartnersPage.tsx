@@ -1,5 +1,7 @@
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import ArrowIcon from "../components/ArrowIcon";
+import { Link } from "react-router";
 import { partners } from "../features/company/partners";
 export default function PartnersPage() {
   return (
@@ -36,6 +38,27 @@ export default function PartnersPage() {
                 <p className="partner-scope">{partner.scope}</p>
               </article>
             ))}
+          </div>
+        </section>
+        <section className="section-wrap journey-next-step" aria-labelledby="partners-next-title">
+          <div>
+            <p className="eyebrow">ПРИМЕНИТЬ К ПРОЕКТУ</p>
+            <h2 id="partners-next-title">
+              Сравните решения <span>в расчёте.</span>
+            </h2>
+            <p>
+              В калькуляторе можно изменить материал стен, кровлю и комплектацию и увидеть, как это
+              влияет на демонстрационную смету. Названия партнёров выше вымышлены и не означают
+              поставку материалов.
+            </p>
+          </div>
+          <div className="journey-next-actions">
+            <Link className="button button-secondary" to="/projects">
+              Выбрать дом <ArrowIcon />
+            </Link>
+            <Link className="button button-primary" to="/calculator">
+              Сравнить стоимость <ArrowIcon />
+            </Link>
           </div>
         </section>
       </main>

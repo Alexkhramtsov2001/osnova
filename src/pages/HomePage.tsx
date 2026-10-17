@@ -176,6 +176,9 @@ export default function HomePage() {
                       <small>Демонстрационный ориентир под ключ</small>
                       <strong>{formatPriceRange(estimate.minTotal, estimate.maxTotal)}</strong>
                     </div>
+                    <Link className="project-detail-action" to={`/projects/${project.number}`}>
+                      Изучить проект <ArrowIcon />
+                    </Link>
                   </div>
                 </article>
               );
@@ -239,22 +242,28 @@ export default function HomePage() {
             Дом — это <span>личное.</span>
           </h2>
           <p className="section-lead">
-            Вымышленные отзывы показывают оформление клиентских историй.
+            Три вымышленных сценария показывают, как потребности семьи помогают выбрать концепцию и
+            следующий шаг. Это примеры выбора, а не отзывы о построенных домах.
           </p>
           <div className="review-grid">
             {reviews.map((review, index) => (
               <article className="review-card" key={review.name}>
                 <div className="review-card-top">
-                  <span>ИСТОРИЯ / 0{index + 1}</span>
-                  <span aria-hidden="true">“</span>
+                  <span>СЦЕНАРИЙ / 0{index + 1}</span>
                 </div>
-                <blockquote>«{review.text}»</blockquote>
-                <div className="review-card-footer">
-                  <h3>{review.name}</h3>
-                  <p>
-                    {review.project} · {review.year}
-                  </p>
-                </div>
+                <h3>{review.name}</h3>
+                <p>
+                  <strong>Запрос:</strong> {review.need}
+                </p>
+                <p>
+                  <strong>Подходящая концепция:</strong> {review.choice}
+                </p>
+                <p>
+                  <strong>Дальше:</strong> {review.nextStep}
+                </p>
+                <Link className="review-card-action" to={`/projects/${review.projectNumber}`}>
+                  Посмотреть концепцию <ArrowIcon />
+                </Link>
               </article>
             ))}
           </div>
