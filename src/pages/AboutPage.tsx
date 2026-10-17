@@ -1,5 +1,7 @@
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import ArrowIcon from "../components/ArrowIcon";
+import { Link } from "react-router";
 import { history, statistics, team, principles } from "../features/company/content";
 import { vacancyRegions } from "../features/company/vacancies";
 export default function AboutPage() {
@@ -48,7 +50,7 @@ export default function AboutPage() {
         </section>
         <section className="approach-section">
           <div className="section-wrap content-section">
-            <p className="demo-label">Вымышленные показатели для иллюстрации интерфейса</p>
+            <p className="demo-label">Что можно проверить в этом демо</p>
             <div className="stat-grid">
               {statistics.map((item) => (
                 <div key={item.label}>
@@ -137,6 +139,26 @@ export default function AboutPage() {
                 <p>{item.text}</p>
               </article>
             ))}
+          </div>
+        </section>
+        <section className="section-wrap journey-next-step" aria-labelledby="about-next-title">
+          <div>
+            <p className="eyebrow">СЛЕДУЮЩИЙ ШАГ</p>
+            <h2 id="about-next-title">
+              Проверьте подход <span>на своём сценарии.</span>
+            </h2>
+            <p>
+              Выберите планировку из каталога или задайте параметры дома сами. Расчёт покажет состав
+              этапов и ориентир стоимости.
+            </p>
+          </div>
+          <div className="journey-next-actions">
+            <Link className="button button-secondary" to="/projects">
+              Смотреть проекты <ArrowIcon />
+            </Link>
+            <Link className="button button-primary" to="/calculator">
+              Перейти к расчёту <ArrowIcon />
+            </Link>
           </div>
         </section>
       </main>

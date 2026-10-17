@@ -324,7 +324,9 @@
 }
 
 .account-project-card > div {
-  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
   padding: 12px 20px 12px 0;
 }
 
@@ -343,7 +345,8 @@
 }
 
 .account-card-actions {
-  margin-top: 15px;
+  margin-top: auto;
+  padding-top: 15px;
 }
 
 .account-card-actions .button {
@@ -372,6 +375,8 @@
 }
 
 .account-estimate-card {
+  display: flex;
+  flex-direction: column;
   padding: 20px 24px;
 }
 
@@ -380,6 +385,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+}
+.account-estimate-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+.account-estimate-actions .button {
+  min-height: 48px;
 }
 
 .account-estimate-card details {

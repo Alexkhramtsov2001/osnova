@@ -1,9 +1,10 @@
 import SiteFooter from "../../components/SiteFooter";
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import type { SavedEstimate } from "../estimate/savedEstimates";
 import { useSavedEstimates } from "../estimate/useSavedEstimates";
+import { writeCalculatorDraft } from "../estimate/calculatorDraft";
 import { projects } from "../projects/catalog";
 import { writeFavoriteIds } from "../projects/favorites";
 import "./AccountPage.css";
@@ -27,6 +28,7 @@ function formatSavedDate(value: string): string {
 }
 
 export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountPageProps) {
+  const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(() => readDemoSession(window.sessionStorage));
   const [email, setEmail] = useState(DEMO_ACCOUNT_EMAIL);
   const [password, setPassword] = useState(DEMO_ACCOUNT_PASSWORD);
@@ -84,6 +86,21 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
   const refreshSavedEstimates = () => {
     refresh();
     setNotice("Список сохранённых расчётов обновлён.");
+  };
+
+  const continueEstimate = (estimate: SavedEstimate) => {
+    if (!estimate.configuration) return;
+    if (
+      !writeCalculatorDraft(window.sessionStorage, {
+        ...estimate.configuration,
+        mode: estimate.mode,
+        sourceProjectNumber: null,
+      })
+    ) {
+      setNotice("Не удалось открыть расчёт: браузер не разрешил сохранить параметры вкладки.");
+      return;
+    }
+    navigate("/calculator");
   };
 
   return (
@@ -261,27 +278,36 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                             {estimate.dataVersion}
                           </p>
                         </div>
-                        <div className="account-card-actions">
-                          <button
-                            className="account-text-button"
-                            type="button"
-                            onClick={() => void copyEstimate(estimate)}
-                          >
-                            Копировать сводку
-                          </button>
-                          <button
-                            className="account-text-button account-danger-button"
-                            type="button"
-                            onClick={() => removeEstimate(estimate.id)}
-                          >
-                            Удалить
-                          </button>
-                        </div>
                       </div>
                       <details>
                         <summary>Показать сводку</summary>
                         <pre>{estimate.summary}</pre>
                       </details>
+                      <div className="account-card-actions account-estimate-actions">
+                        {estimate.configuration && (
+                          <button
+                            className="button button-primary"
+                            type="button"
+                            onClick={() => continueEstimate(estimate)}
+                          >
+                            Продолжить расчёт
+                          </button>
+                        )}
+                        <button
+                          className="account-text-button"
+                          type="button"
+                          onClick={() => void copyEstimate(estimate)}
+                        >
+                          Копировать сводку
+                        </button>
+                        <button
+                          className="account-text-button account-danger-button"
+                          type="button"
+                          onClick={() => removeEstimate(estimate.id)}
+                        >
+                          Удалить
+                        </button>
+                      </div>
                     </article>
                   ))}
                 </div>
