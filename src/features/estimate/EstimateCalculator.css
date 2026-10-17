@@ -1100,8 +1100,19 @@
     transition-duration: 0.01ms;
   }
 }
-.estimate-pdf-actions {
+.estimate-next-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  align-items: start;
+  gap: 12px;
   margin-top: 18px;
+}
+.estimate-next-actions .button {
+  width: 100%;
+  min-height: 54px;
+}
+.estimate-pdf-actions {
+  min-width: 0;
 }
 .estimate-pdf-actions button {
   font-family: inherit;
@@ -1116,31 +1127,7 @@
   font-size: 13px;
 }
 .estimate-payment-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 52px;
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff !important;
-  font-size: 14px;
-  font-weight: 600;
-  transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    transform 180ms ease;
-}
-.estimate-payment-link:hover {
-  border-color: var(--accent-dark);
-  background: var(--accent-dark);
-  transform: translateY(-2px);
-}
-.estimate-payment-link .arrow-icon {
-  width: 16px;
-  height: 16px;
+  min-width: 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .estimate-payment-link {
@@ -1151,6 +1138,9 @@
   }
 }
 @media (max-width: 600px) {
+  .estimate-next-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .estimate-breakdown {
     padding: 0 14px;
   }

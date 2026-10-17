@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
@@ -8,6 +8,7 @@ import { readCalculatorDraft } from "../features/estimate/calculatorDraft";
 import { DEMO_REGIONS, PROJECT_TYPES } from "../features/estimate/catalog";
 import { money, number } from "../features/estimate/formatters";
 import PaymentCheckout from "../features/payment/PaymentCheckout";
+import { bankExamples, paymentMethodGuides } from "../features/payment/paymentMethods";
 import {
   calculatePaymentPreview,
   DEMO_FULL_PAYMENT_DISCOUNT_RATE,
@@ -15,53 +16,21 @@ import {
 } from "../features/payment/paymentPreview";
 import "./PaymentPage.css";
 
-const paymentMethods: { id: PaymentMethod; title: string; description: string }[] = [
-  {
-    id: "cashFull",
-    title: "Наличными полностью",
-    description:
-      "Один платёж по договору. В демо-сводке показана условная скидка 3% за полную оплату.",
-  },
-  {
-    id: "cashStages",
-    title: "Наличными по этапам",
-    description:
-      "Работы оплачиваются частями по этапам. Состав, сроки и акты фиксируются договором.",
-  },
-  {
-    id: "credit",
-    title: "Кредит",
-    description:
-      "Потребительский кредит может покрыть часть расходов. Платёж и переплату рассчитывает банк.",
-  },
-  {
-    id: "mortgage",
-    title: "Ипотека на строительство",
-    description:
-      "Банк проверяет заёмщика, участок, подрядчика и документы. Ставка и график зависят от его решения.",
-  },
-];
-
-const bankExamples = [
-  {
-    name: "Банк ДОМ.РФ",
-    product: "Ипотека на строительство дома с эскроу",
-    href: "https://domrfbank.ru/mortgage/programs/stroitelstvo-zhilogo-doma-escrow/",
-  },
-  {
-    name: "ВТБ",
-    product: "Ипотека на строительство дома",
-    href: "https://www.vtb.ru/personal/ipoteka/stroitelstvo-doma/",
-  },
-  {
-    name: "Альфа-Банк",
-    product: "Кредит на строительство дома",
-    href: "https://alfabank.ru/get-money/credit/na-stroitelstvo-doma/",
-  },
-];
+const paymentMethodStorageKey = "osnova-payment-method";
+const validMethod = (value: string | null) =>
+  paymentMethodGuides.find((guide) => guide.id === value)?.id ?? null;
 
 export default function PaymentPage() {
-  const [method, setMethod] = useState<PaymentMethod | null>(null);
+  const { search } = useLocation();
+  const [method, setMethod] = useState<PaymentMethod | null>(() => {
+    const requestedMethod = validMethod(new URLSearchParams(search).get("method"));
+    if (requestedMethod) return requestedMethod;
+    try {
+      return validMethod(window.sessionStorage.getItem(paymentMethodStorageKey));
+    } catch {
+      return null;
+    }
+  });
   const [draft] = useState(() => {
     try {
       return readCalculatorDraft(window.sessionStorage);
@@ -83,6 +52,15 @@ export default function PaymentPage() {
   const projectLabel = draft
     ? (draft.projectName ?? PROJECT_TYPES[draft.parameters.projectType].label)
     : null;
+
+  useEffect(() => {
+    if (!method) return;
+    try {
+      window.sessionStorage.setItem(paymentMethodStorageKey, method);
+    } catch {
+      // The payment route remains usable when storage is unavailable.
+    }
+  }, [method]);
 
   useEffect(() => {
     if (window.location.hash !== "#payment-checkout" || !hasEstimate) return;
@@ -118,12 +96,19 @@ export default function PaymentPage() {
             </p>
           </div>
           <div className="payment-method-grid">
-            {paymentMethods.map((item, index) => (
-              <article className="payment-method-card" key={item.id}>
+            {paymentMethodGuides.map((item, index) => (
+              <Link
+                className="payment-method-card"
+                key={item.id}
+                to={`/payment/methods/${item.slug}`}
+              >
                 <span className="payment-card-number">0{index + 1}</span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-              </article>
+                <span className="payment-method-more">
+                  Условия и этапы <ArrowIcon />
+                </span>
+              </Link>
             ))}
           </div>
           <p className="payment-maternity-note">
@@ -148,6 +133,13 @@ export default function PaymentPage() {
             <div className="payment-bank-list">
               {bankExamples.map((bank) => (
                 <a key={bank.name} href={bank.href} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={`${import.meta.env.BASE_URL}images/banks/${bank.logo}.svg`}
+                    width="44"
+                    height="44"
+                    alt=""
+                    loading="lazy"
+                  />
                   <strong>{bank.name}</strong>
                   <span>{bank.product}</span>
                   <ArrowIcon />

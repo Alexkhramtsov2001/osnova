@@ -823,17 +823,20 @@ export default function EstimateCalculator({
                   toggleStage={toggleStage}
                 />
                 {includedStageCount > 0 && (
-                  <>
+                  <div className="estimate-next-actions">
                     <EstimatePdfButton
                       parameters={parameters}
                       estimate={estimate}
                       projectName={projectName}
                       constructionMode={constructionMode}
                     />
-                    <Link className="estimate-payment-link" to="/payment#payment-checkout">
-                      Оплатить (демо) <ArrowIcon />
+                    <Link
+                      className="button button-primary button-center-label estimate-payment-link"
+                      to="/payment#payment-checkout"
+                    >
+                      <span>Оплатить (демо)</span> <ArrowIcon />
                     </Link>
-                  </>
+                  </div>
                 )}
 
                 <p className="estimate-disclaimer">

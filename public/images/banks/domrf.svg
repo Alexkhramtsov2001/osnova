@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" role="img" aria-label="Банк ДОМ.РФ">
+  <rect width="44" height="44" rx="6" fill="#bce7f3"/>
+  <text x="22" y="19" text-anchor="middle" fill="#173b59" font-family="Arial,sans-serif" font-size="11" font-weight="800" letter-spacing="-.5">ДОМ</text>
+  <path d="M9 22h26" stroke="#258cad" stroke-width="2"/>
+  <text x="22" y="34" text-anchor="middle" fill="#173b59" font-family="Arial,sans-serif" font-size="11" font-weight="800">РФ</text>
+</svg>

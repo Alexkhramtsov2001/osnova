@@ -51,15 +51,6 @@ export default function HomePage() {
               фундамента до последнего штриха.
             </p>
 
-            <div className="hero-actions">
-              <Link className="button button-primary button-center-label" to="/calculator">
-                <span>Рассчитать стоимость</span> <ArrowIcon />
-              </Link>
-              <Link className="button button-secondary button-center-label" to="/projects">
-                <span>Смотреть проекты</span> <ArrowIcon direction="down" />
-              </Link>
-            </div>
-
             <div className="hero-note">
               <span className="hero-note-line" />
               <p>Понятная смета. Продуманный результат.</p>
@@ -143,6 +134,14 @@ export default function HomePage() {
             <span>02 — РАССЧИТЫВАЕМ</span>
             <span>03 — СТРОИМ</span>
           </div>
+          <div className="hero-actions">
+            <Link className="button button-primary button-center-label" to="/calculator">
+              <span>Рассчитать стоимость</span> <ArrowIcon />
+            </Link>
+            <Link className="button button-secondary button-center-label" to="/projects">
+              <span>Смотреть проекты</span> <ArrowIcon />
+            </Link>
+          </div>
         </section>
         <section className="section-wrap home-popular">
           <div className="section-heading">
@@ -182,10 +181,21 @@ export default function HomePage() {
               );
             })}
           </div>
-          <div className="home-popular-action">
-            <Link className="button button-primary" to="/projects">
-              Все проекты <ArrowIcon />
-            </Link>
+          <div className="home-project-actions">
+            <div className="home-project-action">
+              <h3>Выбрать из каталога</h3>
+              <p>Изучите все типовые концепции и сравните параметры.</p>
+              <Link className="button button-primary button-center-label" to="/projects">
+                <span>Все проекты</span> <ArrowIcon />
+              </Link>
+            </div>
+            <div className="home-project-action">
+              <h3>Найти подходящий вариант</h3>
+              <p>Ответьте на вопросы о планировке, площади и бюджете.</p>
+              <Link className="button button-secondary button-center-label" to="/find-home">
+                <span>Подобрать свой дом</span> <ArrowIcon />
+              </Link>
+            </div>
           </div>
         </section>
         <section className="approach-section" id="advantages">
@@ -207,7 +217,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        <section className="section-wrap calculator-promo">
+        <section className="section-wrap calculator-promo home-bottom-cta">
           <div>
             <p className="eyebrow">ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</p>
             <h2>
@@ -273,11 +283,11 @@ export default function HomePage() {
               показываем, как могли бы соединяться задачи разных партнёров.
             </p>
             <Link className="button button-secondary" to="/partners">
-              Партнёры и кейсы <ArrowIcon />
+              Наши партнёры <ArrowIcon />
             </Link>
           </article>
         </section>
-        <section className="section-wrap final-cta">
+        <section className="section-wrap final-cta home-bottom-cta">
           <h2>
             Обсудим <span>вашу идею?</span>
           </h2>

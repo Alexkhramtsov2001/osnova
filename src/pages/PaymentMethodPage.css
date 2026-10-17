@@ -1,0 +1,274 @@
+.payment-guide-intro {
+  padding-top: 32px;
+  padding-bottom: 36px;
+}
+
+.payment-guide-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.payment-guide-back .arrow-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.payment-guide-back:hover {
+  color: var(--accent-dark);
+}
+
+.payment-guide h1,
+.payment-guide h2,
+.payment-guide h3 {
+  font-weight: 400;
+}
+
+.payment-guide h1 {
+  max-width: 1000px;
+  margin: 0 0 22px;
+  font-size: clamp(38px, 4.8vw, 68px);
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+}
+
+.payment-guide-lead {
+  max-width: 750px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.payment-guide-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 34px;
+}
+
+.payment-guide-summary > div {
+  padding-top: 18px;
+  border-top: 2px solid var(--accent);
+}
+
+.payment-guide-summary span {
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.payment-guide-summary p,
+.payment-guide-card li,
+.payment-guide-steps p {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.payment-guide-summary p {
+  margin: 12px 0 0;
+}
+
+.payment-guide-details,
+.payment-guide-process,
+.payment-guide-next {
+  padding-top: 36px;
+  padding-bottom: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.payment-guide-heading {
+  margin-bottom: 24px;
+}
+
+.payment-guide-heading .eyebrow {
+  margin-bottom: 12px;
+}
+
+.payment-guide h2 {
+  margin: 0;
+  font-size: clamp(30px, 3.5vw, 46px);
+  letter-spacing: -0.05em;
+  line-height: 1.15;
+}
+
+.payment-guide-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.payment-guide-card {
+  padding: 28px;
+  border: 1px solid var(--line);
+  background: #fbfaf7;
+}
+
+.payment-guide-card h3,
+.payment-guide-steps h3,
+.payment-guide-sources h3 {
+  margin: 0 0 14px;
+  font-size: 22px;
+  letter-spacing: -0.035em;
+  line-height: 1.3;
+}
+
+.payment-guide-card ul {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.payment-guide-card li::marker {
+  color: var(--accent);
+}
+
+.payment-guide-documents {
+  background: #eeece5;
+}
+
+.payment-guide-documents > p {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.payment-guide-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-guide-steps li {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 18px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+}
+
+.payment-guide-step-number {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #d6b6a6;
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.payment-guide-steps h3 {
+  margin-bottom: 9px;
+}
+
+.payment-guide-steps p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.payment-guide-sources {
+  margin-top: 12px;
+  padding: 26px;
+  background: #eeece5;
+}
+
+.payment-guide-sources p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.payment-guide-sources > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+}
+
+.payment-guide-sources a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--accent);
+  color: var(--accent-dark);
+  font-size: 14px;
+}
+
+.payment-guide-sources .arrow-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.payment-guide-next h2 {
+  max-width: 800px;
+}
+
+.payment-guide-next h2 span {
+  color: var(--accent);
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+
+.payment-guide-next > p:not(.eyebrow) {
+  max-width: 760px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.payment-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.payment-guide-actions .button {
+  min-width: 260px;
+}
+
+@media (max-width: 900px) {
+  .payment-guide-summary {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+@media (max-width: 760px) {
+  .payment-guide-back {
+    margin-bottom: 28px;
+  }
+
+  .payment-guide-detail-grid,
+  .payment-guide-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-guide-card,
+  .payment-guide-sources {
+    padding: 22px;
+  }
+
+  .payment-guide-steps li {
+    gap: 12px;
+  }
+
+  .payment-guide-actions .button {
+    width: 100%;
+    min-width: 0;
+  }
+}

@@ -132,7 +132,6 @@
 
 .payment-route-details > p,
 .payment-route-placeholder,
-.payment-office-note,
 .payment-schedule-lead {
   margin: 0 0 16px;
   color: var(--muted);
@@ -147,27 +146,143 @@
   font-weight: 600;
 }
 
-.payment-route-details select {
+.payment-office-booking {
+  margin: 18px 0 20px;
+  padding: 20px;
+  border: 1px solid #ded7cd;
+  background: #f5f2ec;
+}
+
+.payment-office-booking .osnova-select-trigger,
+.payment-appointment-fields > input {
   width: 100%;
   min-height: 52px;
-  padding: 10px 38px 10px 14px;
+  padding: 10px 14px;
   border: 1px solid #c9c4b9;
   border-radius: 0;
   background: #fff;
   color: var(--ink);
   font-size: 13px;
-  cursor: pointer;
-  transition: border-color 180ms ease;
+  font-family: inherit;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
 }
 
-.payment-route-details select:hover,
-.payment-route-details select:focus-visible {
+.payment-office-booking .osnova-select-trigger:hover,
+.payment-appointment-fields > input:hover {
   border-color: var(--accent);
 }
 
-.payment-route-details .payment-office-note {
-  margin: 9px 0 18px;
+.payment-office-booking .osnova-select-trigger:focus-visible,
+.payment-appointment-fields > input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.payment-appointment-fields {
+  display: grid;
+  gap: 0;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.payment-office-summary {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.payment-office-summary span,
+.payment-booking-help {
+  color: var(--muted);
   font-size: 11px;
+  line-height: 1.55;
+}
+
+.payment-office-booking > .payment-booking-help {
+  margin: 14px 0 0;
+}
+
+.payment-appointment-fields .payment-booking-help,
+.payment-date-error {
+  margin: 7px 0 18px;
+}
+
+.payment-date-error {
+  color: #9b2d22;
+  font-size: 11px;
+}
+
+.payment-time-slots {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.payment-time-slots legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.payment-time-slots legend span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.payment-time-slots > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.payment-time-slots label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 42px;
+  border: 1px solid #c9c4b9;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.payment-time-slots label:hover,
+.payment-time-slots label.is-selected {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.payment-time-slots label:focus-within {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+}
+
+.payment-time-slots label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.payment-time-slots:disabled label {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .payment-instructions {
@@ -501,7 +616,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .payment-route-grid label,
-  .payment-route-details select {
+  .payment-office-booking .osnova-select-trigger,
+  .payment-appointment-fields > input,
+  .payment-time-slots label {
     transition: none;
   }
 

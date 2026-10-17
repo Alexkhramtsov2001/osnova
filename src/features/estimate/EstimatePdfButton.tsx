@@ -21,7 +21,7 @@ export default function EstimatePdfButton({
     <div className="estimate-pdf-actions">
       <button
         type="button"
-        className="button button-primary"
+        className="button button-secondary button-center-label"
         disabled={pdfBusy}
         onClick={async () => {
           setPdfBusy(true);
@@ -36,7 +36,7 @@ export default function EstimatePdfButton({
           }
         }}
       >
-        {pdfBusy ? "Готовим PDF…" : "Скачать расчёт в PDF"}
+        <span>{pdfBusy ? "Готовим PDF…" : "Скачать расчёт в PDF"}</span>
         <ArrowIcon direction="down" />
       </button>
       {pdfError && <p role="alert">{pdfError}</p>}
