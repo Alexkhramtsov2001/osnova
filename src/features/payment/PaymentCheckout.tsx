@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ArrowIcon from "../../components/ArrowIcon";
 import { vacancyRegions } from "../company/vacancies";
 import type { CalculatorDraft } from "../estimate/calculatorDraft";
@@ -11,10 +11,15 @@ import {
   formatAppointmentDate,
   isValidAppointment,
   officeTimeZone,
-  type PaymentAppointment,
 } from "./paymentAppointment";
 import { buildStagePaymentSchedule, type PaymentMethod } from "./paymentPreview";
 import "./PaymentCheckout.css";
+import {
+  checkoutSignature,
+  readCheckoutDraft,
+  writeCheckoutDraft,
+  type PaymentConfirmation,
+} from "./checkoutDraft";
 
 const methods: { id: PaymentMethod; title: string; brief: string }[] = [
   { id: "cashFull", title: "Наличными полностью", brief: "Один условный платёж со скидкой 3%" },
@@ -52,13 +57,7 @@ type PaymentCheckoutProps = {
   discount: number;
 };
 
-type Confirmation = {
-  reference: string;
-  createdAt: Date;
-  officeId: string;
-  method: PaymentMethod;
-  appointment: PaymentAppointment | null;
-};
+type Confirmation = PaymentConfirmation;
 
 export default function PaymentCheckout({
   method,
@@ -69,11 +68,23 @@ export default function PaymentCheckout({
   total,
   discount,
 }: PaymentCheckoutProps) {
-  const [officeId, setOfficeId] = useState("");
-  const [appointmentDate, setAppointmentDate] = useState("");
-  const [appointmentTime, setAppointmentTime] = useState("");
-  const [acknowledged, setAcknowledged] = useState(false);
-  const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
+  const signature = checkoutSignature(draft, estimate);
+  const [restored] = useState(() => {
+    try {
+      return readCheckoutDraft(window.sessionStorage, signature, method);
+    } catch {
+      return null;
+    }
+  });
+  const [officeId, setOfficeId] = useState(restored?.officeId ?? "");
+  const [appointmentDate, setAppointmentDate] = useState(restored?.date ?? "");
+  const [appointmentTime, setAppointmentTime] = useState(restored?.time ?? "");
+  const [acknowledged, setAcknowledged] = useState(restored?.acknowledged ?? false);
+  const [confirmation, setConfirmation] = useState<Confirmation | null>(
+    restored?.confirmation ?? null,
+  );
+  const pendingConfirmation = useRef<Confirmation | null>(null);
+  const busy = useRef(false);
   const [pdfStatus, setPdfStatus] = useState<"idle" | "working" | "error">("idle");
   const schedule = buildStagePaymentSchedule(estimate);
   const isCash = method === "cashFull" || method === "cashStages";
@@ -82,14 +93,34 @@ export default function PaymentCheckout({
   const canConfirm = Boolean(method && acknowledged && (!isCash || (office && appointmentValid)));
   const progressStep = confirmation ? 4 : !method ? 1 : canConfirm ? 3 : 2;
 
+  useEffect(() => {
+    try {
+      writeCheckoutDraft(window.sessionStorage, {
+        signature,
+        method,
+        officeId,
+        date: appointmentDate,
+        time: appointmentTime,
+        acknowledged,
+        confirmation,
+      });
+    } catch {
+      // Restricted storage leaves the current in-memory demo usable.
+    }
+  }, [signature, method, officeId, appointmentDate, appointmentTime, acknowledged, confirmation]);
+
   const clearConfirmation = () => {
     setAcknowledged(false);
     setConfirmation(null);
+    pendingConfirmation.current = null;
     setPdfStatus("idle");
   };
 
   const changeMethod = (next: PaymentMethod) => {
     onMethodChange(next);
+    setOfficeId("");
+    setAppointmentDate("");
+    setAppointmentTime("");
     clearConfirmation();
   };
 
@@ -117,7 +148,7 @@ export default function PaymentCheckout({
     const { downloadPaymentConfirmationPdf } = await import("./exportPaymentPdf");
     await downloadPaymentConfirmationPdf({
       reference: nextConfirmation.reference,
-      createdAt: nextConfirmation.createdAt,
+      createdAt: new Date(nextConfirmation.createdAt),
       projectName,
       projectType: PROJECT_TYPES[draft.parameters.projectType].label,
       area: draft.parameters.area,
@@ -154,27 +185,30 @@ export default function PaymentCheckout({
   };
 
   const completeDemo = async () => {
-    if (!method || !canConfirm || pdfStatus === "working") return;
+    if (!method || (!confirmation && !canConfirm) || busy.current) return;
+    busy.current = true;
     const zone = officeTimeZone(officeId);
-    const nextConfirmation: Confirmation = {
-      reference: `OSNOVA-DEMO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
-      createdAt: new Date(),
-      method,
-      officeId,
-      appointment: isCash
-        ? {
-            date: appointmentDate,
-            time: appointmentTime,
-            timeZone: zone.timeZone,
-            zoneLabel: zone.label,
-            durationMinutes: APPOINTMENT_DURATION_MINUTES,
-            purpose:
-              method === "cashFull"
-                ? "Согласование договора и полной оплаты"
-                : "Согласование договора и графика платежей по этапам",
-          }
-        : null,
-    };
+    const nextConfirmation: Confirmation = confirmation ??
+      pendingConfirmation.current ?? {
+        reference: `OSNOVA-DEMO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+        createdAt: new Date().toISOString(),
+        method,
+        officeId,
+        appointment: isCash
+          ? {
+              date: appointmentDate,
+              time: appointmentTime,
+              timeZone: zone.timeZone,
+              zoneLabel: zone.label,
+              durationMinutes: APPOINTMENT_DURATION_MINUTES,
+              purpose:
+                method === "cashFull"
+                  ? "Согласование договора и полной оплаты"
+                  : "Согласование договора и графика платежей по этапам",
+            }
+          : null,
+      };
+    pendingConfirmation.current = nextConfirmation;
     setPdfStatus("working");
     try {
       await createPdf(nextConfirmation);
@@ -182,18 +216,13 @@ export default function PaymentCheckout({
       setPdfStatus("idle");
     } catch {
       setPdfStatus("error");
+    } finally {
+      busy.current = false;
     }
   };
 
   const downloadAgain = async () => {
-    if (!confirmation || pdfStatus === "working") return;
-    setPdfStatus("working");
-    try {
-      await createPdf(confirmation);
-      setPdfStatus("idle");
-    } catch {
-      setPdfStatus("error");
-    }
+    if (confirmation) await completeDemo();
   };
 
   return (
@@ -417,6 +446,7 @@ export default function PaymentCheckout({
               onChange={(event) => {
                 setAcknowledged(event.target.checked);
                 setConfirmation(null);
+                pendingConfirmation.current = null;
               }}
             />
             <span>
@@ -427,14 +457,16 @@ export default function PaymentCheckout({
           <button
             className="button button-primary payment-confirm-button"
             type="button"
-            disabled={!canConfirm || pdfStatus === "working"}
+            disabled={(!confirmation && !canConfirm) || pdfStatus === "working"}
             onClick={completeDemo}
           >
             {pdfStatus === "working"
               ? "Готовим PDF…"
-              : isCash
-                ? "Подтвердить демо-запись и скачать PDF"
-                : "Подтвердить маршрут и скачать PDF"}{" "}
+              : confirmation
+                ? "Скачать существующее подтверждение"
+                : isCash
+                  ? "Подтвердить демо-запись и скачать PDF"
+                  : "Подтвердить маршрут и скачать PDF"}{" "}
             <ArrowIcon />
           </button>
           {!method && <p className="payment-hint">Сначала выберите способ оплаты.</p>}
@@ -457,7 +489,7 @@ export default function PaymentCheckout({
                 Поздравляем с выбором проекта.{" "}
                 {confirmation.appointment
                   ? `В демонстрации выбрана встреча ${formatAppointmentDate(confirmation.appointment.date)} в ${confirmation.appointment.time} ${confirmation.appointment.zoneLabel} по адресу: ${office?.office}.`
-                  : "Выбранный способ финансирования сохранён только в PDF на вашем устройстве."}{" "}
+                  : "Выбранный способ финансирования отражён в PDF на вашем устройстве."}{" "}
                 Настоящая заявка не отправлена, деньги не списаны.
               </p>
               <small>Номер: {confirmation.reference}</small>

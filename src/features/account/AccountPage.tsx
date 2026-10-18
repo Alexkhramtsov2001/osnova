@@ -1,10 +1,10 @@
 import SiteFooter from "../../components/SiteFooter";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import type { SavedEstimate } from "../estimate/savedEstimates";
 import { useSavedEstimates } from "../estimate/useSavedEstimates";
-import { writeCalculatorDraft } from "../estimate/calculatorDraft";
+import { resolveCalculatorDraft, writeCalculatorDraft } from "../estimate/calculatorDraft";
 import { projects } from "../projects/catalog";
 import { writeFavoriteIds } from "../projects/favorites";
 import "./AccountPage.css";
@@ -112,6 +112,24 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
       return;
     }
     navigate("/calculator");
+  };
+
+  const startNewEstimate = (event: MouseEvent<HTMLAnchorElement>) => {
+    let saved = false;
+    try {
+      saved = writeCalculatorDraft(
+        window.sessionStorage,
+        resolveCalculatorDraft(null, undefined, false),
+      );
+    } catch {
+      // Access to the tab storage may be denied.
+    }
+    if (!saved) {
+      event.preventDefault();
+      setNotice(
+        "Не удалось начать новый расчёт: браузер не разрешил сохранить параметры вкладки. Сохранённые сметы не изменены.",
+      );
+    }
   };
 
   return (
@@ -234,7 +252,11 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                   >
                     Обновить
                   </button>
-                  <Link className="button button-secondary" to="/calculator">
+                  <Link
+                    className="button button-secondary"
+                    to="/calculator"
+                    onClick={startNewEstimate}
+                  >
                     Новый расчёт
                   </Link>
                 </div>

@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
 import DemoAccessGate from "../features/account/DemoAccessGate";
 import { readDemoSession } from "../features/account/demoSession";
 import { calculateHouseEstimate } from "../features/estimate/calculations";
-import { readCalculatorDraft } from "../features/estimate/calculatorDraft";
+import {
+  hasUnsavedCalculatorDraft,
+  readCalculatorDraft,
+} from "../features/estimate/calculatorDraft";
+import { buildDisplayedEstimate } from "../features/estimate/displayAmounts";
+import { checkoutSignature } from "../features/payment/checkoutDraft";
 import { DEMO_REGIONS, PROJECT_TYPES } from "../features/estimate/catalog";
 import { money, number } from "../features/estimate/formatters";
 import PaymentCheckout from "../features/payment/PaymentCheckout";
@@ -22,18 +27,29 @@ const paymentMethodStorageKey = "osnova-payment-method";
 const validMethod = (value: string | null) =>
   paymentMethodGuides.find((guide) => guide.id === value)?.id ?? null;
 
+function readMethod(search: string): PaymentMethod | null {
+  const requested = validMethod(new URLSearchParams(search).get("method"));
+  if (requested) return requested;
+  try {
+    return validMethod(window.sessionStorage.getItem(paymentMethodStorageKey));
+  } catch {
+    return null;
+  }
+}
+
 export default function PaymentPage() {
   const { search } = useLocation();
-  const [method, setMethod] = useState<PaymentMethod | null>(() => {
-    const requestedMethod = validMethod(new URLSearchParams(search).get("method"));
-    if (requestedMethod) return requestedMethod;
-    try {
-      return validMethod(window.sessionStorage.getItem(paymentMethodStorageKey));
-    } catch {
-      return null;
-    }
-  });
+  const navigate = useNavigate();
+  const [selection, setSelection] = useState(() => ({ search, method: readMethod(search) }));
+  // Update the radio immediately; reconcile a separately navigated URL before rendering children.
+  if (selection.search !== search) setSelection({ search, method: readMethod(search) });
+  const method = selection.search === search ? selection.method : readMethod(search);
+  const changeMethod = (next: PaymentMethod) => {
+    setSelection({ search, method: next });
+  };
+  const unsavedDraft = hasUnsavedCalculatorDraft();
   const [draft] = useState(() => {
+    if (unsavedDraft) return null;
     try {
       return readCalculatorDraft(window.sessionStorage);
     } catch {
@@ -51,6 +67,7 @@ export default function PaymentPage() {
   const hasEstimate = estimate?.stages.some((stage) => stage.included) ?? false;
   const preview =
     estimate && hasEstimate ? calculatePaymentPreview(estimate, method ?? "cashStages") : null;
+  const display = estimate ? buildDisplayedEstimate(estimate) : null;
   const projectLabel = draft
     ? (draft.projectName ?? PROJECT_TYPES[draft.parameters.projectType].label)
     : null;
@@ -64,7 +81,15 @@ export default function PaymentPage() {
     } catch {
       // The payment route remains usable when storage is unavailable.
     }
-  }, [method]);
+    if (validMethod(new URLSearchParams(search).get("method")) !== method) {
+      const params = new URLSearchParams(search);
+      params.set("method", method);
+      navigate(
+        { pathname: "/payment", search: `?${params}`, hash: window.location.hash },
+        { replace: true },
+      );
+    }
+  }, [method, search, navigate]);
 
   useEffect(() => {
     if (window.location.hash !== "#payment-checkout" || !hasEstimate) return;
@@ -162,6 +187,12 @@ export default function PaymentPage() {
           {!preview || !draft || !estimate ? (
             <div className="payment-empty">
               <div>
+                {unsavedDraft && (
+                  <p role="alert">
+                    Актуальная смета не сохранена. Оформление старого расчёта недоступно; вернитесь
+                    в калькулятор и повторите сохранение.
+                  </p>
+                )}
                 <h3>Пока нет выбранного объёма работ</h3>
                 <p>
                   Рассчитайте типовой или индивидуальный дом. После этого здесь появятся состав
@@ -197,14 +228,12 @@ export default function PaymentPage() {
                 </dl>
                 <h4>Что входит в строительный ориентир</h4>
                 <ul className="payment-stage-list">
-                  {estimate.stages
-                    .filter((stage) => stage.included)
-                    .map((stage) => (
-                      <li key={stage.id}>
-                        <span>{stage.name}</span>
-                        <strong>{money.format(stage.total)}</strong>
-                      </li>
-                    ))}
+                  {display!.stages.map((stage) => (
+                    <li key={stage.id}>
+                      <span>{stage.name}</span>
+                      <strong>{money.format(stage.amount)}</strong>
+                    </li>
+                  ))}
                 </ul>
                 <p className="payment-exclusion">
                   Проектная и рабочая документация, проверка конструкций и условия участка в эту
@@ -296,8 +325,9 @@ export default function PaymentPage() {
           projectLabel &&
           (authenticated ? (
             <PaymentCheckout
+              key={checkoutSignature(draft, estimate)}
               method={method}
-              onMethodChange={setMethod}
+              onMethodChange={changeMethod}
               estimate={estimate}
               draft={draft}
               projectName={projectLabel}

@@ -3,6 +3,7 @@ import ArrowIcon from "../../components/ArrowIcon";
 import { DEMO_DELIVERY } from "./catalog";
 import { money, number } from "./formatters";
 import type { EstimateResult, HouseParameters } from "./types";
+import { buildDisplayedEstimate } from "./displayAmounts";
 
 type Props = {
   estimate: EstimateResult;
@@ -25,6 +26,7 @@ export default function EstimateBreakdown({
   expandedStages,
   toggleStage,
 }: Props) {
+  const display = buildDisplayedEstimate(estimate);
   return (
     <div className="estimate-breakdown" data-open={breakdownOpen}>
       <button
@@ -58,6 +60,7 @@ export default function EstimateBreakdown({
           <div className="estimate-stages">
             {estimate.stages.map((stage, index) => {
               const isExpanded = expandedStages.includes(stage.id);
+              const displayedStage = display.stages.find((entry) => entry.id === stage.id);
 
               return (
                 <div
@@ -85,7 +88,7 @@ export default function EstimateBreakdown({
                       )}
                     </span>
                     <span className="estimate-stage-price">
-                      {stage.included ? money.format(stage.total) : "Не включён"}
+                      {displayedStage ? money.format(displayedStage.amount) : "Не включён"}
                     </span>
                     <span
                       className={`estimate-chevron ${isExpanded ? "is-open" : ""}`}
@@ -105,7 +108,9 @@ export default function EstimateBreakdown({
                             {number.format(item.quantity)} {item.unit}
                           </span>
                           <span className="estimate-line-total">
-                            {money.format(item.quantity * item.unitPrice)}
+                            {money.format(
+                              displayedStage!.items.find((entry) => entry.id === item.id)!.amount,
+                            )}
                           </span>
                         </div>
                       ))}

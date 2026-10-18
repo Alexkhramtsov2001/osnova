@@ -15,11 +15,19 @@ import {
   type BankQuestion,
 } from "./recommendation";
 import "./HouseFinder.css";
+import { createFinderDraft, readFinderDraft, writeFinderDraft } from "./finderDraft";
 
 export default function HouseFinder() {
-  const [step, setStep] = useState(0);
-  const [questionIds, setQuestionIds] = useState<string[]>(["purpose"]);
-  const [answers, setAnswers] = useState<Partial<Answers>>({});
+  const [initialDraft] = useState(() => {
+    try {
+      return readFinderDraft(window.sessionStorage) ?? createFinderDraft();
+    } catch {
+      return createFinderDraft();
+    }
+  });
+  const [step, setStep] = useState(initialDraft.step);
+  const [questionIds, setQuestionIds] = useState<string[]>(initialDraft.questionIds);
+  const [answers, setAnswers] = useState<Partial<Answers>>(initialDraft.answers);
   const heading = useRef<HTMLHeadingElement>(null);
   const questionHeading = useRef<HTMLLegendElement>(null);
   const previousStep = useRef(0);
@@ -32,6 +40,21 @@ export default function HouseFinder() {
   const canContinue = options.some((option) => option.value === answers[question.id]);
   const project = recommendation?.project;
   const estimate = project ? getProjectEstimate(project) : null;
+
+  const restart = () => {
+    const fresh = createFinderDraft();
+    setAnswers(fresh.answers);
+    setQuestionIds(fresh.questionIds);
+    setStep(fresh.step);
+  };
+
+  useEffect(() => {
+    try {
+      writeFinderDraft(window.sessionStorage, { step, questionIds, answers });
+    } catch {
+      /* The questionnaire remains usable without tab storage. */
+    }
+  }, [step, questionIds, answers]);
 
   useEffect(() => {
     const target = completed ? heading.current : questionHeading.current;
@@ -61,7 +84,7 @@ export default function HouseFinder() {
           {completed
             ? project
               ? "Этот проект соответствует выбранным условиям. Вот почему он подходит."
-              : "В каталоге нет типового проекта под ваши пожелания. Перейдите в калькулятор-конфигуратор, чтобы задать параметры своего дома."
+              : "В каталоге нет типового проекта под ваши пожелания. Измените ответы, начните подбор заново или перейдите в калькулятор-конфигуратор."
             : `Ровно ${QUESTION_COUNT} коротких вопросов из расширенной подборки. Следующие вопросы учитывают ваши ответы. Без регистрации и контактов.`}
         </p>
         {!completed ? (
@@ -72,6 +95,10 @@ export default function HouseFinder() {
               if (!canContinue) return;
               if (step === QUESTION_COUNT - 1) {
                 setStep(QUESTION_COUNT);
+                return;
+              }
+              if (questionIds[step + 1]) {
+                setStep(step + 1);
                 return;
               }
               const next = nextQuestion(answers, questionIds);
@@ -139,6 +166,16 @@ export default function HouseFinder() {
               Перейти в калькулятор-конфигуратор
               <ArrowIcon />
             </Link>
+            <button
+              className="button button-secondary"
+              type="button"
+              onClick={() => setStep(QUESTION_COUNT - 1)}
+            >
+              Изменить ответы
+            </button>
+            <button className="finder-restart" type="button" onClick={restart}>
+              Пройти заново
+            </button>
           </div>
         ) : (
           recommendation &&
@@ -189,15 +226,7 @@ export default function HouseFinder() {
                 >
                   Изменить ответы
                 </button>
-                <button
-                  className="finder-restart"
-                  type="button"
-                  onClick={() => {
-                    setAnswers({});
-                    setQuestionIds(["purpose"]);
-                    setStep(0);
-                  }}
-                >
+                <button className="finder-restart" type="button" onClick={restart}>
                   Пройти заново
                 </button>
               </div>

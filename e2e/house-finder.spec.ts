@@ -30,7 +30,7 @@ test("опрос показывает семь шагов и ровно четы
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("при отсутствии совпадения после седьмого ответа доступен только конфигуратор", async ({
+test("при отсутствии совпадения можно изменить ответы или начать подбор заново", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -56,4 +56,14 @@ test("при отсутствии совпадения после седьмог
   await expect(page.locator(".finder-result")).toHaveCount(0);
   await expect(page.locator(".finder-no-match").getByRole("link")).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Посмотреть проект" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Изменить ответы", exact: true }).click();
+  await expect(page.getByText("Вопрос 7 из 7")).toBeVisible();
+  await expect(page.getByRole("radio", { checked: true })).toHaveCount(1);
+  await page.getByRole("button", { name: "Показать мой дом", exact: true }).click();
+  await page.getByRole("button", { name: "Пройти заново", exact: true }).click();
+  await expect(page.getByText("Вопрос 1 из 7")).toBeVisible();
+  await expect(page.getByRole("radio", { checked: true })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByText("Вопрос 1 из 7")).toBeVisible();
+  await expect(page.getByRole("radio", { checked: true })).toHaveCount(0);
 });

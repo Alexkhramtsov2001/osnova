@@ -53,4 +53,28 @@ describe("демонстрационная сводка оплаты", () => {
     ).toBe(schedule.total);
     expect(schedule.total).toBe(Math.round(withDelivery.total));
   });
+
+  it.each(["none", "regional"] as const)(
+    "согласует округление дробных сумм этапов и позиций: %s",
+    (delivery) => {
+      const estimate = calculateHouseEstimate(
+        { ...DEFAULT_HOUSE_PARAMETERS, area: 120.1, delivery },
+        { mode: "stages", stageIds: ["walls", "roof"] },
+      );
+      const display = buildStagePaymentSchedule(estimate);
+      expect(display.stages.reduce((sum, stage) => sum + stage.amount, display.deliveryCost)).toBe(
+        display.total,
+      );
+      for (const stage of display.stages)
+        expect(stage.items.reduce((sum, item) => sum + item.amount, 0)).toBe(stage.amount);
+      for (const method of ["cashFull", "cashStages", "credit", "mortgage"] as const) {
+        const preview = calculatePaymentPreview(estimate, method);
+        expect(
+          display.stages.reduce((sum, stage) => sum + stage.amount, display.deliveryCost) -
+            preview.discount,
+        ).toBe(preview.afterDiscount);
+      }
+      expect(display.total).toBe(Math.round(estimate.total));
+    },
+  );
 });

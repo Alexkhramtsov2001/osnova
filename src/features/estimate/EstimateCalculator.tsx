@@ -78,6 +78,7 @@ export default function EstimateCalculator({
   } | null>(null);
   const { savedEstimates, mutate: mutateSavedEstimates } = useSavedEstimates();
   const [savedStatus, setSavedStatus] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
   const [demoSubmissions, setDemoSubmissions] = useState<
     Record<
       string,
@@ -833,11 +834,33 @@ export default function EstimateCalculator({
                     <Link
                       className="button button-primary button-center-label estimate-payment-link"
                       to="/payment#payment-checkout"
+                      onClick={(event) => {
+                        let saved = false;
+                        try {
+                          saved = writeCalculatorDraft(window.sessionStorage, {
+                            parameters,
+                            projectName,
+                            mode: constructionMode,
+                            stageIds: selectedStageIds,
+                            sourceProjectNumber,
+                          });
+                        } catch {
+                          // Access to sessionStorage itself can also be denied.
+                        }
+                        if (!saved) {
+                          event.preventDefault();
+                          setCheckoutError(
+                            "Не удалось сохранить актуальный расчёт. Оформление остановлено, чтобы не открыть старую смету. Проверьте хранилище вкладки и попробуйте снова.",
+                          );
+                        } else setCheckoutError("");
+                      }}
                     >
                       <span>Оплатить (демо)</span> <ArrowIcon />
                     </Link>
                   </div>
                 )}
+
+                {checkoutError && <p role="alert">{checkoutError}</p>}
 
                 <p className="estimate-disclaimer">
                   {DEMO_PRICES_NOTICE} Вилка условная и построена вокруг среднего ориентира.

@@ -2,6 +2,7 @@ import { formatDuration } from "./formatters";
 import { jsPDF } from "jspdf";
 import { formatRequestSummary } from "./requestSummary";
 import type { EstimateResult, HouseParameters } from "./types";
+import { buildDisplayedEstimate } from "./displayAmounts";
 
 let fontPromise: Promise<string> | undefined;
 function loadFont() {
@@ -27,6 +28,7 @@ export async function downloadEstimatePdf(
   mode: "turnkey" | "stages",
 ) {
   const font = await loadFont();
+  const display = buildDisplayedEstimate(estimate);
   const doc = new jsPDF({ format: "a4", compress: true });
   doc.addFileToVFS("NotoSans-Regular.ttf", font);
   doc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
@@ -65,9 +67,15 @@ export async function downloadEstimatePdf(
   y += 4;
   pageBreak(22);
   paragraph("Детализация по этапам", 16, true);
+  paragraph("Суммы позиций и этапов округлены до рублей с согласованием итогов.", 9);
   for (const stage of estimate.stages) {
+    const displayedStage = display.stages.find((entry) => entry.id === stage.id);
     pageBreak(30);
-    paragraph(`${stage.name} - ${stage.included ? money(stage.total) : "не включён"}`, 13, true);
+    paragraph(
+      `${stage.name} - ${displayedStage ? money(displayedStage.amount) : "не включён"}`,
+      13,
+      true,
+    );
     if (!stage.included) continue;
     paragraph(stage.description);
     paragraph(
@@ -76,7 +84,7 @@ export async function downloadEstimatePdf(
     for (const item of stage.items) {
       const quantity = item.quantity.toLocaleString("ru-RU", { maximumFractionDigits: 2 });
       paragraph(
-        `${item.name}: ${quantity} ${item.unit} × ${money(item.unitPrice)} = ${money(item.quantity * item.unitPrice)}`,
+        `${item.name}: ${quantity} ${item.unit} × ${money(item.unitPrice)} ≈ ${money(displayedStage!.items.find((entry) => entry.id === item.id)!.amount)}`,
       );
     }
     paragraph(`Что меняет цену: ${stage.priceFactors}`, 9);
@@ -84,8 +92,8 @@ export async function downloadEstimatePdf(
     y += 3;
   }
   pageBreak(30);
-  paragraph(`Доставка: ${money(estimate.deliveryCost)}`, 11);
-  paragraph(`Итого: ${money(estimate.total)}`, 16, true);
+  paragraph(`Доставка: ${money(display.deliveryCost)}`, 11);
+  paragraph(`Итого: ${money(display.total)}`, 16, true);
   paragraph(`Диапазон: ${money(estimate.minTotal)} - ${money(estimate.maxTotal)}`, 11);
   const pages = doc.getNumberOfPages();
   for (let page = 1; page <= pages; page++) {
