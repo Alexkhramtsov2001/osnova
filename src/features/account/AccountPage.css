@@ -224,20 +224,10 @@
   transform: translateY(-2px);
 }
 
-.account-provider-mark {
-  display: grid;
-  place-items: center;
+.account-provider-button img {
   width: 24px;
   height: 24px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.google-mark {
-  color: #4285f4;
+  flex: 0 0 24px;
 }
 
 .account-code-view > p:not(.eyebrow) {

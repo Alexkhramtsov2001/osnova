@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 
 test("контакты доступны с главной страницы и в мобильном меню", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

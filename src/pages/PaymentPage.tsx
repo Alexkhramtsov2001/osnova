@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
+import DemoAccessGate from "../features/account/DemoAccessGate";
+import { readDemoSession } from "../features/account/demoSession";
 import { calculateHouseEstimate } from "../features/estimate/calculations";
 import { readCalculatorDraft } from "../features/estimate/calculatorDraft";
 import { DEMO_REGIONS, PROJECT_TYPES } from "../features/estimate/catalog";
@@ -52,6 +54,8 @@ export default function PaymentPage() {
   const projectLabel = draft
     ? (draft.projectName ?? PROJECT_TYPES[draft.parameters.projectType].label)
     : null;
+  const authenticated = readDemoSession(window.sessionStorage);
+  const checkoutReturnPath = `/payment${search}#payment-checkout`;
 
   useEffect(() => {
     if (!method) return;
@@ -286,17 +290,29 @@ export default function PaymentPage() {
             </div>
           )}
         </section>
-        {preview && draft && estimate && projectLabel && (
-          <PaymentCheckout
-            method={method}
-            onMethodChange={setMethod}
-            estimate={estimate}
-            draft={draft}
-            projectName={projectLabel}
-            total={preview.afterDiscount}
-            discount={preview.discount}
-          />
-        )}
+        {preview &&
+          draft &&
+          estimate &&
+          projectLabel &&
+          (authenticated ? (
+            <PaymentCheckout
+              method={method}
+              onMethodChange={setMethod}
+              estimate={estimate}
+              draft={draft}
+              projectName={projectLabel}
+              total={preview.afterDiscount}
+              discount={preview.discount}
+            />
+          ) : (
+            <DemoAccessGate
+              id="payment-checkout"
+              eyebrow="03 / ДЕМО-ОФОРМЛЕНИЕ"
+              title="Войдите, чтобы оформить выбор"
+              description="Ваш расчёт сохранён в этой вкладке. После учебной регистрации или повторного входа можно выбрать способ оплаты и скачать демонстрационный PDF."
+              next={checkoutReturnPath}
+            />
+          ))}
       </main>
       <SiteFooter />
     </div>

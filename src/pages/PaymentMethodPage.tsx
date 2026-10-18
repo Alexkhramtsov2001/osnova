@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router";
+import { demoActionPath } from "../features/account/demoSession";
 import ArrowIcon from "../components/ArrowIcon";
 import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
@@ -131,7 +132,7 @@ export default function PaymentMethodPage() {
               <div className="payment-guide-actions">
                 <Link
                   className="button button-primary"
-                  to={`/payment?method=${guide.id}#payment-checkout`}
+                  to={demoActionPath(`/payment?method=${guide.id}#payment-checkout`)}
                 >
                   Выбрать этот способ <ArrowIcon />
                 </Link>

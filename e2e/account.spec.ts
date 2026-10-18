@@ -53,6 +53,14 @@ test("каталог, калькулятор и способы оплаты до
   expect(await page.evaluate(() => sessionStorage.getItem("osnova.demo-session.v1"))).toBeNull();
 });
 
+test("кнопки демо-входа показывают узнаваемые значки сервисов", async ({ page }) => {
+  for (const provider of ["google", "apple"]) {
+    const image = page.locator(`.account-provider-button img[src$="/${provider}.svg"]`);
+    await expect(image).toBeVisible();
+    expect(await image.evaluate((node: HTMLImageElement) => node.naturalWidth)).toBeGreaterThan(0);
+  }
+});
+
 test("регистрация принимает только учебный адрес и открывает кабинет после кода", async ({
   page,
 }) => {

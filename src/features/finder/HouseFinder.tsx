@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import ArrowIcon from "../../components/ArrowIcon";
+import { demoActionPath } from "../account/demoSession";
 import { formatPriceRange, getProjectEstimate } from "../projects/estimates";
 import {
   QUESTION_COUNT,
@@ -176,7 +177,7 @@ export default function HouseFinder() {
                 </p>
                 <Link
                   className="button button-primary"
-                  to={`/calculator?project=${project.number}`}
+                  to={demoActionPath(`/calculator?project=${project.number}`)}
                 >
                   Настроить дом в конфигураторе
                   <ArrowIcon />

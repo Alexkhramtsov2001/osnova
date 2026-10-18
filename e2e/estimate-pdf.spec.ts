@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./authenticated-test";
 import { readFile } from "node:fs/promises";
 
 test("детализация закрыта по умолчанию, а PDF скачивается с текущим расчётом", async ({ page }) => {

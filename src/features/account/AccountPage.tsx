@@ -1,6 +1,6 @@
 import SiteFooter from "../../components/SiteFooter";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SiteHeader from "../../components/SiteHeader";
 import type { SavedEstimate } from "../estimate/savedEstimates";
 import { useSavedEstimates } from "../estimate/useSavedEstimates";
@@ -16,6 +16,7 @@ import {
   readDemoProfile,
   readDemoSession,
   readDemoSessionSource,
+  readDemoReturnPath,
   type DemoSessionSource,
 } from "./demoSession";
 
@@ -30,6 +31,8 @@ function formatSavedDate(value: string): string {
 
 export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountPageProps) {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const returnPath = readDemoReturnPath(search);
   const [authenticated, setAuthenticated] = useState(() => readDemoSession(window.sessionStorage));
   const [sessionSource, setSessionSource] = useState(() =>
     readDemoSessionSource(window.sessionStorage),
@@ -41,6 +44,20 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
     setAuthenticated(true);
     setSessionSource(source);
     window.dispatchEvent(new Event(DEMO_AUTH_CHANGED_EVENT));
+    if (!returnPath) return;
+    const target = new URL(returnPath, "https://osnova.demo");
+    const pendingId = target.pathname === "/projects" ? target.searchParams.get("favorite") : null;
+    const pendingProject = projects.find((project) => project.number === pendingId);
+    if (pendingProject) {
+      const next = favoriteIds.includes(pendingProject.number)
+        ? favoriteIds
+        : [...favoriteIds, pendingProject.number];
+      onFavoritesChange(next);
+      writeFavoriteIds(window.localStorage, next);
+      navigate("/projects", { replace: true, state: { favoriteAdded: pendingProject.name } });
+      return;
+    }
+    navigate(returnPath, { replace: true });
   };
 
   const signOut = () => {
@@ -121,7 +138,11 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
         </div>
 
         {!authenticated ? (
-          <DemoAuthPanel onAuthenticated={signIn} />
+          <DemoAuthPanel
+            key={search}
+            initialView={new URLSearchParams(search).get("mode") === "login" ? "login" : undefined}
+            onAuthenticated={signIn}
+          />
         ) : (
           <>
             <div className="account-demo-banner" role="status">
