@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import ArrowIcon from "../components/ArrowIcon";
+import ArrowIcon from "./ArrowIcon";
 
 import { type Project } from "../features/projects/catalog";
 import { formatPriceRange, getProjectEstimate } from "../features/projects/estimates";
