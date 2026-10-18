@@ -332,3 +332,94 @@
     padding: 24px;
   }
 }
+.comparison-scroll-hint {
+  display: none;
+}
+
+.comparison-project-details > summary {
+  min-height: 44px;
+  padding-block: var(--space-3);
+  color: var(--accent-dark);
+  cursor: pointer;
+}
+
+.comparison-project-details > p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  .comparison-scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+    padding: var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-control);
+    color: var(--muted);
+    background: var(--surface);
+    font-size: 13px;
+  }
+  .comparison-scroll-hint > div {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .comparison-scroll-hint button {
+    border-radius: var(--radius-control);
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+  }
+}
+
+@media (max-width: 760px) {
+  .comparison-mobile-list .comparison-mobile-card {
+    padding: var(--space-4);
+    border-radius: var(--radius-card);
+  }
+  .comparison-mobile-card .comparison-mobile-price {
+    margin: var(--space-3) 0;
+  }
+  .comparison-mobile-card .comparison-mobile-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+    padding-top: var(--space-3);
+  }
+  .comparison-mobile-card .comparison-mobile-facts div {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+  .comparison-mobile-card .comparison-mobile-facts dd {
+    margin: var(--space-1) 0 0;
+    text-align: left;
+  }
+}
+
+.comparison-character-details > summary {
+  min-height: 44px;
+  padding-block: var(--space-2);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.comparison-character-details > summary:hover {
+  color: var(--accent-dark);
+}
+
+.comparison-character-details > summary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.comparison-character-details .project-pitch {
+  margin-top: var(--space-4);
+}

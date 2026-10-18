@@ -13,7 +13,7 @@ test("сводка обновляется и копируется без соо�
   await expect(summary).toContainText("Формат: Отдельные этапы");
   await expect(summary).not.toContainText("Включённые этапы: Фундамент, Коробка дома, Кровля");
   await calculator.getByRole("button", { name: "Копировать текст" }).click();
-  await expect(calculator.getByRole("status")).toContainText(
+  await expect(calculator.locator(".estimate-request-preview").getByRole("status")).toContainText(
     "Сводка скопирована. Она никому не отправлена.",
   );
   expect((await page.evaluate(() => navigator.clipboard.readText())).replace(/\r\n/g, "\n")).toBe(
@@ -29,5 +29,5 @@ test("сводка обновляется и копируется без соо�
 
   await calculator.getByRole("spinbutton", { name: /Площадь дома/ }).fill("");
   await expect(calculator.getByRole("button", { name: "Подготовить сводку" })).toHaveCount(0);
-  await expect(calculator.getByRole("alert")).toContainText("Исправьте параметры");
+  await expect(calculator.locator("#estimate-area-error")).toContainText("Введите число");
 });

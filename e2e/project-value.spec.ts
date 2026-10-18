@@ -19,6 +19,7 @@ test("сравнение объясняет выбор и ведёт к расч
     "Что учесть",
   ])
     await expect(comparison.getByRole("rowheader", { name, exact: true })).toBeVisible();
+  await comparison.locator(".comparison-character-details > summary").first().click();
   await expect(
     comparison
       .locator(".comparison-table-scroll")
@@ -89,7 +90,7 @@ test("кнопка кабинета выделена акцентным цвет
 }) => {
   await page.goto("/projects");
   const accountLink = page.getByRole("link", { name: "Личный кабинет" }).first();
-  await expect(accountLink).toHaveCSS("background-color", "rgb(185, 94, 67)");
+  await expect(accountLink).toHaveCSS("background-color", "rgb(179, 87, 61)");
   await expect(accountLink).not.toContainText("Демо");
 
   const faviconHref = await page.locator('link[rel="icon"]').getAttribute("href");

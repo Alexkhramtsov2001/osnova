@@ -259,7 +259,7 @@ export default function EstimateCalculator({
     );
   };
 
-  const isInvalidNumber = (key: keyof typeof HOUSE_NUMBER_LIMITS) => {
+  const numberBounds = (key: keyof typeof HOUSE_NUMBER_LIMITS) => {
     const { min, max } = HOUSE_NUMBER_LIMITS[key];
     const lower =
       key === "area"
@@ -271,12 +271,31 @@ export default function EstimateCalculator({
       key === "perimeter" && Number.isFinite(parameters.area)
         ? maximumPerimeter(parameters.area, parameters.floors)
         : max;
+    return { lower, upper };
+  };
+  const isInvalidNumber = (key: keyof typeof HOUSE_NUMBER_LIMITS) => {
+    const { lower, upper } = numberBounds(key);
     return (
       !isHouseNumberStepValid(key, parameters[key]) ||
       parameters[key] < lower ||
       parameters[key] > upper
     );
   };
+  const numberError = (key: keyof typeof HOUSE_NUMBER_LIMITS) => {
+    if (key === "perimeter" && isInvalidNumber("area")) return null;
+    if (!isInvalidNumber(key)) return null;
+    const { lower, upper } = numberBounds(key);
+    return (
+      <span className="estimate-field-error" id={`estimate-${key}-error`} role="alert">
+        {Number.isFinite(parameters[key]) ? "Допустимо" : "Введите число"}: от{" "}
+        {number.format(lower)} до {number.format(upper)}. Шаг{" "}
+        {number.format(HOUSE_NUMBER_LIMITS[key].step)}.
+      </span>
+    );
+  };
+  const hasNumberError = (
+    Object.keys(HOUSE_NUMBER_LIMITS) as (keyof typeof HOUSE_NUMBER_LIMITS)[]
+  ).some(isInvalidNumber);
 
   const update = <K extends keyof HouseParameters>(key: K, value: HouseParameters[K]) => {
     if (key === "bedrooms") {
@@ -349,6 +368,25 @@ export default function EstimateCalculator({
               Сбросить
             </button>
           </div>
+
+          {estimate && includedStageCount > 0 && (
+            <div
+              className="estimate-compact-summary"
+              aria-label="Краткая сводка расчёта"
+              role="status"
+            >
+              <span>
+                Ориентир · {constructionMode === "turnkey" ? "Под ключ" : "Отдельные этапы"}
+              </span>
+              <strong>
+                {money.format(estimate.minTotal)} — {money.format(estimate.maxTotal)}
+              </strong>
+              <span>
+                {number.format(parameters.area)} м² ·{" "}
+                {options.wallMaterial.find((item) => item.value === parameters.wallMaterial)?.label}
+              </span>
+            </div>
+          )}
 
           {projectName && (
             <p className="estimate-project-note" role="status">
@@ -453,7 +491,7 @@ export default function EstimateCalculator({
                   max={HOUSE_NUMBER_LIMITS.area.max}
                   step={HOUSE_NUMBER_LIMITS.area.step}
                   aria-invalid={isInvalidNumber("area")}
-                  aria-describedby={isInvalidNumber("area") ? "estimate-input-error" : undefined}
+                  aria-describedby={isInvalidNumber("area") ? "estimate-area-error" : undefined}
                   value={Number.isFinite(parameters.area) ? parameters.area : ""}
                   onChange={(event) => {
                     const area = event.target.valueAsNumber;
@@ -470,6 +508,7 @@ export default function EstimateCalculator({
                 />
                 <span>м²</span>
               </div>
+              {numberError("area")}
             </Field>
 
             <Field label="Количество этажей" group>
@@ -503,7 +542,7 @@ export default function EstimateCalculator({
                         value > maximumBedrooms(parameters.area, parameters.floors)),
                   }))}
                 />
-                {Number.isFinite(parameters.area) && (
+                {!isInvalidNumber("area") && (
                   <span className="estimate-field-hint">
                     Для {number.format(parameters.area)} м²: от {minimumBedrooms(parameters.area)}
                     до {maximumBedrooms(parameters.area, parameters.floors)} спален с запасом на
@@ -531,7 +570,7 @@ export default function EstimateCalculator({
                           )),
                   }))}
                 />
-                {Number.isFinite(parameters.area) && (
+                {!isInvalidNumber("area") && (
                   <span className="estimate-field-hint">
                     Для {parameters.bedrooms} спален: от{" "}
                     {minimumBathrooms(parameters.area, parameters.bedrooms)}
@@ -608,7 +647,7 @@ export default function EstimateCalculator({
                     step={HOUSE_NUMBER_LIMITS.wallHeight.step}
                     aria-invalid={isInvalidNumber("wallHeight")}
                     aria-describedby={
-                      isInvalidNumber("wallHeight") ? "estimate-input-error" : undefined
+                      isInvalidNumber("wallHeight") ? "estimate-wallHeight-error" : undefined
                     }
                     value={Number.isFinite(parameters.wallHeight) ? parameters.wallHeight : ""}
                     onChange={(event) => update("wallHeight", event.target.valueAsNumber)}
@@ -616,6 +655,7 @@ export default function EstimateCalculator({
                   />
                   <span>м</span>
                 </div>
+                {numberError("wallHeight")}
               </Field>
 
               <Field label="Периметр" hint="Внешние стены">
@@ -625,9 +665,11 @@ export default function EstimateCalculator({
                     min={minimumPerimeter(parameters.area, parameters.floors)}
                     max={maximumPerimeter(parameters.area, parameters.floors)}
                     step={HOUSE_NUMBER_LIMITS.perimeter.step}
-                    aria-invalid={isInvalidNumber("perimeter")}
+                    aria-invalid={!isInvalidNumber("area") && isInvalidNumber("perimeter")}
                     aria-describedby={
-                      isInvalidNumber("perimeter") ? "estimate-input-error" : undefined
+                      !isInvalidNumber("area") && isInvalidNumber("perimeter")
+                        ? "estimate-perimeter-error"
+                        : undefined
                     }
                     value={Number.isFinite(parameters.perimeter) ? parameters.perimeter : ""}
                     onChange={(event) => update("perimeter", event.target.valueAsNumber)}
@@ -635,10 +677,17 @@ export default function EstimateCalculator({
                   />
                   <span>м</span>
                 </div>
+                {numberError("perimeter")}
                 <span className="estimate-field-hint">
-                  Для выбранной площади: {minimumPerimeter(parameters.area, parameters.floors)}–
-                  {maximumPerimeter(parameters.area, parameters.floors)} м по условной модели
-                  контура.
+                  {!isInvalidNumber("area") ? (
+                    <>
+                      Для выбранной площади: {minimumPerimeter(parameters.area, parameters.floors)}–
+                      {maximumPerimeter(parameters.area, parameters.floors)} м по условной модели
+                      контура.
+                    </>
+                  ) : (
+                    "Сначала укажите допустимую площадь для определения диапазона периметра."
+                  )}
                 </span>
               </Field>
             </div>
@@ -747,18 +796,20 @@ export default function EstimateCalculator({
                       Это проверка работы сайта, а не запрос на строительство. Для связи с автором
                       используйте контакты ниже.
                     </p>
-                    <button
-                      type="button"
-                      className="estimate-request-toggle"
-                      aria-expanded={summaryOpen}
-                      aria-controls="estimate-request-summary"
-                      onClick={() => setSummaryOpen((current) => !current)}
-                    >
-                      {summaryOpen ? "Скрыть сводку" : "Подготовить сводку"}
-                    </button>
-                    <button type="button" className="estimate-save-button" onClick={saveEstimate}>
-                      Сохранить расчёт
-                    </button>
+                    <div className="estimate-request-actions">
+                      <button
+                        type="button"
+                        className="estimate-request-toggle"
+                        aria-expanded={summaryOpen}
+                        aria-controls="estimate-request-summary"
+                        onClick={() => setSummaryOpen((current) => !current)}
+                      >
+                        {summaryOpen ? "Скрыть сводку" : "Подготовить сводку"}
+                      </button>
+                      <button type="button" className="estimate-save-button" onClick={saveEstimate}>
+                        Сохранить расчёт
+                      </button>
+                    </div>
                     {summaryOpen && (
                       <div id="estimate-request-summary" className="estimate-request-preview">
                         <label htmlFor="estimate-request-text">Текст сводки</label>
@@ -875,11 +926,11 @@ export default function EstimateCalculator({
                     " Расчёт отдельных этапов предполагает, что необходимые предыдущие работы уже выполнены."}
                 </p>
               </>
-            ) : (
+            ) : !hasNumberError ? (
               <p className="estimate-disclaimer" id="estimate-input-error" role="alert">
                 {inputError}. Исправьте параметры — расчёт появится автоматически.
               </p>
-            )}
+            ) : null}
           </div>
           <SavedEstimates
             savedEstimates={savedEstimates}

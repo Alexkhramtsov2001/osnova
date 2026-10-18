@@ -56,7 +56,7 @@ test("пустые состояния кабинета показывают ак
     await expect(link).toHaveClass(/button-primary/);
     await link.scrollIntoViewIfNeeded();
     await page.mouse.move(0, 0);
-    await expect(link).toHaveCSS("background-color", "rgb(185, 94, 67)");
+    await expect(link).toHaveCSS("background-color", "rgb(179, 87, 61)");
     await expect(link).toHaveCSS("color", "rgb(255, 255, 255)");
   }
   await expect(page.getByRole("button", { name: "Выйти из демо" })).toHaveCSS(

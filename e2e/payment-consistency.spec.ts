@@ -64,6 +64,12 @@ const rubles = (value: string) => Number(value.replace(/−/g, "-").replace(/[^\
 
 test("последний способ оплаты согласован с URL и переживает обновление", async ({ page }) => {
   await openPayment(page);
+  if (
+    !(await page
+      .locator(".payment-reference")
+      .evaluate((node) => (node as HTMLDetailsElement).open))
+  )
+    await page.locator(".payment-reference > summary").click();
   await page.locator('.payment-method-card[href$="/cash-full"]').click();
   await page.getByRole("link", { name: "Выбрать этот способ", exact: true }).click();
   await page.getByRole("radio", { name: /Наличными по этапам/ }).check();
@@ -156,6 +162,7 @@ test("дробная смета согласована в калькулятор
   await page.getByRole("button", { name: "Скачать расчёт в PDF", exact: true }).click();
   await (await estimateDownload).saveAs(testInfo.outputPath("estimate.pdf"));
   await page.getByRole("link", { name: "Оплатить (демо)", exact: true }).click();
+  await page.locator(".payment-stage-details > summary").click();
   await expect(page.locator(".payment-stage-list li")).toHaveCount(2);
   const paymentStages = (await page.locator(".payment-stage-list strong").allInnerTexts()).map(
     rubles,

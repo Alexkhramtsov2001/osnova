@@ -1,9 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
 
 :root {
+  --accent: #b95e43;
+  --accent-dark: #98462f;
+  --action-primary: #b3573d;
+  --ink: #252621;
+  --muted: #686a61;
+  --paper: #f7f6f2;
+  --line: #e4e1d9;
+  --surface: #fbfaf7;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-panel: 16px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --focus-ring: var(--accent-dark);
+  --text-page-title: clamp(38px, 4.8vw, 68px);
+  --text-section-title: clamp(30px, 3.5vw, 48px);
+  --text-card-title: 22px;
+  --text-label: 13px;
   font-family: "DM Sans", Arial, sans-serif;
-  color: #252621;
-  background: #f7f6f2;
+  color: var(--ink);
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -57,8 +81,8 @@ img {
 }
 
 :focus-visible {
-  outline: 2px solid #b95e43;
-  outline-offset: 4px;
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--space-1);
 }
 
 @media (prefers-reduced-motion: reduce) {

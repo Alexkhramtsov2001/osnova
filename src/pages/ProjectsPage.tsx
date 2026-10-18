@@ -30,6 +30,18 @@ export default function ProjectsPage({
   setCatalogFilters,
 }: SelectionProps) {
   const navigate = useNavigate();
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const activeFilterCount = Object.values(catalogFilters).filter((value) => value !== "all").length;
+  const priceExplanation = (
+    <>
+      Цены под ключ для типового проекта в общей демо-комплектации: газобетон, ленточный фундамент,
+      металлочерепица, стандартная отделка, 2 санузла и все 8 этапов работ. Фильтр бюджета
+      использует средний ориентир этой вилки. В ценах каталога выбран базовый регион без доставки;
+      эти параметры можно изменить в калькуляторе. Проекты и фотографии — концепты для портфолио,
+      рабочие планировки не разработаны. Версия данных: {DEMO_ESTIMATE_DATA.version} от{" "}
+      {DEMO_ESTIMATE_DATA.updatedAt.split("-").reverse().join(".")}.
+    </>
+  );
   const { state } = useLocation();
   const selectProject = (project: Project) => {
     const target = `/calculator?project=${project.number}`;
@@ -148,76 +160,95 @@ export default function ProjectsPage({
           </div>
 
           {!showFavorites && (
-            <div className="project-filters" aria-label="Фильтры проектов">
-              <div className="filter-field">
-                <span>Площадь дома</span>
-                <OsnovaSelect
-                  ariaLabel="Площадь дома"
-                  value={areaFilter}
-                  onValueChange={(value) =>
-                    setCatalogFilters((current) => ({ ...current, area: value }))
-                  }
-                  options={[
-                    { value: "all", label: "Любая площадь" },
-                    { value: "under100", label: "До 100 м²" },
-                    { value: "100-150", label: "100–150 м²" },
-                    { value: "150-200", label: "151–200 м²" },
-                    { value: "over200", label: "Более 200 м²" },
-                  ]}
-                />
+            <div className="catalog-filter-panel" data-open={filtersOpen}>
+              <div className="catalog-filter-toolbar">
+                <button
+                  className="button button-secondary"
+                  type="button"
+                  aria-expanded={filtersOpen}
+                  aria-controls="catalog-filters"
+                  onClick={() => setFiltersOpen((current) => !current)}
+                >
+                  Фильтры{activeFilterCount > 0 && ` (${activeFilterCount})`}
+                  <ArrowIcon direction={filtersOpen ? "up" : "down"} />
+                </button>
+                {activeFilterCount > 0 && !filtersOpen && (
+                  <button className="filter-reset" type="button" onClick={resetFilters}>
+                    Сбросить
+                  </button>
+                )}
               </div>
-              <div className="filter-field">
-                <span>Этажность</span>
-                <OsnovaSelect
-                  ariaLabel="Этажность"
-                  value={floorsFilter}
-                  onValueChange={(value) =>
-                    setCatalogFilters((current) => ({ ...current, floors: value }))
-                  }
-                  options={[
-                    { value: "all", label: "Любая этажность" },
-                    { value: "1", label: "1 этаж" },
-                    { value: "2", label: "2 этажа" },
-                  ]}
-                />
-              </div>
-              <div className="filter-field">
-                <span>Количество спален</span>
-                <OsnovaSelect
-                  ariaLabel="Количество спален"
-                  value={bedroomsFilter}
-                  onValueChange={(value) =>
-                    setCatalogFilters((current) => ({ ...current, bedrooms: value }))
-                  }
-                  options={[
-                    { value: "all", label: "Любое количество" },
-                    { value: "2", label: "2 спальни" },
-                    { value: "3", label: "3 спальни" },
-                    { value: "4", label: "4 спальни" },
-                    { value: "5", label: "5 спален" },
-                  ]}
-                />
-              </div>
-              <div className="filter-field">
-                <span>Бюджет под ключ</span>
-                <OsnovaSelect
-                  ariaLabel="Бюджет под ключ"
-                  value={priceFilter}
-                  onValueChange={(value) =>
-                    setCatalogFilters((current) => ({ ...current, price: value }))
-                  }
-                  options={[
-                    { value: "all", label: "Любой бюджет" },
-                    { value: "under9", label: "До 9 млн ₽" },
-                    { value: "9-12", label: "9–12 млн ₽" },
-                    { value: "over12", label: "Более 12 млн ₽" },
-                  ]}
-                />
-              </div>
+              <div className="project-filters" id="catalog-filters" aria-label="Фильтры проектов">
+                <div className="filter-field">
+                  <span>Площадь дома</span>
+                  <OsnovaSelect
+                    ariaLabel="Площадь дома"
+                    value={areaFilter}
+                    onValueChange={(value) =>
+                      setCatalogFilters((current) => ({ ...current, area: value }))
+                    }
+                    options={[
+                      { value: "all", label: "Любая площадь" },
+                      { value: "under100", label: "До 100 м²" },
+                      { value: "100-150", label: "100–150 м²" },
+                      { value: "150-200", label: "151–200 м²" },
+                      { value: "over200", label: "Более 200 м²" },
+                    ]}
+                  />
+                </div>
+                <div className="filter-field">
+                  <span>Этажность</span>
+                  <OsnovaSelect
+                    ariaLabel="Этажность"
+                    value={floorsFilter}
+                    onValueChange={(value) =>
+                      setCatalogFilters((current) => ({ ...current, floors: value }))
+                    }
+                    options={[
+                      { value: "all", label: "Любая этажность" },
+                      { value: "1", label: "1 этаж" },
+                      { value: "2", label: "2 этажа" },
+                    ]}
+                  />
+                </div>
+                <div className="filter-field">
+                  <span>Количество спален</span>
+                  <OsnovaSelect
+                    ariaLabel="Количество спален"
+                    value={bedroomsFilter}
+                    onValueChange={(value) =>
+                      setCatalogFilters((current) => ({ ...current, bedrooms: value }))
+                    }
+                    options={[
+                      { value: "all", label: "Любое количество" },
+                      { value: "2", label: "2 спальни" },
+                      { value: "3", label: "3 спальни" },
+                      { value: "4", label: "4 спальни" },
+                      { value: "5", label: "5 спален" },
+                    ]}
+                  />
+                </div>
+                <div className="filter-field">
+                  <span>Бюджет под ключ</span>
+                  <OsnovaSelect
+                    ariaLabel="Бюджет под ключ"
+                    value={priceFilter}
+                    onValueChange={(value) =>
+                      setCatalogFilters((current) => ({ ...current, price: value }))
+                    }
+                    options={[
+                      { value: "all", label: "Любой бюджет" },
+                      { value: "under9", label: "До 9 млн ₽" },
+                      { value: "9-12", label: "9–12 млн ₽" },
+                      { value: "over12", label: "Более 12 млн ₽" },
+                    ]}
+                  />
+                </div>
 
-              <button className="filter-reset" type="button" onClick={resetFilters}>
-                Сбросить
-              </button>
+                <button className="filter-reset" type="button" onClick={resetFilters}>
+                  Сбросить
+                </button>
+              </div>
             </div>
           )}
 
@@ -281,15 +312,16 @@ export default function ProjectsPage({
               Выбрано для сравнения: {comparisonIds.length} из 3.
             </p>
           )}
-          <p className="catalog-price-note">
-            Цены под ключ для типового проекта в общей демо-комплектации: газобетон, ленточный
-            фундамент, металлочерепица, стандартная отделка, 2 санузла и все 8 этапов работ. Фильтр
-            бюджета использует средний ориентир этой вилки. В ценах каталога выбран базовый регион
-            без доставки; эти параметры можно изменить в калькуляторе. Проекты и фотографии —
-            концепты для портфолио, рабочие планировки не разработаны. Версия данных:{" "}
-            {DEMO_ESTIMATE_DATA.version} от{" "}
-            {DEMO_ESTIMATE_DATA.updatedAt.split("-").reverse().join(".")}.
-          </p>
+          <p className="catalog-price-note catalog-price-desktop">{priceExplanation}</p>
+          <div className="catalog-price-mobile catalog-price-note">
+            <p>
+              Приблизительные цены под ключ для демо-комплектации. Не оферта. Проекты — концепции.
+            </p>
+            <details>
+              <summary>Комплектация и допущения</summary>
+              <p>{priceExplanation}</p>
+            </details>
+          </div>
 
           {filteredProjects.length > 0 ? (
             <div className="project-grid">

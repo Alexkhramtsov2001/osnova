@@ -8,7 +8,7 @@
   min-height: 46px;
   padding: 0 13px;
   border: 1px solid var(--line, #e4e1d9);
-  border-radius: 0;
+  border-radius: var(--radius-control);
   color: var(--ink, #252621);
   background: #fff;
   font: inherit;
@@ -27,7 +27,7 @@
 }
 
 .osnova-select-trigger:focus-visible {
-  outline: 2px solid var(--accent, #b95e43);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -51,6 +51,7 @@
   width: var(--radix-select-trigger-width);
   max-height: var(--radix-select-content-available-height);
   overflow: hidden;
+  border-radius: var(--radius-control);
   border: 1px solid var(--line, #e4e1d9);
   color: var(--ink, #252621);
   background: #fbfaf7;
@@ -68,6 +69,7 @@
 
 .osnova-select-item {
   position: relative;
+  border-radius: var(--radius-control);
   display: flex;
   align-items: center;
   min-height: 40px;

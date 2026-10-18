@@ -802,3 +802,26 @@
   font-size: 12px;
   line-height: 1.7;
 }
+.account-page .account-data-section,
+.account-page .account-chat-section {
+  margin-top: var(--space-8);
+}
+
+.account-page .account-section-heading {
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.account-page .account-empty-state {
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+}
+
+@media (max-width: 760px) {
+  .account-page .account-estimate-actions {
+    gap: var(--space-3);
+  }
+  .account-page .account-estimate-actions .button {
+    width: 100%;
+  }
+}

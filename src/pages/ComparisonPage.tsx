@@ -8,7 +8,13 @@ import SiteHeader from "../components/SiteHeader";
 
 import { comparisonMessage } from "../features/contact/links";
 import { projects } from "../features/projects/catalog";
-import { formatPriceRange, getProjectEstimate } from "../features/projects/estimates";
+import {
+  formatPriceRange,
+  getProjectEstimate,
+  getProjectParameters,
+} from "../features/projects/estimates";
+import { WALL_MATERIALS } from "../features/estimate/catalog";
+import { formatDuration } from "../features/estimate/formatters";
 
 import BackToCatalog from "../components/BackToCatalog";
 import ProjectPitch from "../components/ProjectPitch";
@@ -26,6 +32,7 @@ export default function ComparisonPage({
   const comparedProjects = ids.map((id) => projects.find((project) => project.number === id)!);
   const comparisonHeadingRef = useRef<HTMLHeadingElement>(null);
   const pageHeadingRef = useRef<HTMLHeadingElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setComparisonIds(
@@ -71,10 +78,35 @@ export default function ComparisonPage({
                 Очистить сравнение
               </button>
             </div>
+            {comparedProjects.length === 3 && (
+              <div className="comparison-scroll-hint" id="comparison-scroll-hint">
+                <span>Три проекта: прокрутите таблицу вправо, чтобы увидеть все колонки.</span>
+                <div>
+                  <button
+                    type="button"
+                    aria-label="Прокрутить таблицу влево"
+                    onClick={() => tableRef.current?.scrollBy({ left: -260 })}
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Прокрутить таблицу вправо"
+                    onClick={() => tableRef.current?.scrollBy({ left: 260 })}
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            )}
             <div
               className="comparison-table-scroll"
+              ref={tableRef}
               role="region"
               aria-label="Таблица сравнения проектов"
+              aria-describedby={
+                comparedProjects.length === 3 ? "comparison-scroll-hint" : undefined
+              }
               tabIndex={0}
             >
               <table className="comparison-table">
@@ -88,7 +120,12 @@ export default function ComparisonPage({
                     <th scope="col">Параметр</th>
                     {comparedProjects.map((project) => (
                       <th scope="col" key={project.number}>
-                        <strong className="comparison-project-name">{project.name}</strong>
+                        <Link
+                          className="comparison-project-name"
+                          to={`/projects/${project.number}`}
+                        >
+                          {project.name}
+                        </Link>
                         <Link
                           className="comparison-calculate"
                           to={`/calculator?project=${project.number}`}
@@ -113,7 +150,10 @@ export default function ComparisonPage({
                     <th scope="row">Почему выбирают этот дом</th>
                     {comparedProjects.map((project) => (
                       <td key={project.number}>
-                        <ProjectPitch project={project} selection={comparedProjects} />
+                        <details className="comparison-character-details">
+                          <summary>{project.positioning.headline}</summary>
+                          <ProjectPitch project={project} selection={comparedProjects} />
+                        </details>
                       </td>
                     ))}
                   </tr>
@@ -170,6 +210,26 @@ export default function ComparisonPage({
                     ))}
                   </tr>
                   <tr>
+                    <th scope="row">Технология демо-расчёта</th>
+                    {comparedProjects.map((project) => (
+                      <td key={project.number}>
+                        {WALL_MATERIALS[getProjectParameters(project).wallMaterial].label}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <th scope="row">Ориентир по срокам</th>
+                    {comparedProjects.map((project) => {
+                      const { durationWeeks } = getProjectEstimate(project);
+                      return (
+                        <td key={project.number}>
+                          {formatDuration(durationWeeks.min)}–{formatDuration(durationWeeks.max)}{" "}
+                          нед.
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  <tr>
                     <th scope="row">Пятно застройки, примерно</th>
                     {comparedProjects.map((project) => (
                       <td key={project.number}>
@@ -201,7 +261,9 @@ export default function ComparisonPage({
                 return (
                   <article className="comparison-mobile-card" key={project.number}>
                     <div className="comparison-mobile-heading">
-                      <h4>{project.name}</h4>
+                      <h4>
+                        <Link to={`/projects/${project.number}`}>{project.name}</Link>
+                      </h4>
                       <button
                         className="comparison-remove"
                         type="button"
@@ -215,7 +277,6 @@ export default function ComparisonPage({
                       <small>Ориентир под ключ</small>
                       <strong>{formatPriceRange(estimate.minTotal, estimate.maxTotal)}</strong>
                     </p>
-                    <ProjectPitch project={project} selection={comparedProjects} />
                     <dl className="comparison-mobile-facts">
                       <div>
                         <dt>Площадь</dt>
@@ -230,14 +291,29 @@ export default function ComparisonPage({
                         <dd>{project.bedrooms}</dd>
                       </div>
                       <div>
-                        <dt>Пятно застройки, примерно</dt>
-                        <dd>≈ {Math.round(project.area / project.floors)} м²</dd>
+                        <dt>Технология демо-расчёта</dt>
+                        <dd>{WALL_MATERIALS[getProjectParameters(project).wallMaterial].label}</dd>
+                      </div>
+                      <div>
+                        <dt>Ориентир по срокам</dt>
+                        <dd>
+                          {formatDuration(estimate.durationWeeks.min)}–
+                          {formatDuration(estimate.durationWeeks.max)} нед.
+                        </dd>
                       </div>
                     </dl>
-                    <p className="comparison-mobile-tradeoff">
-                      <strong>Что учесть</strong>
-                      {project.tradeoff}
-                    </p>
+                    <details className="comparison-project-details">
+                      <summary>Характер проекта и подробности</summary>
+                      <ProjectPitch project={project} selection={comparedProjects} />
+                      <p>
+                        Пятно застройки, примерно: ≈ {Math.round(project.area / project.floors)} м².
+                        Площадь ÷ этажи, без террасы; не размеры фундамента по чертежу.
+                      </p>
+                      <p className="comparison-mobile-tradeoff">
+                        <strong>Что учесть</strong>
+                        {project.tradeoff}
+                      </p>
+                    </details>
                     <Link
                       className="comparison-calculate"
                       to={`/calculator?project=${project.number}`}

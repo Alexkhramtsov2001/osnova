@@ -6,6 +6,84 @@
   line-height: 1.8;
 }
 
+.catalog-filter-toolbar,
+.catalog-price-mobile {
+  display: none;
+}
+
+.projects-section .project-card-actions {
+  margin-top: auto;
+  padding-top: var(--space-4);
+}
+
+.projects-section .project-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-section .project-meta {
+  margin-top: auto;
+}
+
+@media (min-width: 561px) {
+  .projects-section .project-info > div:first-child > p {
+    min-height: 38px;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 1000px) {
+  .projects-section .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 560px) {
+  .projects-section .section-heading {
+    margin-bottom: var(--space-6);
+  }
+  .catalog-filter-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .catalog-filter-toolbar .button {
+    flex: 1;
+    min-height: 46px;
+    white-space: nowrap;
+  }
+  .catalog-filter-toolbar .filter-reset {
+    flex: 0 0 auto;
+    width: auto;
+  }
+  .catalog-filter-panel .project-filters {
+    display: none;
+    margin-top: var(--space-3);
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+  .catalog-filter-panel[data-open="true"] .project-filters {
+    display: grid;
+  }
+  .catalog-price-desktop {
+    display: none;
+  }
+  .catalog-price-mobile {
+    display: block;
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .catalog-price-mobile p {
+    margin: 0 0 var(--space-2);
+  }
+  .catalog-price-mobile summary {
+    color: var(--accent-dark);
+    cursor: pointer;
+  }
+  .catalog-price-mobile details[open] p {
+    margin-top: var(--space-2);
+  }
+}
+
 .project-price {
   display: grid;
   gap: 7px;
@@ -294,14 +372,14 @@
 
 .project-favorite:hover,
 .project-favorite.is-favorite {
-  border-color: var(--accent-color, #bd6848);
+  border-color: var(--accent);
   color: white;
-  background: var(--accent-color, #bd6848);
+  background: var(--accent);
 }
 
 .project-favorite:focus-visible,
 .favorites-filter:focus-visible {
-  outline: 2px solid var(--accent-color, #bd6848);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -633,9 +711,9 @@
   gap: 16px;
   margin-top: 36px;
   padding: 22px;
-  border: 1px solid var(--border-color, #e5e0d8);
-  border-radius: 14px;
-  background: var(--surface-color, #f8f7f4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
 }
 
 .filter-field {
@@ -646,7 +724,7 @@
 }
 
 .filter-field > span {
-  color: var(--text-color, #242620);
+  color: var(--ink);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -656,10 +734,10 @@
   width: 100%;
   min-height: 46px;
   padding: 0 36px 0 13px;
-  border: 1px solid var(--border-color, #dedad2);
-  border-radius: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
   background: #fff;
-  color: var(--text-color, #242620);
+  color: var(--ink);
   font: inherit;
   font-size: 14px;
   cursor: pointer;
@@ -667,17 +745,17 @@
 
 .filter-field select:focus-visible,
 .filter-reset:focus-visible {
-  outline: 2px solid var(--accent-color, #bd6848);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
 .filter-reset {
   min-height: 46px;
   padding: 0 16px;
-  border: 1px solid var(--border-color, #dedad2);
-  border-radius: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
   background: transparent;
-  color: var(--text-color, #242620);
+  color: var(--ink);
   font: inherit;
   font-size: 13px;
   cursor: pointer;
@@ -687,13 +765,13 @@
 }
 
 .filter-reset:hover {
-  border-color: var(--accent-color, #bd6848);
+  border-color: var(--accent);
   background: #fff;
 }
 
 .projects-count {
   margin: 18px 0 22px;
-  color: var(--muted-color, #77766f);
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -708,9 +786,9 @@
 .favorites-filter {
   min-height: 40px;
   padding: 0 14px;
-  border: 1px solid var(--border-color, #dedad2);
-  border-radius: 8px;
-  color: var(--text-color, #242620);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  color: var(--ink);
   background: #fff;
   font: inherit;
   font-size: 13px;
@@ -723,15 +801,15 @@
 
 .favorites-filter span {
   margin-right: 6px;
-  color: var(--accent-color, #bd6848);
+  color: var(--accent);
   font-size: 16px;
 }
 
 .favorites-filter:hover,
 .favorites-filter[aria-pressed="true"] {
-  border-color: var(--accent-color, #bd6848);
+  border-color: var(--accent);
   color: white;
-  background: var(--accent-color, #bd6848);
+  background: var(--accent);
 }
 
 .favorites-filter[aria-pressed="true"] span {
@@ -739,7 +817,7 @@
 }
 
 .projects-view-options > span {
-  color: var(--muted-color, #77766f);
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -761,9 +839,9 @@
 .projects-empty {
   margin: 0;
   padding: 48px 20px;
-  border: 1px dashed var(--border-color, #dedad2);
-  border-radius: 12px;
-  color: var(--muted-color, #77766f);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-card);
+  color: var(--muted);
   text-align: center;
   line-height: 1.6;
 }
@@ -831,8 +909,8 @@
 }
 
 .filter-field .osnova-select-trigger {
-  border-color: var(--border-color, #dedad2);
-  border-radius: 8px;
+  border-color: var(--line);
+  border-radius: var(--radius-control);
   font-size: 14px;
 }
 

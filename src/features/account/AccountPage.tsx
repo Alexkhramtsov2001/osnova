@@ -178,66 +178,6 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
               </p>
             )}
 
-            <DemoProjectChat
-              projects={favoriteIds
-                .map((id) => projects.find((candidate) => candidate.number === id))
-                .filter((project) => project !== undefined)}
-            />
-
-            <section className="account-data-section" aria-labelledby="account-favorites-title">
-              <div className="account-section-heading">
-                <div>
-                  <p className="eyebrow">КОРОТКИЙ СПИСОК</p>
-                  <h2 id="account-favorites-title">Избранные дома</h2>
-                </div>
-                <Link className="button button-secondary" to="/projects">
-                  Выбрать дом
-                </Link>
-              </div>
-              {favoriteIds.length ? (
-                <div className="account-project-list">
-                  {favoriteIds.map((id) => {
-                    const project = projects.find((candidate) => candidate.number === id);
-                    if (!project) return null;
-                    return (
-                      <article className="account-project-card" key={project.number}>
-                        <img src={project.image} alt="" loading="lazy" />
-                        <div>
-                          <p className="eyebrow">
-                            {project.area} М² / {project.floors} ЭТАЖА
-                          </p>
-                          <h3>{project.name}</h3>
-                          <p>{project.description}</p>
-                          <div className="account-card-actions">
-                            <Link
-                              className="button button-primary"
-                              to={`/projects/${project.number}`}
-                            >
-                              Открыть проект
-                            </Link>
-                            <button
-                              className="account-text-button"
-                              type="button"
-                              onClick={() => removeFavorite(project.number)}
-                            >
-                              Убрать из избранного
-                            </button>
-                          </div>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="account-empty-state">
-                  <p>Пока нет избранных домов.</p>
-                  <Link className="button button-primary" to="/projects">
-                    Посмотреть каталог
-                  </Link>
-                </div>
-              )}
-            </section>
-
             <section className="account-data-section" aria-labelledby="account-estimates-title">
               <div className="account-section-heading">
                 <div>
@@ -318,6 +258,66 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                 </div>
               )}
             </section>
+
+            <section className="account-data-section" aria-labelledby="account-favorites-title">
+              <div className="account-section-heading">
+                <div>
+                  <p className="eyebrow">КОРОТКИЙ СПИСОК</p>
+                  <h2 id="account-favorites-title">Избранные дома</h2>
+                </div>
+                <Link className="button button-secondary" to="/projects">
+                  Выбрать дом
+                </Link>
+              </div>
+              {favoriteIds.length ? (
+                <div className="account-project-list">
+                  {favoriteIds.map((id) => {
+                    const project = projects.find((candidate) => candidate.number === id);
+                    if (!project) return null;
+                    return (
+                      <article className="account-project-card" key={project.number}>
+                        <img src={project.image} alt="" loading="lazy" />
+                        <div>
+                          <p className="eyebrow">
+                            {project.area} М² / {project.floors} ЭТАЖА
+                          </p>
+                          <h3>{project.name}</h3>
+                          <p>{project.description}</p>
+                          <div className="account-card-actions">
+                            <Link
+                              className="button button-primary"
+                              to={`/projects/${project.number}`}
+                            >
+                              Открыть проект
+                            </Link>
+                            <button
+                              className="account-text-button"
+                              type="button"
+                              onClick={() => removeFavorite(project.number)}
+                            >
+                              Убрать из избранного
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="account-empty-state">
+                  <p>Пока нет избранных домов.</p>
+                  <Link className="button button-primary" to="/projects">
+                    Посмотреть каталог
+                  </Link>
+                </div>
+              )}
+            </section>
+
+            <DemoProjectChat
+              projects={favoriteIds
+                .map((id) => projects.find((candidate) => candidate.number === id))
+                .filter((project) => project !== undefined)}
+            />
           </>
         )}
         <p className="account-storage-note">

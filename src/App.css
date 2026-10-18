@@ -3,12 +3,6 @@
 }
 
 .site-shell {
-  --accent: #b95e43;
-  --accent-dark: #98462f;
-  --ink: #252621;
-  --muted: #686a61;
-  --paper: #f7f6f2;
-  --line: #e4e1d9;
   color: var(--ink);
   background: var(--paper);
 }
@@ -178,7 +172,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-4);
   padding: 0 20px;
   font-size: 14px;
   font-weight: 600;
@@ -1035,5 +1029,253 @@
   .mobile-nav a {
     padding-block: 9px;
     font-size: 18px;
+  }
+}
+
+/* Shared component geometry; page grids and typography stay local. */
+.site-shell
+  :is(
+    button:not(.project-favorite):not([role="tab"]),
+    .button,
+    .header-contact,
+    .mobile-account-link,
+    .project-calculate-link
+  ),
+.site-shell
+  :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="number"]),
+    textarea,
+    select,
+    .estimate-number-wrap
+  ) {
+  border-radius: var(--radius-control);
+}
+
+.site-shell :is(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.site-shell .estimate-number-wrap input:focus-visible {
+  outline: none;
+}
+
+.site-shell
+  :is(
+    .project-image-wrap,
+    .team-card,
+    .partner-card,
+    .review-card,
+    .vacancy-card,
+    .contact-option,
+    .payment-method-card,
+    .payment-guide-card,
+    .account-project-card,
+    .account-estimate-card,
+    .estimate-saved-item,
+    .estimate-stage,
+    .estimate-duration-card,
+    .estimate-breakdown,
+    .payment-appointment-fields,
+    .estimate-request-card,
+    .account-empty-state,
+    .projects-empty
+  ) {
+  border-radius: var(--radius-card);
+}
+
+.site-shell :is(.project-image, .team-portrait, .account-project-card > img) {
+  border-start-start-radius: var(--radius-card);
+  border-start-end-radius: var(--radius-card);
+}
+
+.site-shell .project-image {
+  border-radius: var(--radius-card);
+}
+
+.site-shell
+  :is(
+    .project-filters,
+    .estimate-settings,
+    .estimate-results,
+    .estimate-total-card,
+    .estimate-saved,
+    .payment-bank-strip,
+    .payment-empty,
+    .payment-configuration,
+    .payment-totals,
+    .payment-checkout-main,
+    .payment-confirm-panel,
+    .account-login-card,
+    .account-auth-panel,
+    .account-chat-panel,
+    .finder-card,
+    .finder-next,
+    .home-discover-card
+  ) {
+  border-radius: var(--radius-panel);
+}
+
+.site-shell :is(.payment-route-grid label, .payment-time-slots label, .finder-options label) {
+  border-radius: var(--radius-control);
+}
+
+.site-shell
+  :is(
+    .button-primary,
+    .header-account,
+    .mobile-account-link,
+    .estimate-choice.is-active,
+    .estimate-request-toggle,
+    .estimate-request-copy,
+    .estimate-demo-submit,
+    .favorites-filter[aria-pressed="true"]
+  ) {
+  color: #fff;
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+}
+
+.site-shell
+  :is(
+    .button-primary,
+    .header-account,
+    .mobile-account-link,
+    .estimate-request-toggle,
+    .estimate-request-copy,
+    .estimate-demo-submit
+  ):hover:not(:disabled) {
+  border-color: var(--accent-dark);
+  background: var(--accent-dark);
+}
+
+.site-shell .payment-time-slots label:is(:hover, .is-selected) {
+  border-color: var(--action-primary);
+  background: var(--action-primary);
+}
+
+/* Shared finishing rules for the OSNOVA 2.0 content pages. */
+.site-shell :is(.page-intro, .company-hero, .house-finder, .payment-guide, .project-detail) h1 {
+  font-size: var(--text-page-title);
+  line-height: 1.1;
+  letter-spacing: -0.055em;
+}
+
+.site-shell :is(.content-section, .payment-guide, .finder-result) h2 {
+  font-size: var(--text-section-title);
+  line-height: 1.15;
+}
+
+.site-shell
+  :is(.vacancy-card, .payment-guide-card, .payment-guide-steps, .payment-guide-sources)
+  h3 {
+  font-size: var(--text-card-title);
+  line-height: 1.3;
+}
+
+.site-shell :is(.interior-intro-copy, .section-lead, .finder-lead, .payment-guide-lead) {
+  max-width: 68ch;
+}
+
+.site-shell :is(.demo-contact-form, .vacancy-chat) label {
+  font-size: var(--text-label);
+  gap: var(--space-2);
+}
+
+.site-shell
+  :is(
+    .demo-label,
+    .trust-note,
+    .contact-section-note,
+    .site-footer > p,
+    .project-detail-price p,
+    .payment-guide-documents > p,
+    .vacancy-chat form p
+  ) {
+  font-size: var(--text-label);
+  line-height: 1.7;
+}
+
+.site-shell
+  :is(
+    .project-detail-scenario,
+    .project-detail-specs > div,
+    .trust-metric,
+    .company-timeline li,
+    .demo-chat-message,
+    .chat-bubble,
+    .favorite-toast,
+    .vacancy-empty,
+    .partner-category
+  ) {
+  border-radius: var(--radius-card);
+}
+
+.site-shell
+  :is(
+    .project-detail-content aside,
+    .project-detail-price,
+    .demo-chat,
+    .payment-guide-sources,
+    .vacancy-filters,
+    .vacancy-chat
+  ) {
+  border-radius: var(--radius-panel);
+}
+
+.site-shell .vacancy-chat {
+  overflow: hidden;
+}
+
+.site-shell .project-detail-facts span {
+  border-radius: var(--radius-control);
+}
+
+.site-shell :is(.demo-contact-form input, .demo-contact-form textarea):hover {
+  border-color: var(--accent);
+}
+
+.site-shell :is(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .site-shell
+    :is(
+      .page-intro,
+      .content-section,
+      .home-popular,
+      .calculator-promo,
+      .final-cta,
+      .payment-guide-intro,
+      .payment-guide-details,
+      .payment-guide-process,
+      .payment-guide-next
+    ) {
+    padding-block: var(--space-8);
+  }
+
+  .site-shell .page-intro {
+    padding-bottom: var(--space-4);
+  }
+
+  .site-shell :is(.page-intro, .company-hero) h1 {
+    margin-bottom: var(--space-6);
+  }
+
+  .site-shell :is(.content-section, .home-popular, .contact-form-layout) h2 {
+    margin-bottom: var(--space-6);
+  }
+
+  .site-shell
+    :is(
+      .project-detail-scenario,
+      .project-detail-specs > div,
+      .project-detail-content aside,
+      .project-detail-price,
+      .payment-guide-card,
+      .payment-guide-sources
+    ) {
+    padding: var(--space-6);
   }
 }
