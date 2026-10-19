@@ -9,14 +9,11 @@ for (const [width, height] of [
     await page.setViewportSize({ width, height });
     await page.goto("/");
     const actions = (await page.locator(".hero-actions").boundingBox())!;
-    const captions = (await page.locator(".hero-bottom").boundingBox())!;
-    expect(captions.y).toBeGreaterThanOrEqual(actions.y + actions.height);
+    const hero = (await page.locator(".hero").boundingBox())!;
+    expect(hero.y + hero.height - actions.y - actions.height).toBeLessThanOrEqual(1);
+    await expect(page.locator(".hero-note, .hero-bottom")).toHaveCount(0);
     expect(
-      await page
-        .locator(".hero-bottom")
-        .evaluate((node) =>
-          Boolean(node.previousElementSibling?.classList.contains("hero-actions")),
-        ),
+      await page.locator(".hero-actions").evaluate((node) => node.nextElementSibling === null),
     ).toBe(true);
     for (const card of await page.locator(".home-popular .project-card").all()) {
       const image = (await card.locator(".project-image-link").boundingBox())!;

@@ -28,11 +28,14 @@ for (const [width, height] of [
     expect(reviewsGap).toBeLessThanOrEqual(50);
     await expect(page.locator(".trust-section")).not.toContainText("Перед реальной оплатой");
     await expect(page.locator(".testimonials > p")).toHaveCount(1);
-    expect(
-      await page
-        .locator(".hero-actions")
-        .evaluate((node) => node.nextElementSibling?.classList.contains("hero-bottom")),
-    ).toBe(true);
+    await expect(page.locator(".hero-note, .hero-bottom")).toHaveCount(0);
+    const trustGap = await page.evaluate(() => {
+      const metrics = document.querySelector(".trust-metrics")!.getBoundingClientRect();
+      const discover = document.querySelector(".home-discover-card")!.getBoundingClientRect();
+      return discover.top - metrics.bottom;
+    });
+    expect(trustGap).toBeGreaterThanOrEqual(32);
+    expect(trustGap).toBeLessThanOrEqual(40);
     if (width === 1440)
       expect(
         await page

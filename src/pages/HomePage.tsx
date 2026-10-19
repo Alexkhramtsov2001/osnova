@@ -51,11 +51,6 @@ export default function HomePage() {
               Проектируем и строим современные дома, в которых продумана каждая деталь — от
               фундамента до последнего штриха.
             </p>
-
-            <div className="hero-note">
-              <span className="hero-note-line" />
-              <p>Понятная смета. Продуманный результат.</p>
-            </div>
           </div>
 
           <div
@@ -137,11 +132,6 @@ export default function HomePage() {
             <Link className="button button-secondary button-center-label" to="/projects">
               <span>Смотреть проекты</span> <ArrowIcon />
             </Link>
-          </div>
-          <div className="hero-bottom">
-            <span>01 — ПРОЕКТИРУЕМ</span>
-            <span>02 — РАССЧИТЫВАЕМ</span>
-            <span>03 — СТРОИМ</span>
           </div>
         </section>
         <section className="section-wrap home-popular">
