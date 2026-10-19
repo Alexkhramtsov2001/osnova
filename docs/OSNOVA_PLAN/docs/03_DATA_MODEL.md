@@ -1,5 +1,7 @@
 # v2.3 + v2.13-B — Модель данных
 
+> **Архив от 15.10.2026, не действующее ТЗ или инструкция.** Для v1 применяются [V1_SPECIFICATION.md](../V1_SPECIFICATION.md), для порядка работы — [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md). При расхождении они имеют приоритет над текстом ниже. Старые допуски, статусы поиска, объём редактора, маршруты и проверки не переносить в реализацию без сверки; приёмка v1 — раздел 11 спецификации. Исходный текст сохранён для истории.
+
 `Project`: id, name, createdAt, updatedAt, projectRevision, geometryRevision, pricingRevision, requirements, building, constructionSettings, pricingSettings, calculationMetadata, geometryStatus (`notGenerated|valid|requiresRegeneration`). Версия файлового контейнера `.osnova` отличается от версии внутренней модели.
 
 `RoomRequirement`: UUID, type, name, targetAreaQ4, floorPreference, adjacencyPreferences, orientationPreference, required. Ввод м² преобразуется точно, без скрытого округления. Требования не исчезают после объединения комнат.

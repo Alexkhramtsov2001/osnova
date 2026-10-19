@@ -1,5 +1,7 @@
 # v2.10 + v2.12 — Архитектура
 
+> **Архив от 15.10.2026, не действующее ТЗ или инструкция.** Для v1 применяются [V1_SPECIFICATION.md](../V1_SPECIFICATION.md), для порядка работы — [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md). При расхождении они имеют приоритет над текстом ниже. Старые допуски, статусы поиска, объём редактора, маршруты и проверки не переносить в реализацию без сверки; приёмка v1 — раздел 11 спецификации. Исходный текст сохранён для истории.
+
 Project Controller — единственный владелец commit канонического проекта. Generator, solver, validator, QuantityTakeoff, estimate, PDF — независимые функции над immutable входом. UI state (selection, camera, drag preview) отдельно. Кэш вычислений derived, маркирован geometryRevision/pricingRevision/catalogVersion/engineVersion.
 
 Предлагаемая структура `src/features/plan/{app,domain,engine/geometry,engine/generator,engine/solver,engine/validator,adapters,editor,estimate,persistence,export,workers,pages,components,tests}`; уточнить после аудита репозитория.
