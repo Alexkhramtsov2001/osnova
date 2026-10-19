@@ -11,6 +11,7 @@ import {
   type ChatTurn,
   type GlobalTopic,
 } from "../features/demoChat/globalChat";
+import ArrowIcon from "./ArrowIcon";
 import "./GlobalDemoChat.css";
 
 export default function GlobalDemoChat() {
@@ -98,6 +99,9 @@ export default function GlobalDemoChat() {
           fill="none"
           stroke="currentColor"
           strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          focusable="false"
           aria-hidden="true"
         >
           <path d="M20 11.5a8 8 0 0 1-8 8H5l-3 2v-10a9 9 0 0 1 18 0Z" />
@@ -166,7 +170,7 @@ export default function GlobalDemoChat() {
                       <p>{content.answer}</p>
                       {content.action && (
                         <Link to={content.action.to} onClick={close}>
-                          {content.action.label} <span aria-hidden="true">↗</span>
+                          {content.action.label} <ArrowIcon />
                         </Link>
                       )}
                     </div>

@@ -18,6 +18,7 @@
   background: var(--action-primary);
   color: white;
   cursor: pointer;
+  transition: background-color 180ms ease;
 }
 .global-chat-launcher svg {
   width: 24px;
@@ -134,7 +135,9 @@
   margin: 0;
 }
 .global-chat-answer a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-top: 8px;
   color: var(--accent-dark);
   text-underline-offset: 3px;
@@ -211,8 +214,8 @@ body:has(
 
 /* Keep critical full-width actions clear of the fixed launcher without moving it. */
 @media (max-width: 600px) {
-  #site-content :is(.estimate-next-actions, .estimate-request-actions, .estimate-contact-actions) {
-    padding-right: 64px;
+  #site-content .estimate-contact-actions {
+    padding-right: var(--space-16);
   }
   #site-content .payment-confirm-button {
     width: calc(100% - 64px);
@@ -249,5 +252,17 @@ body:has(
   .global-chat-notice {
     font-size: 12px;
     padding-block: 8px;
+  }
+}
+
+.global-chat-launcher:active {
+  background: var(--accent-dark);
+}
+.global-chat-answer a:hover {
+  color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .global-chat-launcher {
+    transition: none;
   }
 }

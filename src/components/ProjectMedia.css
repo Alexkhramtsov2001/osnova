@@ -66,21 +66,85 @@
   animation: plan-appear 160ms ease-out;
   user-select: none;
 }
-.project-detail .floor-plan-caption {
+.floor-plan-next-arrow {
+  transform: rotate(180deg);
+}
+.floor-plan-disclosure {
   max-width: 1040px;
-  margin: var(--space-4) auto;
+  margin: var(--space-4) auto 0;
+  padding: 0 var(--space-6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+.floor-plan-rooms-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-4) 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  text-align: left;
+  transition: color 180ms ease;
+}
+.floor-plan-rooms-toggle:hover {
+  color: var(--accent-dark);
+}
+.floor-plan-rooms-toggle > svg {
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.floor-plan-disclosure[data-open="true"] .floor-plan-rooms-toggle > svg {
+  transform: rotate(180deg);
+}
+.floor-plan-rooms-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 360ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.floor-plan-disclosure[data-open="true"] .floor-plan-rooms-panel {
+  grid-template-rows: 1fr;
+}
+.floor-plan-rooms-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 220ms ease,
+    transform 360ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.floor-plan-disclosure[data-open="true"] .floor-plan-rooms-inner {
+  opacity: 1;
+  transform: none;
 }
 .floor-plan-rooms {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3) var(--space-4);
+  margin: 0;
+  padding: 0 0 var(--space-4);
   list-style: none;
 }
 .project-detail .floor-plan-rooms li {
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+@media (max-width: 600px) {
+  .floor-plan-disclosure {
+    padding-inline: var(--space-4);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floor-plan-rooms-panel,
+  .floor-plan-rooms-inner,
+  .floor-plan-rooms-toggle > svg {
+    transition-duration: 0.01ms;
+  }
 }
 @keyframes plan-appear {
   from {

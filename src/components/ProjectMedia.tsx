@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { Project } from "../features/projects/catalog";
 import { getProjectFloorPlans } from "../features/projects/floorPlans";
 import ImageViewer, { type ViewerImage } from "./ImageViewer";
+import ArrowIcon from "./ArrowIcon";
 import "./ProjectMedia.css";
 
 export function ProjectPhoto({ project }: { project: Project }) {
@@ -25,6 +26,7 @@ export function ProjectPhoto({ project }: { project: Project }) {
 export function ProjectFloorPlans({ project }: { project: Project }) {
   const plans = getProjectFloorPlans(project);
   const [floor, setFloor] = useState(0);
+  const [roomsOpen, setRoomsOpen] = useState(false);
   const [image, setImage] = useState<ViewerImage | null>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const suppressClick = useRef(false);
@@ -52,7 +54,7 @@ export function ProjectFloorPlans({ project }: { project: Project }) {
             disabled={floor === 0}
             onClick={() => changeFloor(floor - 1)}
           >
-            ←
+            <ArrowIcon direction="left" />
           </button>
         )}
         <span role="status" aria-live="polite">
@@ -66,7 +68,7 @@ export function ProjectFloorPlans({ project }: { project: Project }) {
             disabled={floor === plans.length - 1}
             onClick={() => changeFloor(floor + 1)}
           >
-            →
+            <ArrowIcon direction="left" className="floor-plan-next-arrow" />
           </button>
         )}
       </div>
@@ -111,12 +113,32 @@ export function ProjectFloorPlans({ project }: { project: Project }) {
       >
         <img key={plan.src} src={plan.src} alt={plan.alt} draggable={false} />
       </button>
-      <p className="floor-plan-caption">Помещения на этаже</p>
-      <ul className="floor-plan-rooms">
-        {plan.rooms.map((room) => (
-          <li key={room}>{room}</li>
-        ))}
-      </ul>
+      <div className="floor-plan-disclosure" data-open={roomsOpen}>
+        <button
+          className="floor-plan-rooms-toggle"
+          type="button"
+          aria-expanded={roomsOpen}
+          aria-controls="floor-plan-rooms-panel"
+          onClick={() => setRoomsOpen((open) => !open)}
+        >
+          <span>Помещения на этаже</span>
+          <ArrowIcon direction="chevron-down" />
+        </button>
+        <div
+          id="floor-plan-rooms-panel"
+          className="floor-plan-rooms-panel"
+          aria-hidden={!roomsOpen}
+          inert={!roomsOpen}
+        >
+          <div className="floor-plan-rooms-inner">
+            <ul className="floor-plan-rooms">
+              {plan.rooms.map((room) => (
+                <li key={room}>{room}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
       {image && <ImageViewer image={image} onClose={() => setImage(null)} />}
     </section>
   );

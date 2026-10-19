@@ -13,7 +13,7 @@
 
 .project-detail-head {
   max-width: 940px;
-  margin-bottom: 42px;
+  margin-bottom: var(--space-8);
 }
 
 .project-detail h1 {
@@ -35,7 +35,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
-  margin-top: 28px;
+  margin-top: var(--space-6);
 }
 
 .project-detail-facts span {
@@ -63,7 +63,7 @@
 
 .project-detail-content {
   display: block;
-  padding: var(--space-8) 0;
+  padding: var(--space-6) 0;
 }
 
 .project-detail h2 {
@@ -110,7 +110,7 @@
 }
 
 .project-detail-section {
-  padding: 32px 0;
+  padding: var(--space-6) 0;
   border-top: 1px solid var(--line);
 }
 
@@ -127,13 +127,13 @@
 .project-detail-specs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 36px;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
 }
 
 .project-detail-scenario,
 .project-detail-specs > div {
-  padding: 28px;
+  padding: var(--space-6);
   background: #f0ede6;
 }
 
@@ -247,11 +247,11 @@
   }
 
   .project-detail-content {
-    padding: 28px 0 32px;
+    padding: var(--space-6) 0;
   }
 
   .project-detail-section {
-    padding: 32px 0;
+    padding: var(--space-6) 0;
   }
 
   .project-detail-scenarios,
@@ -262,6 +262,23 @@
 
   .project-detail-scenario,
   .project-detail-specs > div {
-    padding: 22px;
+    padding: var(--space-4);
   }
+}
+
+.project-detail-section > :first-child,
+.project-detail-content > section > :first-child {
+  margin-top: 0;
+}
+.project-detail-section > :last-child,
+.project-detail-content > section > :last-child {
+  margin-bottom: 0;
+}
+
+.project-detail .project-detail-final {
+  padding-bottom: 0;
+}
+.project-detail .contact-section {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
 }

@@ -4,6 +4,9 @@ test("слайд шоу показывает локальные экстерье
   page,
   request,
 }) => {
+  // Image requests must not race the slideshow's automatic rotation.
+  await page.clock.install();
+  await page.clock.pauseAt(new Date(Date.now() + 1000));
   await page.goto("/");
   const images = await page
     .locator(".project-image")
