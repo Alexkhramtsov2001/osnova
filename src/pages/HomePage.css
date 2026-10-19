@@ -1173,6 +1173,10 @@
   gap: var(--space-4);
 }
 
+.site-shell.home-page .final-cta {
+  padding-bottom: var(--space-12);
+}
+
 .home-page .final-cta h2 {
   margin: 0;
 }

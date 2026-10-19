@@ -1,6 +1,6 @@
 .account-page {
   padding-top: 40px;
-  padding-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
 }
 
 .account-page .project-detail-back {
@@ -743,7 +743,7 @@
   }
   .account-page {
     padding-top: 26px;
-    padding-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
   }
 
   .account-page .project-detail-back {
@@ -795,7 +795,7 @@
 }
 .account-storage-note {
   margin: var(--space-6) 0 0;
-  padding: 20px 0;
+  padding: var(--space-4) 0 0;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 12px;

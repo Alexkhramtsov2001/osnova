@@ -1,5 +1,9 @@
 .payment-page {
-  padding-bottom: 58px;
+  padding-bottom: 0;
+}
+
+.payment-page > :last-child {
+  padding-bottom: var(--space-8);
 }
 
 .payment-intro {
@@ -478,7 +482,7 @@
 
 @media (max-width: 760px) {
   .payment-page {
-    padding-bottom: 28px;
+    padding-bottom: 0;
   }
 
   .payment-intro {

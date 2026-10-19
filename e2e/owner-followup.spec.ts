@@ -19,6 +19,15 @@ for (const [width, height] of [
       return box(".final-cta h2").top - box(".home-discover-card:last-child").bottom;
     });
     expect(gap).toBeLessThanOrEqual(41);
+    const ctaGap = await page.evaluate(() => {
+      const button = document.querySelector(".final-cta .button")!.getBoundingClientRect();
+      const footer = document.querySelector(".site-footer")!.getBoundingClientRect();
+      return footer.top - button.bottom;
+    });
+    expect(ctaGap).toBeGreaterThanOrEqual(48);
+    expect(ctaGap).toBeLessThanOrEqual(50);
+    await expect(page.locator(".trust-section")).not.toContainText("Перед реальной оплатой");
+    await expect(page.locator(".testimonials > p")).toHaveCount(1);
     expect(
       await page
         .locator(".hero-actions")
@@ -41,24 +50,26 @@ for (const [width, height] of [
     for (const id of ["01", "02", "03", "04", "05", "06", "07", "08"]) {
       await page.goto(`/projects/${id}`);
       const image = page.locator(".project-detail-image");
-      await expect(image).toHaveCSS("object-fit", "contain");
+      const reframed = id === "01" || id === "07";
+      await expect(image).toHaveCSS("object-fit", reframed ? "cover" : "contain");
       await expect
         .poll(() => image.evaluate((node) => (node as HTMLImageElement).naturalWidth))
         .toBeGreaterThan(0);
-      const difference = await image.evaluate((node) => {
+      const difference = await image.evaluate((node, reframed) => {
         const image = node as HTMLImageElement;
-        return Math.abs(image.width / image.height - image.naturalWidth / image.naturalHeight);
-      });
+        const ratio = reframed ? 3 / 2 : image.naturalWidth / image.naturalHeight;
+        return Math.abs(image.width / image.height - ratio);
+      }, reframed);
       expect(difference).toBeLessThan(0.01);
       await noOverflow();
     }
     await page.goto("/account");
-    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "32px");
+    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "24px");
     await noOverflow();
     await page.evaluate(() => sessionStorage.setItem("osnova.demo-session.v1", "active:google"));
     await page.reload();
     await expect(page.getByRole("button", { name: "Выйти из демо", exact: true })).toBeVisible();
-    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "32px");
+    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "24px");
     await noOverflow();
     await page.goto("/about");
     const offices = page.locator(".demo-offices");
@@ -68,6 +79,7 @@ for (const [width, height] of [
       "padding-bottom",
       "16px",
     );
+    await expect(page.locator(".demo-offices + .content-section")).toHaveCSS("padding-top", "16px");
     await noOverflow();
     await page.goto("/vacancies");
     const count = await page.locator(".vacancy-card").count();
@@ -76,9 +88,48 @@ for (const [width, height] of [
     await expect(page.locator(".vacancy-follow")).toHaveCSS("padding-top", "24px");
     await more.click();
     await expect(page.locator(".vacancy-card")).toHaveCount(count + 10);
-    const moreBox = (await more.boundingBox())!;
-    const follow = (await page.locator(".vacancy-follow").boundingBox())!;
-    expect(follow.y - moreBox.y - moreBox.height).toBeLessThanOrEqual(17);
+    const followGap = await page.evaluate(() => {
+      const more = document.querySelector(".vacancy-more")!.getBoundingClientRect();
+      const follow = document.querySelector(".vacancy-follow")!.getBoundingClientRect();
+      return follow.top - more.bottom;
+    });
+    expect(followGap).toBeLessThanOrEqual(17);
     await noOverflow();
+  });
+
+  test(`нижний отступ оплаты и соседних страниц при ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    const footerGap = async (selector: string) =>
+      page.locator(selector).evaluate((node) => {
+        const footer = document.querySelector(".site-footer")!.getBoundingClientRect();
+        return footer.top - node.getBoundingClientRect().bottom;
+      });
+    const noOverflow = async () =>
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+    await page.goto("/payment");
+    expect(await footerGap(".payment-empty")).toBeLessThanOrEqual(33);
+    await noOverflow();
+    await page.goto("/calculator");
+    await page.getByRole("link", { name: "Оплатить (демо)", exact: true }).click();
+    await expect(page.locator(".demo-access-gate")).toBeVisible();
+    expect(await footerGap(".demo-access-actions")).toBeLessThanOrEqual(33);
+    await page.evaluate(() => sessionStorage.setItem("osnova.demo-session.v1", "active:google"));
+    await page.reload();
+    for (const name of [/Наличными полностью/, /^Ипотека/]) {
+      await page.getByRole("radio", { name }).check();
+      expect(await footerGap(".payment-checkout-layout")).toBeLessThanOrEqual(33);
+      await expect(page.locator(".payment-method-grid .payment-method-card")).toHaveCount(4);
+      await noOverflow();
+    }
+    for (const route of ["/compare", "/compare?projects=01,07,08", "/find-home"]) {
+      await page.goto(route);
+      const padding = await page
+        .locator("main")
+        .evaluate((node) => getComputedStyle(node).paddingBottom);
+      expect(padding).toBe("32px");
+      await noOverflow();
+    }
   });
 }

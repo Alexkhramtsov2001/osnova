@@ -1,6 +1,6 @@
 .house-finder {
   padding-top: 36px;
-  padding-bottom: 64px;
+  padding-bottom: var(--space-8);
   max-width: 1120px;
 }
 .finder-back {

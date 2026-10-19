@@ -55,6 +55,12 @@
   border-radius: var(--radius-panel);
 }
 
+.project-detail-image:is([src$="/scandinavia.jpg"], [src$="/prostor.jpg"]) {
+  width: min(100%, 1020px);
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
 .project-detail-content {
   display: block;
   padding: var(--space-8) 0;

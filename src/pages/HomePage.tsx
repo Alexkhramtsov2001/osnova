@@ -255,11 +255,6 @@ export default function HomePage() {
             ))}
           </div>
           <Testimonials />
-          <p className="trust-note">
-            Перед реальной оплатой запросите договор, точную смету, подтверждённые объекты и
-            контакты заказчиков с их согласия. Демонстрационный расчёт и PDF на этом сайте не
-            подтверждают выполнение строительных работ.
-          </p>
         </section>
         <section className="section-wrap home-discover" aria-label="Узнать больше об ОСНОВЕ">
           <article className="home-discover-card">
