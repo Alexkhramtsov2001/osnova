@@ -20,13 +20,52 @@
 .image-viewer::backdrop {
   background: rgb(22 24 21 / 75%);
 }
-.image-viewer > img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+.image-viewer-stage {
+  position: absolute;
+  inset: calc(80px + env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+    calc(76px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  overflow: hidden;
+  touch-action: none;
+}
+.image-viewer-stage > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: contain;
-  min-height: 0;
+  user-select: none;
+}
+.image-viewer-tools {
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  display: flex;
+  gap: 4px;
+}
+.image-viewer-tools button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: var(--radius-control);
+  color: white;
+  background: #30322c;
+  font: inherit;
+}
+.image-viewer-tools button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.image-viewer-tools button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+.image-viewer > p span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #deddd5;
 }
 .image-viewer > p {
   position: absolute;
@@ -44,7 +83,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 8px 16px;
+  padding: 8px 10px;
   border: 1px solid #aaa;
   border-radius: var(--radius-control);
   color: white;

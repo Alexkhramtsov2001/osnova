@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { lockOverlayScroll } from "./overlayScroll";
 import { Link, useLocation } from "react-router";
 import {
   chatContext,
@@ -24,11 +26,10 @@ export default function GlobalDemoChat() {
     }
   });
   const [storageUnavailable, setStorageUnavailable] = useState(false);
-  const [bottom, setBottom] = useState(16);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDialogElement>(null);
   const close = () => {
     setOpen(false);
     buttonRef.current?.focus({ preventScroll: true });
@@ -36,80 +37,33 @@ export default function GlobalDemoChat() {
 
   useEffect(() => {
     if (!open) return;
-    const frame = requestAnimationFrame(() => closeRef.current?.focus({ preventScroll: true }));
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
-  useEffect(() => {
-    if (!open) return;
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !document.querySelector("dialog[open]")) {
-        setOpen(false);
-        buttonRef.current?.focus({ preventScroll: true });
-      }
+    const panel = panelRef.current!;
+    const launcher = buttonRef.current;
+    const mobile = window.matchMedia("(max-width: 600px)");
+    let unlock: (() => void) | undefined;
+    const show = () => {
+      panel.close();
+      unlock?.();
+      unlock = undefined;
+      if (mobile.matches) {
+        unlock = lockOverlayScroll();
+        panel.showModal();
+      } else panel.show();
+      closeRef.current?.focus({ preventScroll: true });
     };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    show();
+    mobile.addEventListener("change", show);
+    return () => {
+      mobile.removeEventListener("change", show);
+      panel.close();
+      unlock?.();
+      launcher?.focus({ preventScroll: true });
+    };
   }, [open]);
   useEffect(() => {
     const log = transcriptRef.current;
     if (open && log) log.scrollTop = log.scrollHeight;
   }, [history, open]);
-
-  // Keep the closed launcher away from nearby form controls without changing page grids.
-  useEffect(() => {
-    if (open) return;
-    let frame = 0;
-    const place = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const button = buttonRef.current;
-        if (!button || button.getClientRects().length === 0) return;
-        const box = button.getBoundingClientRect();
-        const safeBottom = parseFloat(getComputedStyle(rootRef.current!).paddingBottom) || 0;
-        const controls = [
-          ...document.querySelectorAll<HTMLElement>(
-            "#site-content main :is(a,button,input,select,textarea,label,summary), #site-content .site-footer :is(a,p), .favorite-toast, .estimate-disclaimer, .payment-confirm-note, .payment-final",
-          ),
-        ]
-          .filter((node) => node.getClientRects().length && !node.closest("[inert]"))
-          .map((node) => node.getBoundingClientRect())
-          .filter((rect) => rect.bottom > 0 && rect.top < innerHeight);
-        let selected = 16;
-        let leastOverlap = Infinity;
-        for (let offset = 16; offset <= innerHeight - 160; offset += 8) {
-          const top = innerHeight - safeBottom - offset - box.height;
-          const overlap = controls.reduce(
-            (area, rect) =>
-              area +
-              Math.max(0, Math.min(box.right, rect.right + 4) - Math.max(box.left, rect.left - 4)) *
-                Math.max(
-                  0,
-                  Math.min(top + box.height, rect.bottom + 4) - Math.max(top, rect.top - 4),
-                ),
-            0,
-          );
-          if (overlap < leastOverlap) {
-            selected = offset;
-            leastOverlap = overlap;
-          }
-          if (overlap === 0) break;
-        }
-        setBottom((current) => (current === selected ? current : selected));
-      });
-    };
-    place();
-    window.addEventListener("scroll", place, { passive: true });
-    window.addEventListener("resize", place);
-    const observer = new ResizeObserver(place);
-    const content = document.getElementById("site-content");
-    if (content) observer.observe(content);
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener("scroll", place);
-      window.removeEventListener("resize", place);
-    };
-  }, [pathname, open]);
 
   function ask(topic: GlobalTopic) {
     const next = [
@@ -128,11 +82,10 @@ export default function GlobalDemoChat() {
       setStorageUnavailable(true);
     }
   }
-  return (
-    <div className="global-demo-chat" ref={rootRef}>
+  return createPortal(
+    <div className={`global-demo-chat${open ? " chat-open" : ""}`}>
       <button
         className="global-chat-launcher"
-        style={{ bottom: `calc(${open ? 16 : bottom}px + env(safe-area-inset-bottom))` }}
         ref={buttonRef}
         type="button"
         aria-label={open ? "Закрыть демонстрационный чат" : "Открыть демонстрационный чат"}
@@ -152,11 +105,20 @@ export default function GlobalDemoChat() {
         </svg>
       </button>
       {open && (
-        <section
+        <dialog
+          ref={panelRef}
+          onCancel={(event) => {
+            event.preventDefault();
+            close();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              close();
+            }
+          }}
           id="global-chat-panel"
           className="global-chat-panel"
-          role="dialog"
-          aria-modal="false"
           aria-labelledby="global-chat-title"
         >
           <header>
@@ -224,8 +186,9 @@ export default function GlobalDemoChat() {
               </button>
             ))}
           </div>
-        </section>
+        </dialog>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 }

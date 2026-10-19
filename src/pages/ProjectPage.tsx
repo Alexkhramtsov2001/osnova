@@ -84,8 +84,8 @@ export default function ProjectPage() {
         </div>
         <ProjectFloorPlans key={`plans-${project.number}`} project={project} />
         <section className="project-detail-section" aria-labelledby="project-scenarios-title">
-          <p className="eyebrow">СЦЕНАРИИ ЖИЗНИ</p>
-          <h2 id="project-scenarios-title">Как можно использовать этот дом</h2>
+          <p className="eyebrow">ВЫБОР ПРОЕКТА</p>
+          <h2 id="project-scenarios-title">Кому подходит данный проект</h2>
           <div className="project-detail-scenarios">
             {project.scenarios.map((scenario, index) => (
               <div className="project-detail-scenario" key={scenario}>

@@ -26,8 +26,9 @@ for (const [width, height] of [
   [768, 1024],
   [390, 844],
   [375, 812],
+  [375, 500],
 ]) {
-  test(`все планировки, этажи и мобильный свайп при ${width}px`, async ({ page }, info) => {
+  test(`все планировки, этажи и мобильный свайп при ${width}x${height}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height });
     for (const project of projects) {
       await page.goto(`/projects/${project.number}`);
@@ -36,6 +37,24 @@ for (const [width, height] of [
         section.getByRole("heading", { name: "Планировки этажей", exact: true }),
       ).toBeVisible();
       await expect(section).toContainText("Это не рабочая документация");
+      await expect(
+        page.getByRole("heading", { name: "Кому подходит данный проект", exact: true }),
+      ).toBeVisible();
+      await expect(page.locator(".project-detail-scenarios")).toContainText(`${project.area} м²`);
+      await expect(page.locator(".project-photo-hint")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Увеличить план", exact: true })).toHaveCount(
+        0,
+      );
+      const gap = await page
+        .locator(".project-detail-guidance h2")
+        .first()
+        .evaluate(
+          (node) =>
+            node.getBoundingClientRect().top -
+            document.querySelector(".project-detail-content ul")!.getBoundingClientRect().bottom,
+        );
+      expect(gap).toBeLessThanOrEqual(72);
+      expect(gap).toBeGreaterThanOrEqual(16);
       const image = section.locator(".floor-plan-stage img");
       await image.scrollIntoViewIfNeeded();
       await expect
@@ -67,10 +86,21 @@ for (const [width, height] of [
         animations: "disabled",
       });
       await noOverflow(page);
+      await page
+        .locator(".project-detail-guidance")
+        .screenshot({ path: info.outputPath(`${project.number}-guidance.png`) });
+      await page
+        .locator(".project-detail-scenarios")
+        .screenshot({ path: info.outputPath(`${project.number}-audience.png`) });
+      await page.screenshot({
+        path: info.outputPath(`${project.number}-full.png`),
+        fullPage: true,
+      });
     }
     await page.goto("/projects/02");
     await page.locator(".floor-plan-stage").scrollIntoViewIfNeeded();
     await swipe(page, -120);
+    await expect(page.locator(".image-viewer")).toHaveCount(0);
     await expect(page.locator(".floor-plan-controls [role=status]")).toHaveText("Этаж 2 из 2");
     await swipe(page, -120);
     await expect(page.locator(".floor-plan-controls [role=status]")).toHaveText("Этаж 2 из 2");
@@ -86,7 +116,70 @@ for (const [width, height] of [
     await page.screenshot({ path: info.outputPath("project-full.png"), fullPage: true });
   });
 
-  test(`полноэкранные фото, планы и возврат фокуса при ${width}px`, async ({ page }, info) => {
+  test(`модальные панели, масштаб и стабильная кнопка при ${width}x${height}`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width, height });
+    await page.goto("/projects/02");
+    const photo = page.locator(".project-photo-open");
+    await photo.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath("photo-before.png") });
+    await photo.click();
+    await page.screenshot({ path: info.outputPath("photo-after.png") });
+    await page.keyboard.press("Escape");
+    const plan = page.locator(".floor-plan-stage");
+    await plan.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath("plan-before.png") });
+    await plan.click();
+    const image = page.locator(".image-viewer img");
+    const before = (await plan.boundingBox())!;
+    await page.getByRole("button", { name: "Увеличить изображение", exact: true }).click();
+    await page.getByRole("button", { name: "Увеличить изображение", exact: true }).click();
+    expect((await image.boundingBox())!.width).toBeGreaterThan(before.width * 1.1);
+    const stage = (await page.locator(".image-viewer-stage").boundingBox())!;
+    await page.mouse.move(stage.x + stage.width / 2, stage.y + stage.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(stage.x + stage.width / 2 + 40, stage.y + stage.height / 2 + 30, {
+      steps: 5,
+    });
+    await page.mouse.up();
+    await expect(image).not.toHaveCSS("transform", "matrix(2, 0, 0, 2, 0, 0)");
+    await page.screenshot({ path: info.outputPath("plan-zoomed.png") });
+    await page.keyboard.press("Escape");
+    const saved = await page.evaluate(() => scrollY);
+    await page.screenshot({ path: info.outputPath("chat-closed.png") });
+    await page.getByRole("button", { name: "Открыть демонстрационный чат", exact: true }).click();
+    const panel = page.locator(".global-chat-panel");
+    const close = panel.getByRole("button", { name: "Закрыть панель чата", exact: true });
+    await expect(close).toBeInViewport();
+    if (width <= 600) {
+      const box = (await panel.boundingBox())!;
+      expect(box.x).toBe(0);
+      expect(box.y).toBe(0);
+      expect(box.width).toBe(width);
+      expect(box.height).toBe(height);
+      await expect(page.locator("body")).toHaveCSS("position", "fixed");
+      const locked = await page.evaluate(() => scrollY);
+      await page.mouse.wheel(0, 600);
+      expect(await page.evaluate(() => scrollY)).toBe(locked);
+      await page.setViewportSize({ width, height: height - 100 });
+      await expect(close).toBeInViewport();
+      expect((await panel.boundingBox())!.height).toBe(height - 100);
+      await page.setViewportSize({ width, height });
+    }
+    await panel
+      .getByRole("button", { name: "Что входит в стоимость проекта?", exact: true })
+      .click();
+    await page.screenshot({ path: info.outputPath("chat-open.png") });
+    await close.click();
+    if (width <= 600) expect(await page.evaluate(() => scrollY)).toBeCloseTo(saved, 0);
+    await expect(page.locator(".global-chat-launcher")).toBeFocused();
+    await noOverflow(page);
+  });
+
+  test(`полноэкранные фото, планы и возврат фокуса при ${width}x${height}`, async ({
+    page,
+  }, info) => {
     await page.setViewportSize({ width, height });
     for (const project of projects) {
       await page.goto(`/projects/${project.number}`);
@@ -102,13 +195,19 @@ for (const [width, height] of [
       await expect(dialog).toBeVisible();
       await expect(dialog.locator("img")).toHaveAttribute("src", project.image);
       await expect(dialog.locator("img")).toHaveCSS("object-fit", "contain");
+      const beforeZoom = (await dialog.locator("img").boundingBox())!;
+      await dialog.getByRole("button", { name: "Увеличить изображение", exact: true }).click();
+      const zoomed = (await dialog.locator("img").boundingBox())!;
+      expect(zoomed.width).toBeGreaterThan(beforeZoom.width * 1.4);
+      await dialog.getByRole("button", { name: "Сбросить масштаб", exact: true }).click();
       const close = dialog.getByRole("button", { name: "Закрыть просмотр изображения" });
       const box = (await close.boundingBox())!;
       expect(box.x).toBeLessThan(40);
       expect(box.y).toBeLessThan(40);
       await expect(page.locator("body")).toHaveCSS("overflow", "hidden");
+      const locked = await page.evaluate(() => scrollY);
       await page.mouse.wheel(0, 400);
-      expect(await page.evaluate(() => scrollY)).toBe(y);
+      expect(await page.evaluate(() => scrollY)).toBe(locked);
       await noOverflow(page);
       if (project.number === "01")
         await page.screenshot({ path: info.outputPath("photo-viewer.png") });
@@ -120,7 +219,10 @@ for (const [width, height] of [
     await page.getByRole("button", { name: /Увеличить фото проекта/ }).click();
     await page.mouse.click(width - 3, height / 2);
     await expect(page.locator(".image-viewer")).toHaveCount(0);
-    const planOpener = page.getByRole("button", { name: "Увеличить план", exact: true });
+    const planOpener = page.getByRole("button", {
+      name: "Увеличить планировку проекта Гармония, 1 этаж",
+      exact: true,
+    });
     await planOpener.click();
     await expect(page.locator(".image-viewer img")).toHaveAttribute(
       "src",
@@ -130,7 +232,9 @@ for (const [width, height] of [
     await expect(planOpener).toBeFocused();
   });
 
-  test(`глобальный чат, контекст и локальная история при ${width}px`, async ({ page }, info) => {
+  test(`глобальный чат, контекст и локальная история при ${width}x${height}`, async ({
+    page,
+  }, info) => {
     await page.setViewportSize({ width, height });
     const rpc: string[] = [];
     page.on("request", (request) => {
@@ -209,6 +313,7 @@ for (const [width, height] of [
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.y).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(width);
+    if (width > 600) expect(width - box.x - box.width).toBeCloseTo(16, 0);
     expect(box.y + box.height).toBeLessThanOrEqual(height);
     await noOverflow(page);
     expect(rpc).toEqual([]);
@@ -230,48 +335,16 @@ for (const [width, height] of [
         }),
       )
       .toBe(true);
-    await page.locator(".estimate-disclaimer").first().scrollIntoViewIfNeeded();
-    await expect
-      .poll(() =>
-        page.locator(".global-chat-launcher").evaluate((node) => {
-          const button = node.getBoundingClientRect();
-          return [...document.querySelectorAll(".estimate-disclaimer")].every((element) => {
-            const note = element.getBoundingClientRect();
-            return (
-              button.right <= note.left ||
-              button.left >= note.right ||
-              button.bottom <= note.top ||
-              button.top >= note.bottom
-            );
-          });
-        }),
-      )
-      .toBe(true);
-    await page.screenshot({
-      path: info.outputPath("launcher-financial-note.png"),
-      animations: "disabled",
-    });
+    const fixed = await page.locator(".global-chat-launcher").boundingBox();
+    for (const top of [0, 600, 1400, 2200]) {
+      await page.evaluate((top) => scrollTo({ top, behavior: "instant" }), top);
+      const current = (await page.locator(".global-chat-launcher").boundingBox())!;
+      expect(current.x).toBeCloseTo(fixed!.x, 0);
+      expect(current.y).toBeCloseTo(fixed!.y, 0);
+    }
     await page.evaluate(() =>
       scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" }),
     );
-    await expect
-      .poll(() =>
-        page.locator(".global-chat-launcher").evaluate((node) => {
-          const button = node.getBoundingClientRect();
-          return [...document.querySelectorAll(".site-footer a, .site-footer > p")].every(
-            (element) => {
-              const box = element.getBoundingClientRect();
-              return (
-                button.right <= box.left ||
-                button.left >= box.right ||
-                button.bottom <= box.top ||
-                button.top >= box.bottom
-              );
-            },
-          );
-        }),
-      )
-      .toBe(true);
     await page.screenshot({
       path: info.outputPath("chat-launcher-footer.png"),
       animations: "disabled",
@@ -305,4 +378,53 @@ test("маленькая высота, reduced motion и ограничение 
   await panel.getByRole("button", { name: "Что входит в стоимость проекта?", exact: true }).click();
   await expect(panel).toContainText("Хранилище недоступно");
   await expect(panel.locator(".global-chat-answer")).toContainText("Север");
+});
+
+test("план увеличивается двумя пальцами, перемещается и не закрывается от жеста", async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/projects/02");
+  await page.locator(".floor-plan-stage").click();
+  const stage = page.locator(".image-viewer-stage");
+  const box = (await stage.boundingBox())!;
+  const x = box.x + box.width / 2,
+    y = box.y + box.height / 2;
+  const client = await page.context().newCDPSession(page);
+  await client.send("Input.dispatchTouchEvent", {
+    type: "touchStart",
+    touchPoints: [
+      { x: x - 30, y },
+      { x: x + 30, y },
+    ],
+  });
+  for (let i = 1; i <= 5; i++)
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [
+        { x: x - 30 - i * 8, y },
+        { x: x + 30 + i * 8, y },
+      ],
+    });
+  await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  const reset = page.getByRole("button", { name: "Сбросить масштаб", exact: true });
+  await expect(reset).not.toHaveText("100%");
+  const initial = await page
+    .locator(".image-viewer img")
+    .evaluate((img) => getComputedStyle(img).transform);
+  await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  for (let i = 1; i <= 5; i++)
+    await client.send("Input.dispatchTouchEvent", {
+      type: "touchMove",
+      touchPoints: [{ x: x + i * 8, y: y + i * 6 }],
+    });
+  await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await expect(page.locator(".image-viewer img")).not.toHaveCSS("transform", initial);
+  await expect(page.locator(".image-viewer")).toBeVisible();
+  await page.screenshot({ path: info.outputPath("pinch-and-pan.png") });
+  await reset.click();
+  await expect(reset).toHaveText("100%");
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".floor-plan-stage")).toBeFocused();
+  await client.detach();
 });

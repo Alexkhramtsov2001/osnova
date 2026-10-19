@@ -2,25 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router";
 
 import { navigation } from "../features/company/navigation";
+import { lockOverlayScroll } from "./overlayScroll";
 
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const scrollPosition = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     if (!menuOpen) return;
-    const bodyOverflow = document.body.style.overflow;
-    const rootOverflow = document.documentElement.style.overflow;
     const menuButton = menuButtonRef.current;
     const content = Array.from(headerRef.current?.parentElement?.children ?? []).filter(
       (element): element is HTMLElement =>
         element instanceof HTMLElement && element !== headerRef.current,
     );
     const previousInert = content.map((element) => element.inert);
-    window.scrollTo({ top: window.scrollY, behavior: "instant" });
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
+    const unlock = lockOverlayScroll(scrollPosition.current);
     content.forEach((element) => {
       element.inert = true;
     });
@@ -31,8 +29,7 @@ export default function SiteHeader() {
     };
     desktop.addEventListener("change", closeOnDesktop);
     return () => {
-      document.body.style.overflow = bodyOverflow;
-      document.documentElement.style.overflow = rootOverflow;
+      unlock();
       content.forEach((element, index) => {
         element.inert = previousInert[index];
       });
@@ -90,7 +87,10 @@ export default function SiteHeader() {
           aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
-          onClick={() => setMenuOpen((current) => !current)}
+          onClick={() => {
+            if (!menuOpen) scrollPosition.current = { x: window.scrollX, y: window.scrollY };
+            setMenuOpen((current) => !current);
+          }}
         >
           <span />
           <span />

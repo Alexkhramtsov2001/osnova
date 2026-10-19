@@ -36,4 +36,13 @@ describe("статические демонстрационные планиро
       }
     expect(sources.size).toBe(11);
   });
+  it("восемь описаний аудитории различаются и сохраняют площадь проекта без вымышленных рейтингов", () => {
+    const descriptions = projects.map((project) => project.scenarios.join(" "));
+    expect(new Set(descriptions).size).toBe(8);
+    projects.forEach((project, index) => {
+      expect(descriptions[index]).toContain(`${project.area} м²`);
+      expect(descriptions[index]).not.toMatch(/\d+\s*%|самый популярный|чаще всего приобретают/i);
+      expect(project.scenarios).toHaveLength(2);
+    });
+  });
 });

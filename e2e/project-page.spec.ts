@@ -16,9 +16,7 @@ test("карточка открывает отдельный проект в т�
     page.getByText("Больше личного пространства на меньшем пятне застройки"),
   ).toBeVisible();
   await expect(page.locator(".project-detail-image")).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Как можно использовать этот дом" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Кому подходит данный проект" })).toBeVisible();
   await expect(page.getByText("Ленточный", { exact: true })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Что входит в демонстрационный сценарий" }),

@@ -10,23 +10,9 @@
   background: transparent;
   cursor: zoom-in;
 }
-.project-photo-hint {
-  position: absolute;
-  right: var(--space-3);
-  bottom: var(--space-3);
-  padding: 8px 12px;
-  border-radius: var(--radius-control);
-  background: rgb(37 38 33 / 85%);
-  color: white;
-  font-size: 12px;
-  pointer-events: none;
-}
 .project-photo-open:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
-}
-.project-photo-open:hover .project-photo-hint {
-  background: var(--accent-dark);
 }
 .project-detail .floor-plans-notice {
   max-width: 80ch;
@@ -57,13 +43,21 @@
   cursor: not-allowed;
 }
 .floor-plan-stage {
-  max-width: 760px;
+  display: block;
+  width: 100%;
+  padding: 0;
+  cursor: zoom-in;
+  max-width: 1040px;
   margin-inline: auto;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-panel);
   background: var(--surface);
   touch-action: pan-y pinch-zoom;
+}
+.floor-plan-stage:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
 }
 .floor-plan-stage img {
   display: block;
@@ -72,26 +66,15 @@
   animation: plan-appear 160ms ease-out;
   user-select: none;
 }
-.floor-plan-caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  max-width: 760px;
+.project-detail .floor-plan-caption {
+  max-width: 1040px;
   margin: var(--space-4) auto;
-}
-.floor-plan-caption p {
-  margin: 0;
-}
-.floor-plan-caption .button {
-  min-height: 44px;
 }
 .floor-plan-rooms {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
-  max-width: 760px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 0;
   list-style: none;
