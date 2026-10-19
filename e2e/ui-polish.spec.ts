@@ -11,12 +11,30 @@ test("мобильное меню закрывает экран, удержив�
   await expect
     .poll(async () => {
       const bounds = await nav.boundingBox();
+      const header = await page.locator(".site-header").boundingBox();
       return (
         bounds &&
-        Object.fromEntries(Object.entries(bounds).map(([key, value]) => [key, Math.round(value)]))
+        header && {
+          headerX: Math.round(header.x),
+          headerY: Math.round(header.y),
+          headerWidth: Math.round(header.width),
+          navX: Math.round(bounds.x),
+          navWidth: Math.round(bounds.width),
+          gapBelowHeader: Math.round(bounds.y - header.y - header.height),
+          navBottom: Math.round(bounds.y + bounds.height),
+        }
       );
     })
-    .toEqual({ x: 0, y: 0, width: 390, height: 844 });
+    .toEqual({
+      headerX: 0,
+      headerY: 0,
+      headerWidth: 390,
+      navX: 0,
+      navWidth: 390,
+      gapBelowHeader: 0,
+      navBottom: 844,
+    });
+  await expect(page.getByRole("button", { name: "Закрыть меню" })).toBeInViewport();
   await expect(page.locator("main")).toHaveAttribute("inert", "");
   expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).toBe("hidden");
   await expect(nav.getByRole("link", { name: "Главная", exact: true })).toBeFocused();
