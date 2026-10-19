@@ -1,7 +1,25 @@
-# OSS кандидаты — НЕ утверждены
+# OSNOVA PLAN — выбранные доноры и резерв
 
-- https://github.com/charmlinn/blueprint3d-modern — Blueprint3D Modern, возможный источник стен/углов/комнат; проверить лицензию, сборку, TS, зависимость от Three.js/Next.js, точность.
-- https://github.com/cvdlab/react-planner — старый React/Redux/Immutable, скорее UI-референс.
-- https://github.com/benjaminwfriedman/spox — Python OR-Tools CP-SAT, математический референс, не готовый TS браузерный модуль.
+Решение от 20.10.2026 для [первой версии](../V1_SPECIFICATION.md). Выбранные источники предназначены для адаптации, а не установки целых приложений. В OSNOVA PLAN они ещё не подключены. Проверки и ограничения — в [OSS_RESEARCH.md](OSS_RESEARCH.md).
 
-PoC: независимая сборка, лицензия, точные mm, shared walls, L/T/X, толщины, проёмы, сериализация, bundle/performance, Worker compatibility. При несоответствии — собственная каноническая модель.
+| Источник | Зафиксированный коммит | Роль / решение |
+| --- | --- | --- |
+| [OpenCalque](https://github.com/laurent512/opencalque), MIT | `2330a7d36c77b46db16b8ef3744c69ec181ead42` | Основной донор headless CAD-ядра: стены, комнаты, операции, примитивы/экспорт. Адаптер обязан пройти правила OSNOVA; UI на Canvas, AI-модули и Electron целиком не переносить |
+| [ArchLang](https://github.com/ChanMeng666/archlang), MIT | `e736146f1b426ebb35282c989a37a39096e40438` | Отдельные алгоритмы проёмов, мебели, геометрической диагностики и чистой площади. Не глобальный генератор дома и не второй канонический `.arch`-документ |
+| [Procedural-Building-Generator](https://github.com/wojtryb/Procedural-Building-Generator), MIT | `6acbf529b3d405e74763ee02d96fab71a09de712` | Выборочный алгоритмический донор разбиения/роста комнат; Python/Blender, архивирован. Требует порта и исправления обнаруженного условия, не готов для браузера |
+| [OpenHome3D](https://github.com/yuyou-dev/OpenHome3D), MIT | `cb52afc00201b4b7ed90b24631e977112ba07869` | Резерв для seeded-шаблонов и мебели/дверных зон. Штатные шаблоны studio/1br/2br не решают произвольную анкету OSNOVA; React/Three-сцену не переносить |
+| [OpenPlan3D](https://github.com/laanlabs/openPlan3D), MIT | `4e66c60c00fba494181d647cc10324becd9a50b5` | Резерв архитектурных/редакторских алгоритмов. Собственная модель, SvelteKit и серверные части; не основной донор первой 2D-версии |
+
+## Дополнительные референсы
+
+- [Blueprint3D Modern](https://github.com/charmlinn/blueprint3d-modern), MIT: резерв стен/комнат и будущего 3D; не считать запланированные в README Undo/Redo и экспорты уже реализованными.
+- [FloorCanvas](https://github.com/eringoio/FloorCanvas), MIT: UI-референс. Независимые прямоугольники комнат и растровый PDF не соответствуют каноническим стенам и векторному экспорту PLAN.
+- [react-planner](https://github.com/cvdlab/react-planner), MIT: старый React/Redux/Immutable; скорее UX-референс, без необходимости прямого встраивания.
+- [3DWorld](https://github.com/fegennari/3DWorld), GPL-3.0: найден через обсуждения процедурной генерации; крупный C++/OpenGL-движок. Код не выбран для переноса в permissive-набор доноров; его лицензионные условия нельзя игнорировать при копировании или порте.
+- [AI-Floorplan-Generator](https://github.com/HamzehAlBawaneh/AI-Floorplan-Generator), MIT: процедурный Python-модуль отделим от ML, но использует собственные пропорциональные схемы и серверное окружение. Не выбран вместо небольшого детерминированного поиска v1.
+
+## Не считать разрешёнными донорами автоматически
+
+У [spox](https://github.com/benjaminwfriedman/spox) не подтверждена лицензия на перенос. У `martinemmert/floor-planner` и `RobinWeitzel/floor-planner` при исследовании не найден однозначный отдельный LICENSE; у последнего также расходятся обозначения лицензии в README и package.json. Публичность GitHub, обещание на форуме или доступный demo не заменяют проверку разрешения на конкретный код.
+
+Любой перенос сохраняет авторство и применимые лицензии зависимостей/ресурсов. Копировать только необходимые модули с закреплённой версией; не объединять несколько форматов проекта и не подменять независимый валидатор проверками донора.
