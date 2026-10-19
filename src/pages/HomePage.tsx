@@ -1,12 +1,13 @@
 import "./HomePage.css";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
+import Testimonials from "../components/Testimonials";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ArrowIcon from "../components/ArrowIcon";
 import { projects } from "../features/projects/catalog";
 import { formatPriceRange, getProjectEstimate } from "../features/projects/estimates";
-import { advantages, trustMetrics, trustReviews } from "../features/company/content";
+import { advantages, trustMetrics } from "../features/company/content";
 export default function HomePage() {
   const [heroSlide, setHeroSlide] = useState(0);
   const [heroHovered, setHeroHovered] = useState(false);
@@ -29,7 +30,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="site-shell">
+    <div className="site-shell home-page">
       <SiteHeader />
       <main>
         {" "}
@@ -129,11 +130,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-bottom">
-            <span>01 — ПРОЕКТИРУЕМ</span>
-            <span>02 — РАССЧИТЫВАЕМ</span>
-            <span>03 — СТРОИМ</span>
-          </div>
           <div className="hero-actions">
             <Link className="button button-primary button-center-label" to="/calculator">
               <span>Рассчитать стоимость</span> <ArrowIcon />
@@ -141,6 +137,11 @@ export default function HomePage() {
             <Link className="button button-secondary button-center-label" to="/projects">
               <span>Смотреть проекты</span> <ArrowIcon />
             </Link>
+          </div>
+          <div className="hero-bottom">
+            <span>01 — ПРОЕКТИРУЕМ</span>
+            <span>02 — РАССЧИТЫВАЕМ</span>
+            <span>03 — СТРОИМ</span>
           </div>
         </section>
         <section className="section-wrap home-popular">
@@ -253,33 +254,7 @@ export default function HomePage() {
               </article>
             ))}
           </div>
-          <div className="trust-reviews-heading">
-            <div>
-              <p className="eyebrow">ОТЗЫВЫ / ДЕМО</p>
-              <h3>Что важно услышать от клиентов</h3>
-            </div>
-            <p>
-              Ниже — образцы вымышленных отзывов и действия, которыми можно проверить каждый тезис
-              на сайте.
-            </p>
-          </div>
-          <div className="review-grid">
-            {trustReviews.map((review, index) => (
-              <article className="review-card trust-review" key={review.topic}>
-                <div className="review-card-top">
-                  <span>ВЫМЫШЛЕННЫЙ ОТЗЫВ / 0{index + 1}</span>
-                </div>
-                <h3>{review.topic}</h3>
-                <blockquote>«{review.quote}»</blockquote>
-                <p className="trust-review-check">
-                  <strong>Что проверить:</strong> {review.check}
-                </p>
-                <Link className="review-card-action" to={review.to}>
-                  {review.action} <ArrowIcon />
-                </Link>
-              </article>
-            ))}
-          </div>
+          <Testimonials />
           <p className="trust-note">
             Перед реальной оплатой запросите договор, точную смету, подтверждённые объекты и
             контакты заказчиков с их согласия. Демонстрационный расчёт и PDF на этом сайте не

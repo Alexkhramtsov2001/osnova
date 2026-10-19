@@ -148,7 +148,7 @@
   min-height: 44px;
   padding: 8px 0;
   border: 0;
-  border-bottom: 1px solid currentColor;
+  text-decoration: none;
   background: transparent;
   color: var(--accent-dark);
   font-family: inherit;
@@ -209,7 +209,7 @@
   width: 100%;
 }
 .vacancy-follow-actions .button {
-  width: 280px;
+  width: auto;
   min-height: 56px;
   font-family: inherit;
   font-size: 15px;

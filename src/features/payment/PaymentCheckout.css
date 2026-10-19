@@ -405,9 +405,15 @@
 }
 
 .payment-confirm-panel {
-  position: sticky;
-  top: 18px;
+  position: static;
   background: #eeece5;
+}
+
+@media (min-width: 901px) and (min-height: 950px) {
+  .payment-confirm-panel {
+    position: sticky;
+    top: calc(88px + var(--space-4));
+  }
 }
 
 .payment-confirm-panel h3 {
@@ -471,7 +477,7 @@
 
 .payment-confirm-panel .payment-confirm-note {
   margin: 13px 0 18px;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .payment-acknowledge {
@@ -479,7 +485,7 @@
   align-items: flex-start;
   gap: 10px;
   margin-bottom: 16px;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.55;
   cursor: pointer;
 }

@@ -1033,3 +1033,111 @@
     max-width: none;
   }
 }
+
+/* Home cards and sections share a natural content rhythm. */
+.home-page .hero-actions {
+  padding: var(--space-6) 0 var(--space-4);
+  border-bottom: 0;
+}
+
+.home-page .hero-bottom {
+  min-height: 0;
+  padding: var(--space-3) 0 var(--space-6);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-shell.home-page :is(.home-popular, .content-section, .calculator-promo, .final-cta) {
+  padding-block: var(--space-8);
+}
+
+.home-page .home-popular .section-heading {
+  margin-bottom: var(--space-6);
+}
+
+.site-shell.home-page .home-popular .project-card {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.home-page .home-popular .project-image-link {
+  display: block;
+  aspect-ratio: 1.3;
+}
+
+.home-page .home-popular .project-image {
+  display: block;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.home-page .home-popular .project-info {
+  display: block;
+  padding: var(--space-4);
+}
+
+.home-page .home-popular .project-info > p {
+  margin: var(--space-2) 0 var(--space-3);
+  font-size: 13px;
+}
+
+.home-page .home-popular .project-price {
+  margin: var(--space-3) 0;
+  gap: var(--space-1);
+}
+
+.home-page .home-popular .project-price small {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.home-page .home-popular .project-detail-action {
+  width: 100%;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  min-height: 44px;
+}
+
+.home-page .home-project-actions {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+}
+
+.site-shell.home-page .home-discover {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-8);
+}
+
+.home-page .home-discover-card {
+  padding: var(--space-6);
+}
+
+.home-page .final-cta {
+  gap: var(--space-4);
+}
+
+.home-page .final-cta h2 {
+  margin: 0;
+}
+
+.home-page .site-footer {
+  padding-top: var(--space-8);
+}
+
+@media (max-width: 760px) {
+  .home-page .hero {
+    row-gap: var(--space-6);
+  }
+  .home-page .hero-actions {
+    padding: 0;
+  }
+  .home-page .hero-bottom {
+    gap: var(--space-3) var(--space-4);
+    padding-top: 0;
+  }
+}

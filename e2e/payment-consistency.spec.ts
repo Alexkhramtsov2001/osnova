@@ -64,12 +64,6 @@ const rubles = (value: string) => Number(value.replace(/−/g, "-").replace(/[^\
 
 test("последний способ оплаты согласован с URL и переживает обновление", async ({ page }) => {
   await openPayment(page);
-  if (
-    !(await page
-      .locator(".payment-reference")
-      .evaluate((node) => (node as HTMLDetailsElement).open))
-  )
-    await page.locator(".payment-reference > summary").click();
   await page.locator('.payment-method-card[href$="/cash-full"]').click();
   await page.getByRole("link", { name: "Выбрать этот способ", exact: true }).click();
   await page.getByRole("radio", { name: /Наличными по этапам/ }).check();

@@ -563,14 +563,6 @@
     transition: none;
   }
 }
-.payment-reference > summary {
-  padding-block: var(--space-6);
-  border-block: 1px solid var(--line);
-  color: var(--accent-dark);
-  font-size: 18px;
-  cursor: pointer;
-}
-
 .payment-stage-details > summary,
 .payment-tax-details > summary {
   padding-block: var(--space-3);

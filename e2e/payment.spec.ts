@@ -21,12 +21,6 @@ test("каждый способ оплаты открывает подробно
     ["credit", "Кредит на строительство"],
     ["mortgage", "Ипотека на строительство"],
   ]) {
-    if (
-      !(await page
-        .locator(".payment-reference")
-        .evaluate((node) => (node as HTMLDetailsElement).open))
-    )
-      await page.locator(".payment-reference > summary").click();
     await page.locator(`.payment-method-card[href$="/${slug}"]`).click();
     await expect(page).toHaveURL(new RegExp(`/payment/methods/${slug}$`));
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
@@ -53,12 +47,6 @@ test("подробности способов доступны по прямой
 test("выбор подробного сценария сохраняется при возвращении к расчёту", async ({ page }) => {
   await page.goto("/calculator");
   await page.getByRole("link", { name: "Оплатить (демо)" }).click();
-  if (
-    !(await page
-      .locator(".payment-reference")
-      .evaluate((node) => (node as HTMLDetailsElement).open))
-  )
-    await page.locator(".payment-reference > summary").click();
   await page.locator('.payment-method-card[href$="/cash-full"]').click();
   await page.getByRole("link", { name: "Выбрать этот способ" }).click();
   await expect(page).toHaveURL(/\/payment\?method=cashFull#payment-checkout$/);

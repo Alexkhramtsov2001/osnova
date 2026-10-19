@@ -49,7 +49,6 @@ test("каталог, калькулятор и способы оплаты до
   await page.goto("/calculator");
   await expect(page.getByRole("region", { name: "Калькулятор сметы" })).toBeVisible();
   await page.goto("/payment");
-  await page.locator(".payment-reference > summary").click();
   await expect(page.getByRole("heading", { name: "Какие есть варианты" })).toBeVisible();
   expect(await page.evaluate(() => sessionStorage.getItem("osnova.demo-session.v1"))).toBeNull();
 });

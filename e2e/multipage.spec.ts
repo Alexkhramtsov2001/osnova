@@ -31,7 +31,9 @@ test("главная компактна, корпоративные данные
   await page.goto("/");
   await expect(page.locator(".project-card")).toHaveCount(3);
   await expect(page.locator(".project-filters,.estimate-calculator")).toHaveCount(0);
-  await expect(page.locator(".review-card")).toHaveCount(3);
+  await expect(
+    page.locator(".testimonials-group").first().locator(".testimonial-card"),
+  ).toHaveCount(12);
   await page.goto("/about");
   await expect(page.locator(".company-timeline li")).toHaveCount(6);
   await expect(page.locator(".stat-grid>div")).toHaveCount(4);

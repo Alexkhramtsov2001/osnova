@@ -1,14 +1,13 @@
 import { expect, test } from "@playwright/test";
 import { openDemoCabinetViaGoogle } from "./demo-auth";
 
-test("блок доверия ведёт к выбору проекта, а страницы компании и партнёров — к расчёту", async ({
+test("главная ведёт к выбору проекта, а страницы компании и партнёров — к расчёту", async ({
   page,
 }) => {
   await page.goto("/");
   await page
-    .locator(".review-card")
-    .first()
-    .getByRole("link", { name: "Сравнить проекты" })
+    .locator(".home-project-actions")
+    .getByRole("link", { name: "Все проекты", exact: true })
     .click();
   await expect(page).toHaveURL(/\/projects$/);
   await page.goto("/about");
@@ -66,10 +65,12 @@ for (const width of [320, 768, 1440]) {
       );
     }
     await page.goto("/");
-    const cards = page.locator(".review-card");
+    const cards = page.locator(".home-popular .project-card");
     for (const card of await cards.all()) {
       const bounds = await card.boundingBox();
-      const action = await card.getByRole("link").boundingBox();
+      const action = await card
+        .getByRole("link", { name: "Изучить проект", exact: true })
+        .boundingBox();
       expect(
         bounds && action && Math.abs(bounds.y + bounds.height - action.y - action.height),
       ).toBeLessThan(32);

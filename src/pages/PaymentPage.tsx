@@ -115,6 +115,72 @@ export default function PaymentPage() {
           </p>
         </section>
 
+        <section
+          className="section-wrap payment-methods payment-reference"
+          aria-labelledby="payment-methods-title"
+        >
+          <div className="payment-section-heading">
+            <p className="eyebrow">01 / ДО РАСЧЁТА</p>
+            <h2 id="payment-methods-title">Какие есть варианты</h2>
+            <p>
+              Можно выбрать полную оплату, платежи по этапам, кредит или ипотеку. Фактические
+              условия определяются договором и банком.
+            </p>
+          </div>
+          <div className="payment-method-grid">
+            {paymentMethodGuides.map((item, index) => (
+              <Link
+                className="payment-method-card"
+                key={item.id}
+                to={`/payment/methods/${item.slug}`}
+              >
+                <span className="payment-card-number">0{index + 1}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <span className="payment-method-more">
+                  Условия и этапы <ArrowIcon />
+                </span>
+              </Link>
+            ))}
+          </div>
+          <p className="payment-maternity-note">
+            Материнский капитал может участвовать в реальном финансировании при соблюдении правил
+            СФР. В этом демо он не вычитается из сметы и не оформляется.{" "}
+            <a
+              href="https://sfr.gov.ru/grazhdanam/semyam_s_detmi/materinskij_kapital/rasporyazhenije_sredstvami"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Правила СФР <ArrowIcon />
+            </a>
+          </p>
+          <div className="payment-bank-strip">
+            <div>
+              <h3>Примеры банковских программ</h3>
+              <p>
+                Реальные банки, но не партнёры демонстрационной ОСНОВЫ. Откройте официальные
+                страницы, чтобы проверить действующие условия.
+              </p>
+            </div>
+            <div className="payment-bank-list">
+              {bankExamples.map((bank) => (
+                <a key={bank.name} href={bank.href} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={`${import.meta.env.BASE_URL}images/banks/${bank.logo}.svg`}
+                    width="44"
+                    height="44"
+                    alt=""
+                    loading="lazy"
+                  />
+                  <strong>{bank.name}</strong>
+                  <span>{bank.product}</span>
+                  <ArrowIcon />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="section-wrap payment-preview" aria-labelledby="payment-preview-title">
           <div className="payment-section-heading">
             <p className="eyebrow">02 / ПОСЛЕ РАСЧЁТА</p>
@@ -290,71 +356,6 @@ export default function PaymentPage() {
               next={checkoutReturnPath}
             />
           ))}
-        <details className="payment-reference" open={!hasEstimate}>
-          <summary className="section-wrap">Способы оплаты и справочная информация</summary>
-          <section className="section-wrap payment-methods" aria-labelledby="payment-methods-title">
-            <div className="payment-section-heading">
-              <p className="eyebrow">01 / ДО РАСЧЁТА</p>
-              <h2 id="payment-methods-title">Какие есть варианты</h2>
-              <p>
-                Можно выбрать полную оплату, платежи по этапам, кредит или ипотеку. Фактические
-                условия определяются договором и банком.
-              </p>
-            </div>
-            <div className="payment-method-grid">
-              {paymentMethodGuides.map((item, index) => (
-                <Link
-                  className="payment-method-card"
-                  key={item.id}
-                  to={`/payment/methods/${item.slug}`}
-                >
-                  <span className="payment-card-number">0{index + 1}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                  <span className="payment-method-more">
-                    Условия и этапы <ArrowIcon />
-                  </span>
-                </Link>
-              ))}
-            </div>
-            <p className="payment-maternity-note">
-              Материнский капитал может участвовать в реальном финансировании при соблюдении правил
-              СФР. В этом демо он не вычитается из сметы и не оформляется.{" "}
-              <a
-                href="https://sfr.gov.ru/grazhdanam/semyam_s_detmi/materinskij_kapital/rasporyazhenije_sredstvami"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Правила СФР <ArrowIcon />
-              </a>
-            </p>
-            <div className="payment-bank-strip">
-              <div>
-                <h3>Примеры банковских программ</h3>
-                <p>
-                  Реальные банки, но не партнёры демонстрационной ОСНОВЫ. Откройте официальные
-                  страницы, чтобы проверить действующие условия.
-                </p>
-              </div>
-              <div className="payment-bank-list">
-                {bankExamples.map((bank) => (
-                  <a key={bank.name} href={bank.href} target="_blank" rel="noopener noreferrer">
-                    <img
-                      src={`${import.meta.env.BASE_URL}images/banks/${bank.logo}.svg`}
-                      width="44"
-                      height="44"
-                      alt=""
-                      loading="lazy"
-                    />
-                    <strong>{bank.name}</strong>
-                    <span>{bank.product}</span>
-                    <ArrowIcon />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
-        </details>
       </main>
       <SiteFooter />
     </div>

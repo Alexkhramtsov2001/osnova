@@ -181,7 +181,7 @@
 
 .estimate-field-hint {
   color: var(--muted, #77786f);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -660,7 +660,7 @@
   border: 1px solid #e7d9ce;
   color: #6c6259;
   background: #f5eee7;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
 }
 
@@ -1148,7 +1148,7 @@
 }
 .estimate-next-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 12px;
   margin-top: 18px;
@@ -1161,6 +1161,10 @@
   min-width: 0;
 }
 .estimate-pdf-actions button {
+  min-height: 44px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
   font-family: inherit;
   cursor: pointer;
 }

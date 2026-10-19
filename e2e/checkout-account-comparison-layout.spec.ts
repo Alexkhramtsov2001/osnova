@@ -5,13 +5,13 @@ for (const width of [1440, 768, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/payment");
     await expect(page.locator(".payment-empty")).toBeVisible();
-    await expect(page.locator(".payment-reference")).toHaveAttribute("open", "");
+    await expect(page.locator(".payment-method-grid")).toBeVisible();
     await page.evaluate(() => sessionStorage.setItem("osnova.demo-session.v1", "active:google"));
     await page.goto("/calculator");
     await page.getByRole("link", { name: "Оплатить (демо)", exact: true }).click();
-    await expect(page.locator(".payment-reference")).not.toHaveAttribute("open");
-    expect((await page.locator(".payment-checkout").boundingBox())!.y).toBeLessThan(
-      (await page.locator(".payment-reference").boundingBox())!.y,
+    await expect(page.locator(".payment-method-grid")).toBeVisible();
+    expect((await page.locator(".payment-reference").boundingBox())!.y).toBeLessThan(
+      (await page.locator(".payment-checkout").boundingBox())!.y,
     );
     await page.locator(".payment-stage-details > summary").click();
     await expect(page.locator(".payment-stage-list li")).toHaveCount(8);

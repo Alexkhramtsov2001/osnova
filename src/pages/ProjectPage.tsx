@@ -74,7 +74,7 @@ export default function ProjectPage() {
               ))}
             </ul>
           </section>
-          <aside>
+          <section className="project-detail-guidance">
             <h2>Кому подойдёт</h2>
             <p>{project.audience}</p>
             <h2>Что учесть</h2>
@@ -83,7 +83,7 @@ export default function ProjectPage() {
               Это концепция для портфолио. Иллюстрация не показывает построенный объект, а рабочие
               планы ещё не разработаны.
             </p>
-          </aside>
+          </section>
         </div>
         <section className="project-detail-section" aria-labelledby="project-scenarios-title">
           <p className="eyebrow">СЦЕНАРИИ ЖИЗНИ</p>
