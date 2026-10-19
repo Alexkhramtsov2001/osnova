@@ -1,0 +1,261 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 640 520"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Демонстрационная планировка «Компакт» — 1 этаж</title>
+  <desc id="desc">
+    Спальня 1, Спальня 2, Холл, Кухня-гостиная, Санузел, Тамбур. Стены, двери и окна условные. Не
+    рабочая документация.
+  </desc>
+  <rect width="640" height="520" fill="#fbfaf7" />
+  <text
+    x="320"
+    y="34"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="23"
+    fill="#252621"
+  >
+    Компакт · 1 этаж
+  </text>
+  <text
+    x="320"
+    y="61"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="17"
+    fill="#686a61"
+  >
+    Демонстрационная схема · без масштаба
+  </text>
+  <rect
+    x="70"
+    y="92"
+    width="214.286"
+    height="127.5"
+    fill="#fbfaf7"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="177.143"
+    y="150.25"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Спальня
+  </text>
+  <text
+    x="177.143"
+    y="175.25"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    1
+  </text>
+  <rect
+    x="284.286"
+    y="92"
+    width="285.714"
+    height="127.5"
+    fill="#fbfaf7"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="427.143"
+    y="150.25"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Спальня
+  </text>
+  <text
+    x="427.143"
+    y="175.25"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    2
+  </text>
+  <rect
+    x="70"
+    y="219.5"
+    width="500"
+    height="63.75"
+    fill="#eeece5"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="320"
+    y="258.375"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Холл
+  </text>
+  <rect
+    x="70"
+    y="283.25"
+    width="250"
+    height="148.75"
+    fill="#fbfaf7"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="195"
+    y="352.125"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Кухня-
+  </text>
+  <text
+    x="195"
+    y="377.125"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    гостиная
+  </text>
+  <rect
+    x="320"
+    y="283.25"
+    width="125"
+    height="148.75"
+    fill="#fbfaf7"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="382.5"
+    y="364.625"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Санузел
+  </text>
+  <rect
+    x="445"
+    y="283.25"
+    width="125"
+    height="148.75"
+    fill="#eeece5"
+    stroke="#252621"
+    stroke-width="5"
+  />
+  <text
+    x="507.5"
+    y="364.625"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="22"
+    fill="#252621"
+  >
+    Тамбур
+  </text>
+  <path data-window="true" d="M 156.143 92 h 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 156.143 92 h 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 70 134.75 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 70 134.75 v 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 406.143 92 h 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 406.143 92 h 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 570 134.75 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 570 134.75 v 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 70 230.375 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 70 230.375 v 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 570 230.375 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 570 230.375 v 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 174 432 h 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 174 432 h 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 70 336.625 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 70 336.625 v 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 361.5 432 h 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 361.5 432 h 42" stroke="#557e87" stroke-width="4" />
+  <path data-window="true" d="M 570 336.625 v 42" stroke="#fbfaf7" stroke-width="9" />
+  <path d="M 570 336.625 v 42" stroke="#557e87" stroke-width="4" />
+  <g data-door="Спальня 1" transform="translate(177.143 219.5) rotate(180)">
+    <path d="M -17 0 H 17" stroke="#fbfaf7" stroke-width="9" />
+    <path
+      d="M -16 0 V 30 M 14 0 A 30 30 0 0 1 -16 30"
+      fill="none"
+      stroke="#686a61"
+      stroke-width="1.5"
+    />
+  </g>
+  <g data-door="Спальня 2" transform="translate(427.143 219.5) rotate(180)">
+    <path d="M -17 0 H 17" stroke="#fbfaf7" stroke-width="9" />
+    <path
+      d="M -16 0 V 30 M 14 0 A 30 30 0 0 1 -16 30"
+      fill="none"
+      stroke="#686a61"
+      stroke-width="1.5"
+    />
+  </g>
+  <g data-door="Кухня-гостиная" transform="translate(195 283.25) rotate(0)">
+    <path d="M -17 0 H 17" stroke="#fbfaf7" stroke-width="9" />
+    <path
+      d="M -16 0 V 30 M 14 0 A 30 30 0 0 1 -16 30"
+      fill="none"
+      stroke="#686a61"
+      stroke-width="1.5"
+    />
+  </g>
+  <g data-door="Санузел" transform="translate(382.5 283.25) rotate(0)">
+    <path d="M -17 0 H 17" stroke="#fbfaf7" stroke-width="9" />
+    <path
+      d="M -16 0 V 30 M 14 0 A 30 30 0 0 1 -16 30"
+      fill="none"
+      stroke="#686a61"
+      stroke-width="1.5"
+    />
+  </g>
+  <g data-door="Тамбур" transform="translate(507.5 283.25) rotate(0)">
+    <path d="M -17 0 H 17" stroke="#fbfaf7" stroke-width="9" />
+    <path
+      d="M -16 0 V 30 M 14 0 A 30 30 0 0 1 -16 30"
+      fill="none"
+      stroke="#686a61"
+      stroke-width="1.5"
+    />
+  </g>
+  <g data-entry="true" transform="translate(507.5 432) rotate(180)">
+    <path d="M -19 0 H 19" stroke="#fbfaf7" stroke-width="11" />
+    <path
+      d="M -18 0 V 34 M 16 0 A 34 34 0 0 1 -18 34"
+      fill="none"
+      stroke="#98462f"
+      stroke-width="2"
+    />
+  </g>
+  <text
+    x="320"
+    y="467"
+    text-anchor="middle"
+    font-family="Arial,sans-serif"
+    font-size="17"
+    fill="#686a61"
+  >
+    Тёмные линии — стены · синие — окна · дуги — двери
+  </text>
+</svg>

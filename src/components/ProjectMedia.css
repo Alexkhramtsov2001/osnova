@@ -1,0 +1,116 @@
+.project-photo-open {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-panel);
+  background: transparent;
+  cursor: zoom-in;
+}
+.project-photo-hint {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  padding: 8px 12px;
+  border-radius: var(--radius-control);
+  background: rgb(37 38 33 / 85%);
+  color: white;
+  font-size: 12px;
+  pointer-events: none;
+}
+.project-photo-open:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+.project-photo-open:hover .project-photo-hint {
+  background: var(--accent-dark);
+}
+.project-detail .floor-plans-notice {
+  max-width: 80ch;
+  font-size: 13px;
+  line-height: 1.75;
+}
+.floor-plan-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 var(--space-4);
+}
+.floor-plan-controls .button {
+  width: 48px;
+  min-height: 44px;
+  padding: 8px;
+  justify-content: center;
+  font-size: 22px;
+}
+.floor-plan-controls > span {
+  min-width: 100px;
+  text-align: center;
+  font-size: 14px;
+}
+.floor-plan-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.floor-plan-stage {
+  max-width: 760px;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  touch-action: pan-y pinch-zoom;
+}
+.floor-plan-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: plan-appear 160ms ease-out;
+  user-select: none;
+}
+.floor-plan-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 760px;
+  margin: var(--space-4) auto;
+}
+.floor-plan-caption p {
+  margin: 0;
+}
+.floor-plan-caption .button {
+  min-height: 44px;
+}
+.floor-plan-rooms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.project-detail .floor-plan-rooms li {
+  font-size: 13px;
+}
+@keyframes plan-appear {
+  from {
+    opacity: 0.4;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floor-plan-stage img {
+    animation: none;
+  }
+}

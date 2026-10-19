@@ -28,6 +28,7 @@ import PaymentMethodPage from "./pages/PaymentMethodPage";
 import PageMetadata from "./components/PageMetadata";
 import "./pages/ContentPages.css";
 import ProjectPage from "./pages/ProjectPage";
+import GlobalDemoChat from "./components/GlobalDemoChat";
 function App() {
   const [favoriteProjects, setFavoriteProjects] = useState<string[]>(() =>
     readFavoriteIds(window.localStorage),
@@ -50,63 +51,66 @@ function App() {
   const [comparisonIds, setComparisonIds] = useState<string[]>([]);
   return (
     <>
-      <RouteScrollManager />
-      <PageMetadata />
-      <Routes>
-        <Route path="/" element={<HomeEntry />} />
-        <Route path="/calculator" element={<CalculatorPage key={window.location.search} />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/payment/methods/:methodSlug" element={<PaymentMethodPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/partners" element={<PartnersPage />} />
-        <Route path="/contacts" element={<ContactsPage />} />
-        <Route path="/vacancies" element={<VacanciesPage />} />
-        <Route
-          path="/projects"
-          element={
-            <ProjectsPage
-              favoriteProjects={favoriteProjects}
-              setFavoriteProjects={setFavoriteProjects}
-              showFavorites={showFavorites}
-              setShowFavorites={setShowFavorites}
-              comparisonIds={comparisonIds}
-              setComparisonIds={setComparisonIds}
-              catalogFilters={catalogFilters}
-              setCatalogFilters={setCatalogFilters}
-            />
-          }
-        />
-        <Route
-          path="/compare"
-          element={
-            <ComparisonPage
-              favoriteProjects={favoriteProjects}
-              setComparisonIds={setComparisonIds}
-            />
-          }
-        />
-        <Route path="/find-home" element={<HouseFinder />} />
-        <Route
-          path="/account"
-          element={
-            <AccountPage favoriteIds={favoriteProjects} onFavoritesChange={setFavoriteProjects} />
-          }
-        />
-        <Route path="/projects/:id" element={<ProjectPage />} />
-        <Route
-          path="*"
-          element={
-            <div className="site-shell">
-              <SiteHeader />
-              <main className="project-not-found">
-                <h1>Страница не найдена.</h1>
-                <Link to="/">На главную</Link>
-              </main>
-              <SiteFooter />
-            </div>
-          }
-        />
-      </Routes>
+      <div id="site-content">
+        <RouteScrollManager />
+        <PageMetadata />
+        <Routes>
+          <Route path="/" element={<HomeEntry />} />
+          <Route path="/calculator" element={<CalculatorPage key={window.location.search} />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/methods/:methodSlug" element={<PaymentMethodPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/partners" element={<PartnersPage />} />
+          <Route path="/contacts" element={<ContactsPage />} />
+          <Route path="/vacancies" element={<VacanciesPage />} />
+          <Route
+            path="/projects"
+            element={
+              <ProjectsPage
+                favoriteProjects={favoriteProjects}
+                setFavoriteProjects={setFavoriteProjects}
+                showFavorites={showFavorites}
+                setShowFavorites={setShowFavorites}
+                comparisonIds={comparisonIds}
+                setComparisonIds={setComparisonIds}
+                catalogFilters={catalogFilters}
+                setCatalogFilters={setCatalogFilters}
+              />
+            }
+          />
+          <Route
+            path="/compare"
+            element={
+              <ComparisonPage
+                favoriteProjects={favoriteProjects}
+                setComparisonIds={setComparisonIds}
+              />
+            }
+          />
+          <Route path="/find-home" element={<HouseFinder />} />
+          <Route
+            path="/account"
+            element={
+              <AccountPage favoriteIds={favoriteProjects} onFavoritesChange={setFavoriteProjects} />
+            }
+          />
+          <Route path="/projects/:id" element={<ProjectPage />} />
+          <Route
+            path="*"
+            element={
+              <div className="site-shell">
+                <SiteHeader />
+                <main className="project-not-found">
+                  <h1>Страница не найдена.</h1>
+                  <Link to="/">На главную</Link>
+                </main>
+                <SiteFooter />
+              </div>
+            }
+          />
+        </Routes>
+      </div>
+      <GlobalDemoChat />
     </>
   );
 }

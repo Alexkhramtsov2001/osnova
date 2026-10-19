@@ -16,6 +16,7 @@ import {
 } from "../features/projects/estimates";
 
 import BackToCatalog from "../components/BackToCatalog";
+import { ProjectPhoto, ProjectFloorPlans } from "../components/ProjectMedia";
 export default function ProjectPage() {
   const { id } = useParams();
   const project = projects.find((item) => item.number === id);
@@ -58,11 +59,7 @@ export default function ProjectPage() {
             </span>
           </div>
         </header>
-        <img
-          className="project-detail-image"
-          src={project.image}
-          alt={`Иллюстративное фото экстерьера для проекта «${project.name}»`}
-        />
+        <ProjectPhoto key={`photo-${project.number}`} project={project} />
         <div className="project-detail-content">
           <section>
             <p className="eyebrow">ИДЕЯ ДОМА</p>
@@ -85,6 +82,7 @@ export default function ProjectPage() {
             </p>
           </section>
         </div>
+        <ProjectFloorPlans key={`plans-${project.number}`} project={project} />
         <section className="project-detail-section" aria-labelledby="project-scenarios-title">
           <p className="eyebrow">СЦЕНАРИИ ЖИЗНИ</p>
           <h2 id="project-scenarios-title">Как можно использовать этот дом</h2>
