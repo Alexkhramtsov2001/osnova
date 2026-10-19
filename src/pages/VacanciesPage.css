@@ -1,8 +1,9 @@
 .page-intro.vacancies-intro {
   padding-bottom: 0;
 }
-.content-section.vacancies-section {
+.site-shell .content-section.vacancies-section {
   padding-top: 18px;
+  padding-bottom: var(--space-4);
 }
 .vacancy-filters {
   display: grid;
@@ -169,7 +170,7 @@
 }
 .vacancy-more {
   display: block;
-  margin: 24px auto 0;
+  margin: var(--space-4) auto 0;
 }
 .vacancy-empty {
   padding: 30px;
@@ -181,8 +182,8 @@
   align-items: flex-start;
   flex-direction: column;
   gap: 24px;
-  padding-top: 42px;
-  padding-bottom: 48px;
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-8);
   border-top: 1px solid var(--line);
 }
 .vacancy-follow h2 {
@@ -197,6 +198,7 @@
   font-style: italic;
 }
 .vacancy-follow p:not(.eyebrow) {
+  margin-bottom: 0;
   max-width: 620px;
   color: var(--muted);
   font-size: 13px;

@@ -22,12 +22,7 @@
   letter-spacing: -0.04em;
 }
 
-.testimonials-heading .button {
-  min-height: 44px;
-}
-
-.testimonials-notice,
-.testimonials-help {
+.testimonials-notice {
   max-width: 72ch;
   color: var(--muted);
   font-size: 13px;
@@ -36,10 +31,8 @@
 }
 
 .testimonials-viewport {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+  overflow: clip;
   border-radius: var(--radius-card);
-  scrollbar-width: thin;
 }
 
 .testimonials-track {
@@ -95,26 +88,6 @@
   color: var(--muted);
 }
 
-.testimonials-viewport:is(:hover, [data-paused="true"]) .testimonials-track {
-  animation-play-state: paused;
-}
-
-/* A static, scrollable original group keeps every review reachable by keyboard. */
-.testimonials-viewport:focus-within .testimonials-track {
-  animation: none;
-  transform: none;
-}
-
-.testimonials-viewport:focus-within .testimonials-group[aria-hidden="true"] {
-  display: none;
-}
-
-.testimonials-viewport:focus-visible,
-.testimonial-card:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: -3px;
-}
-
 @keyframes testimonials-scroll {
   to {
     transform: translateX(-50%);
@@ -124,6 +97,16 @@
 @media (prefers-reduced-motion: reduce) {
   .testimonials-track {
     animation: none;
+    display: block;
+    width: auto;
+  }
+  .testimonials-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(272px, 100%), 1fr));
+    padding-right: 0;
+  }
+  .testimonial-card {
+    width: auto;
   }
   .testimonials-group[aria-hidden="true"] {
     display: none;

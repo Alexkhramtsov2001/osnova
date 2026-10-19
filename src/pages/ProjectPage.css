@@ -8,7 +8,7 @@
 .project-detail {
   width: min(1440px, 100%);
   margin: 0 auto;
-  padding: 34px 6.1% 100px;
+  padding: 34px 6.1% var(--space-8);
 }
 
 .project-detail-head {
@@ -45,11 +45,14 @@
 }
 
 .project-detail-image {
-  width: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
   max-height: 680px;
   display: block;
-  object-fit: cover;
-  aspect-ratio: 2 / 1;
+  object-fit: contain;
+  margin-inline: auto;
+  border-radius: var(--radius-panel);
 }
 
 .project-detail-content {
@@ -224,17 +227,13 @@
 
 @media (max-width: 760px) {
   .project-detail {
-    padding: 25px 20px 70px;
+    padding: 25px 20px var(--space-8);
   }
 
   .project-detail-content,
   .project-detail-final {
     grid-template-columns: 1fr;
     gap: 24px;
-  }
-
-  .project-detail-image {
-    aspect-ratio: 1.1 / 1;
   }
 
   .project-detail-content {

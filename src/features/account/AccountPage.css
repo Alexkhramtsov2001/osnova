@@ -1,7 +1,6 @@
 .account-page {
-  min-height: 65vh;
   padding-top: 40px;
-  padding-bottom: 100px;
+  padding-bottom: var(--space-8);
 }
 
 .account-page .project-detail-back {
@@ -744,7 +743,7 @@
   }
   .account-page {
     padding-top: 26px;
-    padding-bottom: 64px;
+    padding-bottom: var(--space-8);
   }
 
   .account-page .project-detail-back {
@@ -795,7 +794,7 @@
   }
 }
 .account-storage-note {
-  margin: 32px 0 0;
+  margin: var(--space-6) 0 0;
   padding: 20px 0;
   border-top: 1px solid var(--line);
   color: var(--muted);
