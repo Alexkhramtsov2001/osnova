@@ -254,7 +254,6 @@ export default function HomePage() {
               </article>
             ))}
           </div>
-          <Testimonials />
         </section>
         <section className="section-wrap home-discover" aria-label="Узнать больше об ОСНОВЕ">
           <article className="home-discover-card">
@@ -292,6 +291,9 @@ export default function HomePage() {
             Перейти к контактам <ArrowIcon />
           </Link>
         </section>
+        <div className="section-wrap home-reviews">
+          <Testimonials />
+        </div>
       </main>
       <SiteFooter />
     </div>

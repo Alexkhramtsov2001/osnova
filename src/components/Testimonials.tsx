@@ -7,7 +7,7 @@ export default function Testimonials() {
       <div className="testimonials-heading">
         <div>
           <p className="eyebrow">ОТЗЫВЫ / ДЕМОНСТРАЦИЯ</p>
-          <h3 id="testimonials-title">О доме и работе команды</h3>
+          <h2 id="testimonials-title">О доме и работе команды</h2>
         </div>
       </div>
       <p className="testimonials-notice" id="testimonials-notice">

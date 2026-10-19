@@ -9,6 +9,13 @@ for (const width of [390, 1440]) {
     await expect(trust).toContainText("нет подтверждённой статистики клиентов");
     await expect(trust.locator(".trust-metric")).toHaveCount(2);
     const reviews = page.locator(".testimonials");
+    await expect(page.locator("main > :last-child .testimonials")).toHaveCount(1);
+    await expect(reviews.getByRole("heading", { level: 2 })).toHaveText("О доме и работе команды");
+    expect(
+      await page
+        .locator(".final-cta")
+        .evaluate((node) => Boolean(node.nextElementSibling?.querySelector(".testimonials"))),
+    ).toBe(true);
     await expect(reviews).toContainText("Все отзывы демонстрационные и вымышленные");
     await expect(reviews.getByRole("link")).toHaveCount(0);
     await expect(reviews.locator(".testimonials-track")).toHaveCSS("animation-name", "none");

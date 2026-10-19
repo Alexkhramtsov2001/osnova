@@ -19,13 +19,13 @@ for (const [width, height] of [
       return box(".final-cta h2").top - box(".home-discover-card:last-child").bottom;
     });
     expect(gap).toBeLessThanOrEqual(41);
-    const ctaGap = await page.evaluate(() => {
-      const button = document.querySelector(".final-cta .button")!.getBoundingClientRect();
+    const reviewsGap = await page.evaluate(() => {
+      const reviews = document.querySelector(".testimonials")!.getBoundingClientRect();
       const footer = document.querySelector(".site-footer")!.getBoundingClientRect();
-      return footer.top - button.bottom;
+      return footer.top - reviews.bottom;
     });
-    expect(ctaGap).toBeGreaterThanOrEqual(48);
-    expect(ctaGap).toBeLessThanOrEqual(50);
+    expect(reviewsGap).toBeGreaterThanOrEqual(48);
+    expect(reviewsGap).toBeLessThanOrEqual(50);
     await expect(page.locator(".trust-section")).not.toContainText("Перед реальной оплатой");
     await expect(page.locator(".testimonials > p")).toHaveCount(1);
     expect(
