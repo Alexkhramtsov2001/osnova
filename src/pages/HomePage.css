@@ -474,7 +474,6 @@
 
 .approach-section .principle-grid article {
   min-width: 0;
-  aspect-ratio: 1;
   padding: var(--space-6);
   background: var(--approach-surface);
   overflow-wrap: break-word;
@@ -487,12 +486,6 @@
 
 .approach-section .principle-grid p {
   margin: 0;
-}
-
-@media (max-width: 1000px) {
-  .approach-section .principle-grid article {
-    aspect-ratio: auto;
-  }
 }
 
 @media (max-width: 600px) {
