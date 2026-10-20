@@ -7,6 +7,9 @@ for (const [width, height] of [
   [390, 844],
   [375, 812],
 ]) {
+  // Approved shared rhythm: 48 px between sections/on page edges, 32 px on phones.
+  const pageSpace = width <= 760 ? 32 : 48;
+  const sectionInset = pageSpace / 2;
   test(`ритм страниц и полные фотографии проектов при ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     const noOverflow = async () =>
@@ -18,14 +21,13 @@ for (const [width, height] of [
       const box = (selector: string) => document.querySelector(selector)!.getBoundingClientRect();
       return box(".final-cta h2").top - box(".home-discover-card:last-child").bottom;
     });
-    expect(gap).toBeLessThanOrEqual(41);
+    expect(gap).toBeCloseTo(pageSpace, 0);
     const reviewsGap = await page.evaluate(() => {
       const reviews = document.querySelector(".testimonials")!.getBoundingClientRect();
       const footer = document.querySelector(".site-footer")!.getBoundingClientRect();
       return footer.top - reviews.bottom;
     });
-    expect(reviewsGap).toBeGreaterThanOrEqual(48);
-    expect(reviewsGap).toBeLessThanOrEqual(50);
+    expect(reviewsGap).toBeCloseTo(pageSpace, 0);
     await expect(page.locator(".trust-section")).not.toContainText("Перед реальной оплатой");
     await expect(page.locator(".testimonials > p")).toHaveCount(1);
     await expect(page.locator(".hero-note, .hero-bottom")).toHaveCount(0);
@@ -34,8 +36,7 @@ for (const [width, height] of [
       const discover = document.querySelector(".home-discover-card")!.getBoundingClientRect();
       return discover.top - metrics.bottom;
     });
-    expect(trustGap).toBeGreaterThanOrEqual(32);
-    expect(trustGap).toBeLessThanOrEqual(40);
+    expect(trustGap).toBeCloseTo(pageSpace, 0);
     if (width === 1440)
       expect(
         await page
@@ -67,28 +68,34 @@ for (const [width, height] of [
       await noOverflow();
     }
     await page.goto("/account");
-    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "24px");
+    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", `${pageSpace}px`);
     await noOverflow();
     await page.evaluate(() => sessionStorage.setItem("osnova.demo-session.v1", "active:google"));
     await page.reload();
     await expect(page.getByRole("button", { name: "Выйти из демо", exact: true })).toBeVisible();
-    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", "24px");
+    await expect(page.locator(".account-page")).toHaveCSS("padding-bottom", `${pageSpace}px`);
     await noOverflow();
     await page.goto("/about");
     const offices = page.locator(".demo-offices");
     await expect(offices.locator(".demo-office-grid > li")).toHaveCount(11);
-    await expect(offices).toHaveCSS("padding-top", "16px");
+    await expect(offices).toHaveCSS("padding-top", `${sectionInset}px`);
     await expect(page.locator(".content-section:has(+ .demo-offices)")).toHaveCSS(
       "padding-bottom",
-      "16px",
+      `${sectionInset}px`,
     );
-    await expect(page.locator(".demo-offices + .content-section")).toHaveCSS("padding-top", "16px");
+    await expect(page.locator(".demo-offices + .content-section")).toHaveCSS(
+      "padding-top",
+      `${sectionInset}px`,
+    );
     await noOverflow();
     await page.goto("/vacancies");
     const count = await page.locator(".vacancy-card").count();
     const more = page.getByRole("button", { name: "Показать ещё", exact: true });
-    await expect(page.locator(".vacancies-section")).toHaveCSS("padding-bottom", "16px");
-    await expect(page.locator(".vacancy-follow")).toHaveCSS("padding-top", "24px");
+    await expect(page.locator(".vacancies-section")).toHaveCSS(
+      "padding-bottom",
+      `${sectionInset}px`,
+    );
+    await expect(page.locator(".vacancy-follow")).toHaveCSS("padding-top", `${sectionInset}px`);
     await more.click();
     await expect(page.locator(".vacancy-card")).toHaveCount(count + 10);
     const followGap = await page.evaluate(() => {
@@ -96,7 +103,7 @@ for (const [width, height] of [
       const follow = document.querySelector(".vacancy-follow")!.getBoundingClientRect();
       return follow.top - more.bottom;
     });
-    expect(followGap).toBeLessThanOrEqual(17);
+    expect(followGap).toBeCloseTo(sectionInset, 0);
     await noOverflow();
   });
 
@@ -112,17 +119,17 @@ for (const [width, height] of [
         true,
       );
     await page.goto("/payment");
-    expect(await footerGap(".payment-empty")).toBeLessThanOrEqual(33);
+    expect(await footerGap(".payment-empty")).toBeCloseTo(pageSpace, 0);
     await noOverflow();
     await page.goto("/calculator");
     await page.getByRole("link", { name: "Оплатить (демо)", exact: true }).click();
     await expect(page.locator(".demo-access-gate")).toBeVisible();
-    expect(await footerGap(".demo-access-actions")).toBeLessThanOrEqual(33);
+    expect(await footerGap(".demo-access-actions")).toBeCloseTo(pageSpace, 0);
     await page.evaluate(() => sessionStorage.setItem("osnova.demo-session.v1", "active:google"));
     await page.reload();
     for (const name of [/Наличными полностью/, /^Ипотека/]) {
       await page.getByRole("radio", { name }).check();
-      expect(await footerGap(".payment-checkout-layout")).toBeLessThanOrEqual(33);
+      expect(await footerGap(".payment-checkout-layout")).toBeCloseTo(pageSpace, 0);
       await expect(page.locator(".payment-method-grid .payment-method-card")).toHaveCount(4);
       await noOverflow();
     }
@@ -131,7 +138,7 @@ for (const [width, height] of [
       const padding = await page
         .locator("main")
         .evaluate((node) => getComputedStyle(node).paddingBottom);
-      expect(padding).toBe("32px");
+      expect(padding).toBe(`${pageSpace}px`);
       await noOverflow();
     }
   });
