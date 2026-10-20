@@ -151,7 +151,6 @@ export default function DemoAuthPanel({
   return (
     <section className="account-login-card account-auth-card" aria-labelledby="account-login-title">
       <div className="account-auth-context">
-        <p className="eyebrow">ЛИЧНЫЙ КАБИНЕТ / ДЕМО</p>
         <h2>
           Сохраните свой <span>маршрут к дому.</span>
         </h2>
@@ -186,7 +185,6 @@ export default function DemoAuthPanel({
       <div className="account-auth-panel">
         {challenge ? (
           <div className="account-code-view">
-            <p className="eyebrow">ПОДТВЕРЖДЕНИЕ / ДЕМО</p>
             <h2 id="account-login-title">Введите код из письма</h2>
             <p>
               В настоящем сервисе код пришёл бы на почту, связанную с{" "}

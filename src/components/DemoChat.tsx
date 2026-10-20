@@ -51,7 +51,6 @@ export default function DemoChat() {
     <div id="demo-chat" className="demo-chat" role="group" aria-labelledby="demo-chat-title">
       <div className="demo-chat-intro">
         <div>
-          <p className="eyebrow">ИНТЕРАКТИВНОЕ ДЕМО</p>
           <h3 id="demo-chat-title">Чат о проекте</h3>
         </div>
         <p>

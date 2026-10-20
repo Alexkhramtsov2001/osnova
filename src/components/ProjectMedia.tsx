@@ -38,7 +38,6 @@ export function ProjectFloorPlans({ project }: { project: Project }) {
       className="project-detail-section project-floor-plans"
       aria-labelledby="floor-plans-title"
     >
-      <p className="eyebrow">ДЕМОНСТРАЦИОННЫЕ ПЛАНИРОВКИ</p>
       <h2 id="floor-plans-title">Планировки этажей</h2>
       <p className="floor-plans-notice">
         Условная компоновка для знакомства с домом, без масштаба. Положение стен, окон и лестницы не

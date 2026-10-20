@@ -21,7 +21,6 @@ export default function SavedEstimates({
     <section className="estimate-saved" aria-labelledby="estimate-saved-title">
       <div className="estimate-saved-heading">
         <div>
-          <span className="estimate-overline">НА ЭТОМ УСТРОЙСТВЕ</span>
           <h3 id="estimate-saved-title">Сохранённые расчёты</h3>
         </div>
         <span>

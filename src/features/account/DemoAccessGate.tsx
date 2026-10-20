@@ -5,16 +5,14 @@ import "./DemoAccessGate.css";
 
 type Props = {
   id?: string;
-  eyebrow: string;
   title: string;
   description: string;
   next: string;
 };
 
-export default function DemoAccessGate({ id, eyebrow, title, description, next }: Props) {
+export default function DemoAccessGate({ id, title, description, next }: Props) {
   return (
     <section className="section-wrap demo-access-gate" id={id} aria-labelledby="demo-access-title">
-      <p className="eyebrow">{eyebrow}</p>
       <h2 id="demo-access-title">{title}</h2>
       <p>{description}</p>
       <div className="demo-access-actions">

@@ -32,7 +32,6 @@ export default function DemoProjectChat({ projects }: { projects: Project[] }) {
     >
       <div className="account-section-heading">
         <div>
-          <p className="eyebrow">ВОПРОСЫ ПО ПРОЕКТАМ</p>
           <h2 id="account-chat-title">Демо-чат с менеджером</h2>
         </div>
         <span className="account-chat-status">

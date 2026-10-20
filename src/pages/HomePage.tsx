@@ -36,11 +36,6 @@ export default function HomePage() {
         {" "}
         <section className="hero" id="home">
           <div className="hero-copy">
-            <p className="eyebrow">
-              <span className="status-dot" />
-              СТРОИТЕЛЬСТВО ЗАГОРОДНЫХ ДОМОВ
-            </p>
-
             <h1>
               Дом начинается
               <br />
@@ -137,7 +132,6 @@ export default function HomePage() {
         <section className="section-wrap home-popular">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">ИЗБРАННЫЕ КОНЦЕПЦИИ</p>
               <h2>
                 С чего начинается <span>ваш дом.</span>
               </h2>
@@ -186,16 +180,14 @@ export default function HomePage() {
         </section>
         <section className="approach-section" id="advantages">
           <div className="section-wrap content-section">
-            <p className="eyebrow">НАШ ПОДХОД</p>
             <h2>
               Меньше неопределённости.
               <br />
               <span>Больше ясности.</span>
             </h2>
             <div className="principle-grid">
-              {advantages.map((item, i) => (
+              {advantages.map((item) => (
                 <article key={item.title}>
-                  <small>0{i + 1}</small>
                   <h3>{item.title}</h3>
                   <p>{item.text}</p>
                 </article>
@@ -205,7 +197,6 @@ export default function HomePage() {
         </section>
         <section className="section-wrap calculator-promo home-bottom-cta">
           <div>
-            <p className="eyebrow">ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</p>
             <h2>
               Рассчитайте стоимость <span>будущего дома.</span>
             </h2>
@@ -223,7 +214,6 @@ export default function HomePage() {
           className="section-wrap content-section trust-section"
           aria-labelledby="trust-title"
         >
-          <p className="eyebrow">НАМ ДОВЕРЯЮТ / ДЕМОНСТРАЦИЯ</p>
           <h2 id="trust-title">
             Доверие начинается <span>с проверки.</span>
           </h2>
@@ -247,7 +237,6 @@ export default function HomePage() {
         </section>
         <section className="section-wrap home-discover" aria-label="Узнать больше об ОСНОВЕ">
           <article className="home-discover-card">
-            <p className="eyebrow">О КОМПАНИИ</p>
             <h2>
               Люди и принципы <span>за проектом.</span>
             </h2>
@@ -260,7 +249,6 @@ export default function HomePage() {
             </Link>
           </article>
           <article className="home-discover-card">
-            <p className="eyebrow">ПАРТНЁРЫ</p>
             <h2>
               Один дом — <span>много решений.</span>
             </h2>

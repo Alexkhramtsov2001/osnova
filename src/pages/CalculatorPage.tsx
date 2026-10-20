@@ -64,7 +64,6 @@ export default function CalculatorPage() {
         <SiteHeader />
         <main>
           <DemoAccessGate
-            eyebrow="ВЫБОР ПРОЕКТА / ДЕМО"
             title={`Войдите, чтобы выбрать «${startingProject.name}»`}
             description="Вы сможете продолжить с этим домом в калькуляторе. Учебный вход работает только в браузере и не требует настоящей почты."
             next={`/calculator?project=${startingProject.number}`}

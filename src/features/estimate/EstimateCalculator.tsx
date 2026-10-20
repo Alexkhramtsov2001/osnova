@@ -344,10 +344,6 @@ export default function EstimateCalculator({
   return (
     <section className="estimate-calculator" aria-label="Калькулятор сметы">
       <div className="estimate-intro">
-        <p className="estimate-eyebrow">
-          <span className="estimate-status-dot" />
-          ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ
-        </p>
         <h1>
           Дом начинается <span>с расчёта</span>
         </h1>
@@ -361,7 +357,6 @@ export default function EstimateCalculator({
         <div className="estimate-settings">
           <div className="estimate-panel-heading">
             <div>
-              <span className="estimate-overline">01 / ПАРАМЕТРЫ</span>
               <h2>Ваш будущий дом</h2>
             </div>
             <button className="estimate-reset" type="button" onClick={reset}>
@@ -704,7 +699,6 @@ export default function EstimateCalculator({
               <>
                 <div className="estimate-total-card">
                   <div className="estimate-total-top">
-                    <span className="estimate-overline">02 / СТОИМОСТЬ ПРОЕКТА</span>
                     <span className="estimate-live">
                       <span className="estimate-status-dot" />
                       Расчёт обновлён
@@ -749,7 +743,7 @@ export default function EstimateCalculator({
 
                 {includedStageCount > 0 && (
                   <div className="estimate-duration-card">
-                    <span className="estimate-overline">ОРИЕНТИР ПО СРОКАМ</span>
+                    <p className="estimate-duration-label">Ориентир по срокам</p>
                     <strong>
                       {formatDuration(estimate.durationWeeks.min)}–
                       {formatDuration(estimate.durationWeeks.max)} нед.
@@ -766,7 +760,6 @@ export default function EstimateCalculator({
 
                 {requestSummary && (
                   <div className="estimate-request-card">
-                    <span className="estimate-overline">СЛЕДУЮЩИЙ ШАГ</span>
                     <h2>Проверить отправку заявки</h2>
                     <p>
                       Тестовая заявка сохранит в Supabase только параметры дома и расчёта. Имя,

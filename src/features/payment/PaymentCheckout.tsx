@@ -232,7 +232,6 @@ export default function PaymentCheckout({
       aria-labelledby="payment-checkout-title"
     >
       <div className="payment-section-heading">
-        <p className="eyebrow">03 / ДЕМО-ОФОРМЛЕНИЕ</p>
         <h2 id="payment-checkout-title">Выберите способ оплаты</h2>
         <p>
           Пройдите сценарий, похожий на оформление заказа. Он работает только в браузере: заявки и
@@ -392,7 +391,6 @@ export default function PaymentCheckout({
         </div>
 
         <aside className="payment-confirm-panel" aria-label="Подтверждение сценария">
-          <span className="payment-overline">ПРОВЕРЬТЕ ВЫБОР</span>
           <h3>{projectName}</h3>
           <p>
             {PROJECT_TYPES[draft.parameters.projectType].label} ·{" "}

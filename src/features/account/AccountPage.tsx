@@ -141,7 +141,6 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
         </Link>
         <div className="account-page-heading">
           <div>
-            <p className="eyebrow">ЛИЧНЫЙ КАБИНЕТ / ДЕМО</p>
             <h1>Ваши проекты</h1>
             <p className="account-page-lead">
               Демонстрационный вход показывает, как можно собрать избранные дома и расчёты в одном
@@ -181,7 +180,6 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
             <section className="account-data-section" aria-labelledby="account-estimates-title">
               <div className="account-section-heading">
                 <div>
-                  <p className="eyebrow">ВАШИ РАСЧЁТЫ</p>
                   <h2 id="account-estimates-title">Сохранённые сметы</h2>
                 </div>
                 <div className="account-section-actions">
@@ -207,10 +205,10 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                     <article className="account-estimate-card" key={estimate.id}>
                       <div className="account-estimate-summary">
                         <div>
-                          <p className="eyebrow">
+                          <h3>{estimate.title}</h3>
+                          <p className="account-card-meta">
                             {formatSavedDate(estimate.savedAt)} / {estimate.area} М²
                           </p>
-                          <h3>{estimate.title}</h3>
                           <p>
                             {estimate.mode === "turnkey" ? "Под ключ" : "Отдельные этапы"} · версия{" "}
                             {estimate.dataVersion}
@@ -262,7 +260,6 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
             <section className="account-data-section" aria-labelledby="account-favorites-title">
               <div className="account-section-heading">
                 <div>
-                  <p className="eyebrow">КОРОТКИЙ СПИСОК</p>
                   <h2 id="account-favorites-title">Избранные дома</h2>
                 </div>
                 <Link className="button button-secondary" to="/projects">
@@ -278,10 +275,10 @@ export default function AccountPage({ favoriteIds, onFavoritesChange }: AccountP
                       <article className="account-project-card" key={project.number}>
                         <img src={project.image} alt="" loading="lazy" />
                         <div>
-                          <p className="eyebrow">
+                          <h3>{project.name}</h3>
+                          <p className="account-card-meta">
                             {project.area} М² / {project.floors} ЭТАЖА
                           </p>
-                          <h3>{project.name}</h3>
                           <p>{project.description}</p>
                           <div className="account-card-actions">
                             <Link

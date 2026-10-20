@@ -150,7 +150,6 @@ export default function ProjectsPage({
         <section className="projects-section section-wrap" id="projects">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">НАША ПОДБОРКА</p>
               <h1>
                 Пространство
                 <br />

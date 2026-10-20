@@ -56,7 +56,6 @@ export default function ComparisonPage({
       <SiteHeader />
       <main className="comparison-page section-wrap">
         <BackToCatalog />
-        <p className="eyebrow">НАША ПОДБОРКА / СРАВНЕНИЕ</p>
         <h1 ref={pageHeadingRef} tabIndex={-1}>
           Сравнение домов
         </h1>

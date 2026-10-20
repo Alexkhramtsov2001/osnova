@@ -37,7 +37,6 @@ export default function EstimateBreakdown({
         onClick={() => onToggle()}
       >
         <span>
-          <span className="estimate-overline">03 / ДЕТАЛИЗАЦИЯ</span>
           <strong>Из чего складывается цена</strong>
         </span>
         <span className="estimate-stage-count">

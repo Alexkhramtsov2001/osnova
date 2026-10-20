@@ -72,7 +72,6 @@ export default function HouseFinder() {
         <Link className="finder-back" to="/projects">
           <ArrowIcon direction="left" /> К подборке домов
         </Link>
-        <p className="eyebrow">ВАШ ДОМ / ПЕРСОНАЛЬНЫЙ ПОДБОР</p>
         <h1 ref={heading} tabIndex={-1}>
           {completed
             ? project
@@ -184,7 +183,6 @@ export default function HouseFinder() {
             <div className="finder-result">
               <img src={project.image} alt={`Концепция дома «${project.name}»`} />
               <div className="finder-result-copy">
-                <p className="eyebrow">СООТВЕТСТВУЕТ ВЫБРАННЫМ ПАРАМЕТРАМ</p>
                 <h2>{project.name}</h2>
                 <p>
                   {project.area} м² · {project.floors === 1 ? "Один этаж" : "Два этажа"} · Спален:{" "}

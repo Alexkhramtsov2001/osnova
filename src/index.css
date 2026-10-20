@@ -25,6 +25,10 @@
   --text-section-title: clamp(30px, 3.5vw, 48px);
   --text-card-title: 22px;
   --text-label: 13px;
+  --page-space: var(--space-12);
+  --section-space: var(--space-12);
+  --section-inset: var(--space-6);
+  --heading-space: var(--space-6);
   font-family: "DM Sans", Arial, sans-serif;
   color: var(--ink);
   background: var(--paper);
@@ -88,5 +92,13 @@ img {
 @media (prefers-reduced-motion: reduce) {
   :root {
     scroll-behavior: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page-space: var(--space-8);
+    --section-space: var(--space-8);
+    --section-inset: var(--space-4);
   }
 }

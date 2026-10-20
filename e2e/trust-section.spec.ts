@@ -10,7 +10,7 @@ for (const width of [390, 1440]) {
     await expect(trust.locator(".trust-metric")).toHaveCount(2);
     const reviews = page.locator(".testimonials");
     await expect(page.locator("main > :last-child .testimonials")).toHaveCount(1);
-    await expect(reviews.getByRole("heading", { level: 2 })).toHaveText("О доме и работе команды");
+    await expect(reviews.getByRole("heading", { level: 2 })).toHaveText("Отзывы о нашей компании");
     expect(
       await page
         .locator(".final-cta")

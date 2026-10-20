@@ -26,7 +26,6 @@ export default function ProjectPage() {
       <div className="site-shell">
         <SiteHeader />
         <main className="project-not-found">
-          <p className="eyebrow">ПРОЕКТ НЕ НАЙДЕН</p>
           <h1>Такого дома в подборке нет.</h1>
           <Link className="button button-primary" to="/projects">
             Вернуться к проектам <ArrowIcon />
@@ -45,7 +44,6 @@ export default function ProjectPage() {
       <main className="project-detail">
         <BackToCatalog />
         <header className="project-detail-head">
-          <p className="eyebrow">ТИПОВОЙ ПРОЕКТ / {project.number}</p>
           <h1>{project.name}</h1>
           <p className="project-detail-lead">{project.description}</p>
           <div className="project-detail-facts">
@@ -62,7 +60,6 @@ export default function ProjectPage() {
         <ProjectPhoto key={`photo-${project.number}`} project={project} />
         <div className="project-detail-content">
           <section>
-            <p className="eyebrow">ИДЕЯ ДОМА</p>
             <h2>{project.positioning.headline}</h2>
             <p>{project.positioning.story}</p>
             <ul>
@@ -84,7 +81,6 @@ export default function ProjectPage() {
         </div>
         <ProjectFloorPlans key={`plans-${project.number}`} project={project} />
         <section className="project-detail-section" aria-labelledby="project-scenarios-title">
-          <p className="eyebrow">ВЫБОР ПРОЕКТА</p>
           <h2 id="project-scenarios-title">Кому подходит данный проект</h2>
           <div className="project-detail-scenarios">
             {project.scenarios.map((scenario, index) => (
@@ -96,7 +92,6 @@ export default function ProjectPage() {
           </div>
         </section>
         <section className="project-detail-section" aria-labelledby="project-materials-title">
-          <p className="eyebrow">МАТЕРИАЛЫ И КОМПЛЕКТАЦИЯ</p>
           <h2 id="project-materials-title">База для примерного расчёта</h2>
           <p className="project-detail-intro">
             Для всех домов каталога используется одна демонстрационная комплектация. Так проще
@@ -132,7 +127,6 @@ export default function ProjectPage() {
           </p>
         </section>
         <section className="project-detail-section" aria-labelledby="project-steps-title">
-          <p className="eyebrow">ЭТАПЫ И СРОКИ</p>
           <h2 id="project-steps-title">Что входит в демонстрационный сценарий</h2>
           <p className="project-detail-intro">
             Ориентиры по этапам взяты из той же модели, что и калькулятор. Они не являются графиком
@@ -160,7 +154,6 @@ export default function ProjectPage() {
           className="project-detail-section project-detail-warranty"
           aria-labelledby="project-warranty-title"
         >
-          <p className="eyebrow">ГАРАНТИИ И ДОКУМЕНТЫ</p>
           <h2 id="project-warranty-title">Условия определяются для реального строительства</h2>
           <p>
             У демонстрационного проекта нет утверждённого гарантийного срока или договора. Перед
@@ -174,7 +167,6 @@ export default function ProjectPage() {
           aria-labelledby="project-price-title"
         >
           <div>
-            <p className="eyebrow">СТОИМОСТЬ И СЛЕДУЮЩИЙ ШАГ</p>
             <h2 id="project-price-title">Оцените проект под свой участок и задачи</h2>
             <p>
               Ниже — демонстрационный ориентир для общей комплектации каталога. В калькуляторе можно

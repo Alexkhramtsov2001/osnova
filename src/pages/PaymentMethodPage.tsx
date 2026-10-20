@@ -27,7 +27,6 @@ export default function PaymentMethodPage() {
               <Link className="payment-guide-back" to="/payment">
                 <ArrowIcon direction="left" /> Все способы оплаты
               </Link>
-              <p className="eyebrow">ОПЛАТА / УСЛОВИЯ И ПОРЯДОК ДЕЙСТВИЙ</p>
               <h1>{guide.title}</h1>
               <p className="payment-guide-lead">{guide.description}</p>
               <div className="payment-guide-summary">
@@ -51,7 +50,6 @@ export default function PaymentMethodPage() {
               aria-labelledby="payment-guide-conditions"
             >
               <div className="payment-guide-heading">
-                <p className="eyebrow">01 / ПЕРЕД ОФОРМЛЕНИЕМ</p>
                 <h2 id="payment-guide-conditions">Условия и документы</h2>
               </div>
               <div className="payment-guide-detail-grid">
@@ -83,7 +81,6 @@ export default function PaymentMethodPage() {
               aria-labelledby="payment-guide-steps"
             >
               <div className="payment-guide-heading">
-                <p className="eyebrow">02 / ОТ ВЫБОРА К ДОГОВОРУ</p>
                 <h2 id="payment-guide-steps">Как проходит оформление</h2>
               </div>
               <ol className="payment-guide-steps">
@@ -124,7 +121,6 @@ export default function PaymentMethodPage() {
               className="section-wrap payment-guide-next"
               aria-labelledby="payment-guide-next-title"
             >
-              <p className="eyebrow">03 / ПОПРОБУЙТЕ СЦЕНАРИЙ</p>
               <h2 id="payment-guide-next-title">
                 От понятных условий <span>к вашему расчёту.</span>
               </h2>

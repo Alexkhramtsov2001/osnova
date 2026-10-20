@@ -29,6 +29,7 @@ import PageMetadata from "./components/PageMetadata";
 import "./pages/ContentPages.css";
 import ProjectPage from "./pages/ProjectPage";
 import GlobalDemoChat from "./components/GlobalDemoChat";
+import "./ContentRhythm.css";
 function App() {
   const [favoriteProjects, setFavoriteProjects] = useState<string[]>(() =>
     readFavoriteIds(window.localStorage),

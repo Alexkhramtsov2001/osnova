@@ -104,7 +104,6 @@ export default function PaymentPage() {
       <SiteHeader />
       <main className="payment-page">
         <section className="section-wrap payment-intro">
-          <p className="eyebrow">ОПЛАТА / ДЕМОНСТРАЦИОННЫЙ СЦЕНАРИЙ</p>
           <h1>
             Дом начинается с плана. <span>Оплата — с ясных условий.</span>
           </h1>
@@ -120,7 +119,6 @@ export default function PaymentPage() {
           aria-labelledby="payment-methods-title"
         >
           <div className="payment-section-heading">
-            <p className="eyebrow">01 / ДО РАСЧЁТА</p>
             <h2 id="payment-methods-title">Какие есть варианты</h2>
             <p>
               Можно выбрать полную оплату, платежи по этапам, кредит или ипотеку. Фактические
@@ -128,13 +126,12 @@ export default function PaymentPage() {
             </p>
           </div>
           <div className="payment-method-grid">
-            {paymentMethodGuides.map((item, index) => (
+            {paymentMethodGuides.map((item) => (
               <Link
                 className="payment-method-card"
                 key={item.id}
                 to={`/payment/methods/${item.slug}`}
               >
-                <span className="payment-card-number">0{index + 1}</span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
                 <span className="payment-method-more">
@@ -183,7 +180,6 @@ export default function PaymentPage() {
 
         <section className="section-wrap payment-preview" aria-labelledby="payment-preview-title">
           <div className="payment-section-heading">
-            <p className="eyebrow">02 / ПОСЛЕ РАСЧЁТА</p>
             <h2 id="payment-preview-title">Сводка перед оформлением</h2>
             <p>Сумма появится после выбора параметров дома в калькуляторе.</p>
           </div>
@@ -209,7 +205,6 @@ export default function PaymentPage() {
           ) : (
             <div className="payment-preview-layout">
               <div className="payment-configuration">
-                <span className="payment-overline">ВЫБРАННЫЙ ПРОЕКТ</span>
                 <h3>{projectLabel}</h3>
                 <dl className="payment-project-facts">
                   <div>
@@ -252,7 +247,6 @@ export default function PaymentPage() {
               </div>
 
               <div className="payment-totals">
-                <span className="payment-overline">ПРЕДВАРИТЕЛЬНЫЙ РАСЧЁТ</span>
                 <p className="payment-range">
                   Диапазон модели: {money.format(estimate.minTotal)} —{" "}
                   {money.format(estimate.maxTotal)}
@@ -350,7 +344,6 @@ export default function PaymentPage() {
           ) : (
             <DemoAccessGate
               id="payment-checkout"
-              eyebrow="03 / ДЕМО-ОФОРМЛЕНИЕ"
               title="Войдите, чтобы оформить выбор"
               description="Ваш расчёт сохранён в этой вкладке. После учебной регистрации или повторного входа можно выбрать способ оплаты и скачать демонстрационный PDF."
               next={checkoutReturnPath}

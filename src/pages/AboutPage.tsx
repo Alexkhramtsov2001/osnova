@@ -11,7 +11,6 @@ export default function AboutPage() {
       <main>
         <section className="section-wrap company-hero">
           <div>
-            <p className="eyebrow">О КОМПАНИИ / ДЕМОНСТРАЦИОННАЯ ИСТОРИЯ</p>
             <h1>
               Строим историю <span>вокруг человека.</span>
             </h1>
@@ -27,7 +26,6 @@ export default function AboutPage() {
           />
         </section>
         <section className="section-wrap content-section about-timeline-section">
-          <p className="eyebrow">ДЕМОНСТРАЦИОННАЯ ХРОНОЛОГИЯ</p>
           <h2>
             От идеи <span>к платформе.</span>
           </h2>
@@ -80,8 +78,8 @@ export default function AboutPage() {
                 />
                 <div className="team-card-body">
                   <header className="team-card-heading">
-                    <p className="team-role">{person.role}</p>
                     <h3>{person.name}</h3>
+                    <p className="team-role">{person.role}</p>
                   </header>
                   <dl className="team-meta">
                     <div>
@@ -110,7 +108,6 @@ export default function AboutPage() {
           className="section-wrap content-section demo-offices"
           aria-labelledby="demo-offices-title"
         >
-          <p className="eyebrow">ГЕОГРАФИЯ / ДЕМОНСТРАЦИЯ</p>
           <h2 id="demo-offices-title">
             Офисы в <span>демо-истории.</span>
           </h2>
@@ -132,9 +129,8 @@ export default function AboutPage() {
             Принципы <span>работы.</span>
           </h2>
           <div className="principle-grid">
-            {principles.map((item, index) => (
+            {principles.map((item) => (
               <article key={item.title}>
-                <small className="principle-number">{String(index + 1).padStart(2, "0")}</small>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
               </article>
@@ -143,7 +139,6 @@ export default function AboutPage() {
         </section>
         <section className="section-wrap journey-next-step" aria-labelledby="about-next-title">
           <div>
-            <p className="eyebrow">СЛЕДУЮЩИЙ ШАГ</p>
             <h2 id="about-next-title">
               Проверьте подход <span>на своём сценарии.</span>
             </h2>

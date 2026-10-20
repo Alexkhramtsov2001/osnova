@@ -27,7 +27,6 @@ export default function ContactSection({
     >
       <div className="contact-section-head">
         <div>
-          <p className="eyebrow">КОНТАКТЫ ПРОЕКТА</p>
           <h2 id="contact-section-title">{title}</h2>
         </div>
         {description && <p>{description}</p>}

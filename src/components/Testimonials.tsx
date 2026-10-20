@@ -6,8 +6,7 @@ export default function Testimonials() {
     <section className="testimonials" aria-labelledby="testimonials-title">
       <div className="testimonials-heading">
         <div>
-          <p className="eyebrow">ОТЗЫВЫ / ДЕМОНСТРАЦИЯ</p>
-          <h2 id="testimonials-title">О доме и работе команды</h2>
+          <h2 id="testimonials-title">Отзывы о нашей компании</h2>
         </div>
       </div>
       <p className="testimonials-notice" id="testimonials-notice">

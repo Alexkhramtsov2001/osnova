@@ -9,7 +9,6 @@ export default function PartnersPage() {
       <SiteHeader />
       <main>
         <section className="section-wrap page-intro partners-intro">
-          <p className="eyebrow">ПАРТНЁРЫ / ДЕМОНСТРАЦИОННАЯ ЭКОСИСТЕМА</p>
           <h1>
             Хорошие решения <span>рождаются вместе.</span>
           </h1>
@@ -23,15 +22,8 @@ export default function PartnersPage() {
             От материала <span>до архитектуры.</span>
           </h2>
           <div className="partner-grid">
-            {partners.map((partner, index) => (
+            {partners.map((partner) => (
               <article className="partner-card" key={partner.name}>
-                <div className="partner-card-top" aria-hidden="true">
-                  <span>
-                    {String(index + 1).padStart(2, "0")} /{" "}
-                    {String(partners.length).padStart(2, "0")}
-                  </span>
-                  <span className="partner-card-line" />
-                </div>
                 <h3 className="partner-logo">{partner.name}</h3>
                 <p className="demo-label partner-category">{partner.category}</p>
                 <p className="partner-description">{partner.description}</p>
@@ -42,7 +34,6 @@ export default function PartnersPage() {
         </section>
         <section className="section-wrap journey-next-step" aria-labelledby="partners-next-title">
           <div>
-            <p className="eyebrow">ПРИМЕНИТЬ К ПРОЕКТУ</p>
             <h2 id="partners-next-title">
               Сравните решения <span>в расчёте.</span>
             </h2>

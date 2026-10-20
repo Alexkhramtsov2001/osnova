@@ -55,7 +55,6 @@ export default function VacanciesPage() {
       <SiteHeader />
       <main>
         <section className="section-wrap page-intro vacancies-intro">
-          <p className="eyebrow">КАРЬЕРА / ДЕМОНСТРАЦИОННЫЕ ВАКАНСИИ</p>
           <h1>
             Работа, в которой <span>есть смысл.</span>
           </h1>
@@ -69,7 +68,6 @@ export default function VacanciesPage() {
           className="section-wrap content-section vacancies-section"
           aria-labelledby="vacancies-title"
         >
-          <p className="eyebrow">ПОИСК ПОЗИЦИЙ</p>
           <h2 id="vacancies-title">
             Найдите свою <span>роль.</span>
           </h2>
@@ -174,7 +172,6 @@ export default function VacanciesPage() {
         </section>
         <section className="section-wrap vacancy-follow">
           <div>
-            <p className="eyebrow">ОСТАВАЙТЕСЬ НА СВЯЗИ</p>
             <h2>
               Не нашли <span>свою вакансию?</span>
             </h2>
@@ -217,7 +214,6 @@ export default function VacanciesPage() {
             >
               <header>
                 <div>
-                  <small>ДЕМО / МЕНЕДЖЕР</small>
                   <h2 id="vacancy-chat-title">Отклик на вакансию</h2>
                 </div>
                 <button type="button" aria-label="Закрыть чат" onClick={() => setChatOpen(false)}>

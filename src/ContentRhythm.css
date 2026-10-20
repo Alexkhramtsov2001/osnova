@@ -1,0 +1,172 @@
+/* One vertical rhythm for content sections; form controls keep their own compact spacing. */
+.site-shell main > .section-wrap,
+.site-shell main > .section-wrap.content-section,
+.site-shell main > .section-wrap.home-popular,
+.site-shell main > .section-wrap.home-discover,
+.site-shell main > .section-wrap.calculator-promo,
+.site-shell main > .section-wrap.final-cta,
+.site-shell main > .section-wrap.home-reviews,
+.site-shell .approach-section > .content-section {
+  padding-block: var(--section-inset);
+}
+
+.site-shell main > .section-wrap:first-child,
+.site-shell .company-hero,
+.site-shell
+  :is(.project-detail, .comparison-page, .account-page, .house-finder, .estimate-calculator),
+.site-shell .payment-guide-intro {
+  padding-top: var(--page-space);
+}
+
+.site-shell main > .section-wrap:last-child,
+.site-shell main > .section-wrap.home-reviews,
+.site-shell
+  :is(.project-detail, .comparison-page, .account-page, .house-finder, .projects-section) {
+  padding-bottom: var(--page-space);
+}
+
+.site-shell :is(.payment-guide-details, .payment-guide-process, .payment-guide-next) {
+  padding-block: var(--section-inset);
+}
+
+.site-shell .payment-guide-next {
+  padding-bottom: var(--page-space);
+}
+.site-shell .estimate-calculator {
+  padding-bottom: var(--section-inset);
+}
+
+.site-shell :is(.project-detail-content, .project-detail-section) {
+  padding-block: var(--section-inset);
+}
+
+.site-shell .project-detail .project-detail-final {
+  padding-bottom: 0;
+}
+.site-shell main:is(.project-detail, .comparison-page) > .contact-section {
+  margin-top: var(--section-inset);
+  padding-top: var(--section-inset);
+  padding-bottom: 0;
+}
+
+.site-shell :is(.project-detail-back, .finder-back, .payment-guide-back) {
+  margin-bottom: var(--heading-space);
+}
+
+.site-shell
+  :is(
+    .page-intro,
+    .company-hero,
+    .project-detail-head,
+    .account-page-heading,
+    .house-finder,
+    .comparison-page,
+    .estimate-intro,
+    .payment-intro,
+    .payment-guide-intro
+  )
+  h1,
+.site-shell .projects-section h1 {
+  margin-top: 0;
+  margin-bottom: var(--heading-space);
+}
+
+.site-shell
+  :is(
+    .content-section,
+    .home-discover-card,
+    .calculator-promo,
+    .final-cta,
+    .journey-next-step,
+    .project-detail-section,
+    .project-detail-content,
+    .contact-section-head
+  )
+  h2 {
+  margin-top: 0;
+  margin-bottom: var(--heading-space);
+}
+
+.site-shell
+  :is(.section-heading, .payment-section-heading, .payment-guide-heading, .contact-section-head) {
+  margin-bottom: var(--heading-space);
+}
+
+.site-shell :is(.section-heading, .payment-guide-heading, .testimonials-heading) h2,
+.site-shell .final-cta h2 {
+  margin: 0;
+}
+
+.site-shell .payment-section-heading h2 {
+  margin: 0 0 var(--space-4);
+}
+.site-shell .home-popular .section-heading {
+  margin-bottom: var(--heading-space);
+}
+.site-shell .principle-grid {
+  margin-top: var(--heading-space);
+}
+.site-shell .principle-grid h3 {
+  margin-top: 0;
+}
+.site-shell .home-reviews .testimonials {
+  margin-top: 0;
+}
+
+.site-shell .account-page :is(.account-data-section, .account-chat-section) {
+  margin-top: var(--section-space);
+}
+
+.site-shell .account-card-meta {
+  margin: var(--space-2) 0;
+  color: var(--muted);
+  font-size: var(--text-label);
+  line-height: 1.6;
+}
+
+.site-shell .estimate-duration-label {
+  margin: 0 0 var(--space-3);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.site-shell :is(.interior-intro-copy, .account-page-lead, .estimate-lead, .payment-guide-lead) {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.site-shell .estimate-intro {
+  margin-bottom: var(--section-space);
+}
+
+.site-shell
+  :is(.content-section, .calculator-promo, .journey-next-step, .home-discover-card)
+  h2
+  + p {
+  margin-top: 0;
+}
+
+.site-shell
+  :is(.payment-method-card, .partner-card, .team-card-heading, .estimate-panel-heading)
+  h3,
+.site-shell .estimate-panel-heading h2 {
+  margin-top: 0;
+}
+
+.site-shell main > .section-wrap > :first-child {
+  margin-top: 0;
+}
+.site-shell main > .section-wrap > :last-child,
+.site-shell main > p:last-child {
+  margin-bottom: 0;
+}
+
+.site-shell :is(.account-estimate-card, .account-project-card) h3 {
+  margin: 0 0 var(--space-2);
+}
+
+.site-shell
+  :is(.content-section, .calculator-promo, .journey-next-step, .home-discover-card)
+  > p:last-child {
+  margin-bottom: 0;
+}
