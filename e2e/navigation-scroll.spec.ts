@@ -117,7 +117,7 @@ test("после просмотра дома фильтры и положени�
     .toBeLessThan(3);
 });
 
-test("мобильное меню с внутренней страницы открывает нужный раздел главной", async ({ page }) => {
+test("мобильное меню с внутренней страницы открывает контакты сверху", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/projects/02");
   await page.getByRole("button", { name: "Открыть меню" }).click();
@@ -126,6 +126,8 @@ test("мобильное меню с внутренней страницы от�
     .getByRole("link", { name: "Контакты" })
     .click();
   await expect(page).toHaveURL(/\/contacts$/);
-  await expect(page.getByRole("heading", { name: "Начнём с разговора." })).toBeInViewport();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Контакты автора портфолио", exact: true }),
+  ).toBeInViewport();
   await expect(page.getByRole("navigation", { name: "Мобильная навигация" })).toHaveCount(0);
 });

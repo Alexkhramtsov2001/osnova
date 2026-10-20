@@ -41,6 +41,7 @@ for (const width of [1440, 768, 390]) {
   test(`калькулятор: сводка и локальные ошибки при ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/calculator");
+    await page.evaluate(() => document.fonts.ready);
     const summary = page.getByRole("status", { name: "Краткая сводка расчёта" });
     const area = page.getByRole("spinbutton", { name: /Площадь дома/ });
     if (width === 390) {
@@ -70,7 +71,20 @@ for (const width of [1440, 768, 390]) {
       await expect(input).toHaveAttribute("aria-describedby", errorId);
       const error = page.locator(`#${errorId}`);
       await expect(error).toBeVisible();
-      expect((await error.boundingBox())!.y - (await input.boundingBox())!.y).toBeLessThan(100);
+      // Read both rectangles together: scrolling between separate calls changes viewport coordinates.
+      const position = await input.evaluate((node, id) => {
+        const message = document.getElementById(id)!;
+        const inputRect = node.getBoundingClientRect();
+        const errorRect = message.getBoundingClientRect();
+        return {
+          sameField: node.closest(".estimate-field")!.contains(message),
+          topGap: errorRect.top - inputRect.top,
+          bottomGap: errorRect.top - inputRect.bottom,
+        };
+      }, errorId);
+      expect(position.sameField).toBe(true);
+      expect(position.bottomGap).toBeGreaterThanOrEqual(0);
+      expect(position.topGap).toBeLessThan(100);
       await expect(summary).toBeHidden();
       await input.fill(previous);
       await expect(error).toHaveCount(0);
