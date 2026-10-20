@@ -36,6 +36,10 @@ export default function HomePage() {
         {" "}
         <section className="hero" id="home">
           <div className="hero-copy">
+            <p className="eyebrow hero-tagline">
+              <span className="status-dot" />
+              СТРОИТЕЛЬСТВО ЗАГОРОДНЫХ ДОМОВ
+            </p>
             <h1>
               Дом начинается
               <br />

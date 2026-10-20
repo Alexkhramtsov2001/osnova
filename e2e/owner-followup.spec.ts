@@ -10,7 +10,7 @@ for (const [width, height] of [
   // Approved shared rhythm: 48 px between sections/on page edges, 32 px on phones.
   const pageSpace = width <= 760 ? 32 : 48;
   const sectionInset = pageSpace / 2;
-  test(`ритм страниц и полные фотографии проектов при ${width}px`, async ({ page }) => {
+  test(`ритм страниц и полные фотографии проектов при ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height });
     const noOverflow = async () =>
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
@@ -59,6 +59,14 @@ for (const [width, height] of [
       await expect
         .poll(() => image.evaluate((node) => (node as HTMLImageElement).naturalWidth))
         .toBeGreaterThan(0);
+      if (width > 1150) {
+        const left = await image.evaluate((node) => node.getBoundingClientRect().left);
+        const headingLeft = await page
+          .locator(".project-detail-head")
+          .evaluate((node) => node.getBoundingClientRect().left);
+        expect(left).toBeCloseTo(headingLeft, 0);
+        await page.screenshot({ path: info.outputPath(`project-${id}-${width}.png`) });
+      }
       const difference = await image.evaluate((node, reframed) => {
         const image = node as HTMLImageElement;
         const ratio = reframed ? 3 / 2 : image.naturalWidth / image.naturalHeight;

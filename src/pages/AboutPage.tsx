@@ -2,7 +2,7 @@ import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ArrowIcon from "../components/ArrowIcon";
 import { Link } from "react-router";
-import { history, statistics, team, principles } from "../features/company/content";
+import { history, team, principles } from "../features/company/content";
 import { vacancyRegions } from "../features/company/vacancies";
 export default function AboutPage() {
   return (
@@ -46,25 +46,12 @@ export default function AboutPage() {
             ))}
           </ol>
         </section>
-        <section className="approach-section">
-          <div className="section-wrap content-section">
-            <p className="demo-label">Что можно проверить в этом демо</p>
-            <div className="stat-grid">
-              {statistics.map((item) => (
-                <div key={item.label}>
-                  <strong>{item.value}</strong>
-                  <p>{item.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
         <section className="section-wrap content-section">
           <h2>
             За каждым решением — <span>команда.</span>
           </h2>
           <p className="section-lead">
-            Персонажи, офисы и достижения в карточках вымышлены. Портреты сгенерированы для этого
+            Персонажи и офисы в карточках вымышлены. Портреты сгенерированы для этого
             демонстрационного проекта и не изображают реальных сотрудников.
           </p>
           <div className="team-grid">
@@ -95,10 +82,6 @@ export default function AboutPage() {
                     {vacancyRegions.find((region) => region.name === person.office)?.office}
                   </address>
                   <p className="team-bio">{person.bio}</p>
-                  <div className="team-achievement">
-                    <small>ДОСТИЖЕНИЕ В ДЕМО-ИСТОРИИ</small>
-                    <p>{person.achievement}</p>
-                  </div>
                 </div>
               </article>
             ))}
@@ -124,13 +107,14 @@ export default function AboutPage() {
             ))}
           </ul>
         </section>
-        <section className="section-wrap content-section">
+        <section className="section-wrap content-section company-principles">
           <h2>
             Принципы <span>работы.</span>
           </h2>
           <div className="principle-grid">
-            {principles.map((item) => (
+            {principles.map((item, index) => (
               <article key={item.title}>
+                <small className="principle-number">{String(index + 1).padStart(2, "0")}</small>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
               </article>

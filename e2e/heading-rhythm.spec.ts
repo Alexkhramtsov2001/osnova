@@ -36,7 +36,7 @@ for (const width of [1440, 768, 390]) {
       await expect(page.locator("main h1")).toBeVisible();
       await expect(
         page.locator(
-          "main .eyebrow, main .estimate-eyebrow, main .estimate-overline, main .payment-overline",
+          "main .eyebrow:not(.hero-tagline), main .estimate-eyebrow, main .estimate-overline, main .payment-overline",
         ),
       ).toHaveCount(0);
       const sections = await page
@@ -57,8 +57,57 @@ for (const width of [1440, 768, 390]) {
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
         route,
       ).toBe(true);
+      await expect(page.locator(".footer-brand")).toHaveJSProperty("tagName", "DIV");
+      await expect(page.locator(".footer-brand a, .footer-brand button")).toHaveCount(0);
       await page.screenshot({ path: output(`${name}-${width}.png`) });
+      if (name === "projects") {
+        await expect(page.locator(".catalog-account-link")).toHaveCount(0);
+        await expect(page.getByRole("button", { name: /Избранное/ })).toBeVisible();
+      }
+      if (name === "about") {
+        await expect(page.locator(".stat-grid, .team-achievement")).toHaveCount(0);
+        await expect(page.locator(".company-principles .principle-number")).toHaveText([
+          "01",
+          "02",
+          "03",
+          "04",
+        ]);
+        if (width > 760) {
+          const delta = await page
+            .locator(".company-hero")
+            .evaluate(
+              (node) =>
+                node.querySelector("h1")!.getBoundingClientRect().top -
+                node.querySelector("img")!.getBoundingClientRect().top,
+            );
+          expect(delta).toBeCloseTo(0, 0);
+        }
+        const dividers = page.locator(".company-principles article");
+        await expect(dividers.nth(1)).toHaveCSS(
+          width > 560 ? "border-left-width" : "border-top-width",
+          "1px",
+        );
+        await expect(page.locator(".team-bio").first()).toHaveCSS("margin-bottom", "0px");
+        await page.screenshot({ path: output(`about-full-${width}.png`), fullPage: true });
+        await page
+          .locator(".company-principles")
+          .screenshot({ path: output(`principles-${width}.png`) });
+        await page
+          .locator(".team-card")
+          .first()
+          .screenshot({ path: output(`team-card-${width}.png`) });
+      }
       if (name === "home") {
+        await expect(page.locator(".hero-tagline")).toHaveText("СТРОИТЕЛЬСТВО ЗАГОРОДНЫХ ДОМОВ");
+        const ctaGap = await page
+          .locator(".final-cta")
+          .evaluate(
+            (node) =>
+              node.querySelector(".button")!.getBoundingClientRect().top -
+              node.querySelector("h2")!.getBoundingClientRect().bottom,
+          );
+        expect(ctaGap).toBeCloseTo(32, 0);
+        await page.locator(".final-cta").screenshot({ path: output(`final-cta-${width}.png`) });
         const reviews = page.locator(".testimonials");
         await expect(
           reviews.getByRole("heading", { name: "Отзывы о нашей компании" }),

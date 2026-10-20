@@ -36,7 +36,7 @@ test("главная компактна, корпоративные данные
   ).toHaveCount(12);
   await page.goto("/about");
   await expect(page.locator(".company-timeline li")).toHaveCount(6);
-  await expect(page.locator(".stat-grid>div")).toHaveCount(4);
+  await expect(page.locator(".stat-grid, .team-achievement")).toHaveCount(0);
   await expect(page.locator(".team-card")).toHaveCount(6);
   await expect(page.locator(".demo-office-grid li")).toHaveCount(11);
   await expect(page.locator(".principle-grid h3")).toHaveText([
@@ -45,7 +45,8 @@ test("главная компактна, корпоративные данные
     "Контроль качества",
     "Последовательность этапов",
   ]);
-  await expect(page.locator(".principle-number, .eyebrow")).toHaveCount(0);
+  await expect(page.locator(".principle-number")).toHaveText(["01", "02", "03", "04"]);
+  await expect(page.locator(".eyebrow")).toHaveCount(0);
   await expect(page.locator(".site-footer")).toContainText(
     "Компания, сотрудники, партнёры, отзывы и показатели",
   );

@@ -14,6 +14,13 @@
   outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
 }
+
+@media (min-width: 1151px) {
+  .project-detail .project-photo-open,
+  .project-detail .project-detail-image {
+    margin-inline: 0;
+  }
+}
 .project-detail .floor-plans-notice {
   max-width: 80ch;
   font-size: 13px;

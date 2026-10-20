@@ -86,8 +86,7 @@
 }
 
 .desktop-nav a:hover,
-.site-footer nav a:hover,
-.footer-brand:hover {
+.site-footer nav a:hover {
   color: var(--accent);
 }
 

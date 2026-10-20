@@ -11,7 +11,8 @@ test("главная ведёт к выбору проекта, а страни�
     .click();
   await expect(page).toHaveURL(/\/projects$/);
   await page.goto("/about");
-  await expect(page.locator(".stat-grid")).toContainText("Концепций для сравнения");
+  await expect(page.locator(".stat-grid")).toHaveCount(0);
+  await expect(page.locator(".company-principles h2")).toContainText("Принципы");
   await page.locator(".journey-next-step").getByRole("link", { name: "Смотреть проекты" }).click();
   await expect(page).toHaveURL(/\/projects$/);
   await page.goto("/partners");

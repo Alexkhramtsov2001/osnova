@@ -3,7 +3,7 @@ import { navigation } from "../features/company/navigation";
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
-      <Link className="footer-brand brand" to="/" aria-label="ОСНОВА — на главную">
+      <div className="footer-brand brand">
         <span className="brand-mark" aria-hidden="true">
           О
         </span>
@@ -11,7 +11,7 @@ export default function SiteFooter() {
           <strong>ОСНОВА</strong>
           <small>СТРОИМ ДЛЯ ЖИЗНИ</small>
         </span>
-      </Link>
+      </div>
       <nav aria-label="Навигация в подвале">
         {navigation.map((item) => (
           <Link key={item.to} to={item.to}>
