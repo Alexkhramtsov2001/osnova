@@ -6,6 +6,7 @@ import DemoChat from "./DemoChat";
 type ContactSectionProps = {
   id?: string;
   title: string;
+  headingLevel?: 1 | 2;
   description?: string;
   subject: string;
   message?: string;
@@ -14,11 +15,13 @@ type ContactSectionProps = {
 export default function ContactSection({
   id,
   title,
+  headingLevel = 2,
   description,
   subject,
   message,
 }: ContactSectionProps) {
   const links = contactLinks(subject, message);
+  const Heading = headingLevel === 1 ? "h1" : "h2";
   return (
     <section
       className="contact-section section-wrap"
@@ -27,7 +30,7 @@ export default function ContactSection({
     >
       <div className="contact-section-head">
         <div>
-          <h2 id="contact-section-title">{title}</h2>
+          <Heading id="contact-section-title">{title}</Heading>
         </div>
         {description && <p>{description}</p>}
       </div>

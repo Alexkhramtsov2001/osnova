@@ -1,5 +1,34 @@
 import { expect, test } from "./authenticated-test";
 
+for (const width of [1440, 768, 390]) {
+  test(`контакты начинают страницу без лишнего вводного блока при ${width}px`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    await page.goto("/contacts");
+    await expect(page.locator("main > :first-child")).toHaveClass(/contact-section/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Контакты автора портфолио");
+    await expect(page.locator(".contacts-page-intro")).toHaveCount(0);
+    await expect(page.getByText("Начнём с разговора.")).toHaveCount(0);
+    const gap = await page
+      .locator("h1")
+      .evaluate(
+        (node) =>
+          node.getBoundingClientRect().top -
+          document.querySelector(".site-header")!.getBoundingClientRect().bottom,
+      );
+    expect(Math.abs(gap - (width <= 760 ? 32 : 48))).toBeLessThanOrEqual(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await expect(page.locator(".contact-options a")).toHaveCount(3);
+    await expect(page.locator(".demo-chat")).toBeVisible();
+    await expect(page.locator(".demo-contact-form")).toBeVisible();
+    await page.screenshot({ path: info.outputPath(`contacts-${width}.png`) });
+    await page.screenshot({ path: info.outputPath(`contacts-full-${width}.png`), fullPage: true });
+  });
+}
+
 test("контакты доступны с главной страницы и в мобильном меню", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/contacts");

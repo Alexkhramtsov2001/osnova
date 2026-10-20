@@ -9,16 +9,11 @@ export default function ContactsPage() {
     <div className="site-shell">
       <SiteHeader />
       <main>
-        <div className="section-wrap page-intro contacts-page-intro">
-          <h1>
-            Начнём <span>с разговора.</span>
-          </h1>
-          <p className="interior-intro-copy">
-            Здесь находятся контакты автора портфолио. Ниже можно открыть демонстрационный чат и
-            попробовать форму: она проверяет поля локально и не отправляет данные.
-          </p>
-        </div>
-        <ContactSection title="Контакты автора портфолио" subject="ОСНОВА — вопрос о проекте" />
+        <ContactSection
+          title="Контакты автора портфолио"
+          headingLevel={1}
+          subject="ОСНОВА — вопрос о проекте"
+        />
         <section className="section-wrap content-section">
           <div className="contact-form-layout">
             <div>

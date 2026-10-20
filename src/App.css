@@ -718,8 +718,8 @@
   margin-bottom: 38px;
 }
 
-.contact-section h2 {
-  margin: 17px 0 0;
+.contact-section :is(h1, h2) {
+  margin: 0;
   font-size: clamp(36px, 4.5vw, 64px);
   font-weight: 400;
   letter-spacing: -0.055em;
