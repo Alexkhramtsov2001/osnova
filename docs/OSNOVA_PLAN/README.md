@@ -1,6 +1,6 @@
 # OSNOVA PLAN — документация v3.0
 
-Документация v3.0 сверена 25.10.2026. **Локально выполнен C13.2b — explicit vector→стены/комнаты/точный ledger/fresh room geometry. Следующий отдельно C13.2c — bounded search, затем d.**180Vitest passed/0failed (72central+49bound+59rooms,37новых), TypeScript3/ESLint3/форматирование успешны. C1/C2 совпали с ручными примерами;4Chromium1440/390 просмотрены без overflow. Ручные векторы/проёмы не выдаются за автоматический поиск; C3 room-valid, direct access невозможен. Общий driver ещё C12/2семейства, source/tests локальные. В GitHub только документация. Полный Building/качество/Worker/UI/owner/iPhone pending. Актуальный опубликованный снимок — [PROGRESS](PROGRESS.md), последующие кодовые результаты — локальный журнал; история не задаёт следующий шаг.
+Документация v3.0 сверена 25.10.2026. **Локально выполнен C13.2c — автоматический bounded/resumable поиск центрального коридора. Следующий отдельно C13.2d — включение третьей семьи в общий generate/гейт.** A03/B02 автоматически прошли C13→C10→fresh budgeted MVP guard→2D без ручных векторов/проёмов и увеличения лимитов.103уникальных Vitest passed/0failed (28новых+72builder+3N_hall),261исключённых не passed; TypeScript3/ESLint2/форматирование и4Chromium1440/390 успешны. Public driver пока2семейства; source/tests локальные. В GitHub только документация. Качество/Building/Worker/UI/owner/iPhone pending. Актуальный опубликованный снимок — [PROGRESS](PROGRESS.md), последующий кодовый журнал локальный.
 
 ## Приоритет и навигация
 
