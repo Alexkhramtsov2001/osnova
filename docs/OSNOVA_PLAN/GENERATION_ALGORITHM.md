@@ -1,6 +1,6 @@
 # OSNOVA PLAN — алгоритм генерации v3.0
 
-Числа, профили, допуски и бюджеты определены только в [SPECIFICATION.md](SPECIFICATION.md). C09/C10 и ранний гейт публичного core generate C11 выполнены локально; C12.1 ниже фиксирует контракт следующего семейства до его кода. Текущий статус исходников фиксируется в локальном PROGRESS генератора; [PROGRESS.md](PROGRESS.md) этого репозитория остаётся опубликованным снимком документации.
+Числа, профили, допуски и бюджеты определены только в [SPECIFICATION.md](SPECIFICATION.md). C09–C12 выполнены локально в своих границах; C13.1 ниже фиксирует контракт третьего семейства до его кода. Текущий статус исходников фиксируется в локальном PROGRESS генератора; [PROGRESS.md](PROGRESS.md) этого репозитория остаётся опубликованным снимком документации.
 
 ## Порядок
 
@@ -245,6 +245,100 @@ N_side до кода — B01 и B05 из неизменного mvp-b-2026.10.22
 C12.2 выполнить небольшими связанными шагами с прежним общим критерием: a — raw preflight/ленивые скелеты/точные интервалы; b — явный вектор→ID/стены/ledger/fresh room geometry, S1/S2 и B05; c — возобновляемый конечный поиск/seed/dedup/бюджет; d — минимальное подключение к общему generate/C10/final gate. Это декомпозиция существующей C12.2, не новые возможности/документы и не увеличение119карточек. До каждого шага уточнить свой узкий тестовый контракт. Не выполнять их в запросе C12.1.
 
 Проверки реализации: границы ширин/совместного последнего остатка/тройного ряда, физические стороны окон/частичный контакт с входом, сохранение целей/ID/приватности, exact union без двойного счёта, frozen input, malformed raw, quota1…64/zero remaining, cancel/deadline/reentry/terminal, отсутствие скрытой работы factory/double debit. После подключения — реальные N_side raw→C12→C10→fresh MVP→2D без координат witness, повтор раннего гейта primary10/N_hall/diagnostics при прежних общих ceilings, новые данные не суммируются со старыми26tests. Невалидный success/регрессия N_hall или неуспех N_side требуют адресной диагностики процесса; не повышать бюджет и не начинать C13 ради обхода причины. Переход C13.1 только после этих проверок; K2/полный Building остаются будущими.
+
+## C13.1 — центральный коридор: контракт central-corridor-2026.10.25-1
+
+Письменный P-contract от25.10.2026, до centralCorridor.ts/C13.2. Ограниченный mvp-0.1: наружный прямоугольник, прямые ненесущие перегородки, пользовательские комнаты/производная циркуляция и прежние цели/валидаторы. N_central заранее A03/B02 из неизменных mvp-a-2026.10.22-3/mvp-b-2026.10.22-5. Семейства могут пересекаться геометрически; другое имя циркуляции/UUID не доказывает разнообразия C15. Этот контракт не обещает решить DIAG03, произвольный ввод или оптимизировать жилые маршруты.
+
+### Топология и вход
+
+Канонические координаты u/v. Две непрерывные вертикальные перегородки выделяют левую полосу L, центральную C и правую R. В обоих крыльях не менее одного пользовательского листа, по1…3листа в ряду; ряды каждого крыла заполняют всю чистую высоту независимо от противоположного крыла. Листья нумеруются от коридора к внешнему фасаду, ряды от v=0. Только дальний лист промежуточного ряда касается бокового фасада; в первом/последнем ряду все листья имеют торцевой фасад. При обязательном окне отсутствие любого наружного фасада отсекает назначение, но фасад ещё не доказывает slot окна.
+
+- entryPlacement=wing разрешён только при separate. Вся C — один производный corridor; a=0 и перегородки вход/corridor нет. Entry host — выбранное реальное entrance-требование в одном из крыльев, с наружным фасадом. Оно остаётся обычным листом, не дублируется как дополнительный вход. Наружный фасад возможен у дальнего листа либо любого листа первого/последнего ряда; C10 проверяет фактическое место входа/проёмы/путь, не только этот признак.
+- entryPlacement=strip-cap: в начале C прямоугольник высотой a, затем перегородка p и corridor до конца полосы. Для separate cap назначается одному выбранному entrance-требованию. Для via-hall cap — отдельный настоящий производный hall, host requirement=null. Нельзя выдавать corridor за входной hall или ослаблять C04. Via-hall/wing не поддерживается. Требования entrance сверх выбранного не удаляются: они назначаются в крылья.
+
+Все пользовательские требования назначаются ровно один раз. N=n−1 только для separate/strip-cap; иначе N=n. Разделить N на N_L≥1 и N_R≥1; при N<2 домен семейства пуст, а не ошибка допустимого raw. В каждом крыле K_s∈[ceil(N_s/3),N_s], m_si∈1…3, Σm_si=N_s. Нет добавленного ограничения6рядов/двух пар C09. Кольца, изломы циркуляции, произвольные вложенные разбиения,4листа в ряду, true void, несущие внутренние линии, лестница/два этажа/мебель не строятся этим семейством, но не запрещаются всему будущему проекту.
+
+Реальные соседства: соседние листья одного ряда, перекрывающиеся листья соседних рядов того же крыла, ближний лист с совпадающей частью corridor/входного cap. Разные крылья не имеют прямого контакта сквозь центральную полосу. Контакт cap не равен контакту corridor. Hard door/adjacency и desired=false сохраняются; soft не отсекают. Оптимистические контакты дают только необходимые отсечения; приватность/ширины/дуги/реальные маршруты — C03/C04/C10. Спальня, санузел, кладовая и technicalRoom не становятся вынужденным транзитом. Общие комнаты допускаются в маршрутах по прежней политике C04, качество оценивается позже C15.
+
+### Явный вектор, диапазоны и порядок
+
+Raw — прежние7полей C09/C12: capabilityProfile/rulesVersion/technologyId/clearHeightMm/roomProgram/seed/limits, заново строгий C01/C02 preflight. Явные parameters ровно frame,mirror,entryPlacement,entryHostRequirementId|null,columnWidthsMm:[L,C,R],entryHeightMm:a,leftRowIds,rightRowIds,leftRowHeights,rightRowHeights,leftRowWidths,rightRowWidths. Полные двумерные widths включают последний лист; никаких defaults, sparse arrays, повторных/пропущенных ID, нецелых/unsafe размеров или доверенного prepared cache. Wing требует a=0; cap требует a>0. Иные нули недопустимы.
+
+Для world W×D frame0/180 даёт Wc=W,Dc=D, frame90/270 — Wc=D,Dc=W. Mirror u→Wc−u, затем прежние R0(u,v)=(u,v), R90=(W−v,u), R180=(W−u,D−v), R270=(v,D−u). Существующий current.rotation не переписывается, габарит повторно не округляется. Толщины e/p из выбранной технологии. Iw=Wc−2e,Ih=Dc−2e,b=1 для strip-cap/0 для wing:
+
+    L+C+R+2p=Iw; C≥1000;
+    Hcorr=Ih−b(a+p)≥1000;
+    Σh_si+(K_s−1)p=Ih;
+    Σw_sij+(m_si−1)p=B_s, где B_L=L,B_R=R.
+
+Одна независимая ширина вектора — L, вторая R; C — только точный остаток. Для каждого крыла H_s=Ih−(K_s−1)p>0, E_s=N_s−K_s. Из прежних lo_j/hi_j в areaQ4 и shortMin_j:
+
+    Bmin_s=max(max_i(Σ_j shortMin_ij+(m_si−1)p),ceil(Σlo_j/(4H_s)));
+    Bmax_s=floor((Σhi_j+4p E_s Ih)/(4H_s)).
+
+Это консервативный внешний диапазон, не гарантия размещения. Cmin=1000, дополнительно shortMin выбранного entrance для separate/strip-cap. L∈[Bmin_L,min(Bmax_L,Iw−2p−Bmin_R−Cmin)], R∈[Bmin_R,min(Bmax_R,Iw−2p−L−Cmin)], C=Iw−2p−L−R. Отрицательный/пустой интервал закрывает данную ветвь. Для separate cap a — hallSideInterval(entrance,C,Ih−p−1000); для via-hall cap a∈[1000,Ih−p−1000], номинал a=C. Для wing a=0 без размерной ветки. Выбранный wing-host проходит тот же профиль комнаты, что любой лист.
+
+Высоты рядов, A_j(h)/B_j(h), U_i и совместные остатки ширин — буквально формулы C12.1 с band width L либо R. Для одиночного ряда высота проверяется точным hallSideInterval; для2/3листьев внешний height bound сужается будущими min/max, каждое выбранное h проходит точные совместные width intervals. Последняя h каждого крыла и последняя w ряда — ровно остаток; после этого все цели/short/aspect проверяются. Не исправлять их растяжением/площадью «по печатным м²»/допуском50мм. Безопасные area/maximum-side/contact отсечения C12.2c применимы отдельно к крыльям, без переноса контакта через коридор.
+
+Для separate64ленивых потока:8frame/mirror×2entryPlacement×4phase; для via-hall32, только strip-cap. Потоки fair round-robin, не полный materialized каталог. Внутри каждого сначала общее число рядов T от N до ceil(N/3), затем N_L=1…N−1, K_L по убыванию с допустимым K_R=T−K_L; compositions обоих крыльев1/2/3 лексикографически. Невозможные T/K пропускаются оплаченно. Host — все entrance при separate; via-hall только null. Для strip-cap host исключён из pool, для wing входит в pool и должен занять допустимый наружный слот. Слоты назначения: все левые ряды/листья, затем правые. Порядок требований tuple(typeId,targetAreaQ4,seededHash,lowercaseUUID), теги FNV-1a32/ASCII central:frame,central:host и central:slot:wing:row:leaf. Names/порядок JSON/время обход не задают; независимость от переименования UUID не заявлена.
+
+После назначения L,R,a, затем h левого/правого крыла, затем w листьев левого/правого крыла. Номинал B_s=ΣT_s/(4H_s)+p E_s/K_s; h_i=ΣT_row/(4U_i); w_j=T_j/(4h_i); separate cap a=T_entry/(4C). Точные рациональные оценки задают порядок, не новые цели. Anchors nominal half-up/midpoint half-up/low/high с удалением повторов и значений вне диапазона; далее прежние100/20/1мм, distance-to-nominal с меньшим при равенстве. Полный вектор испускается только при max rank независимых L/R/a/h/w=current phase. C и последние h/w производные, rank0; a=0 wing тоже производный. Все размеры включены в identity независимо от ранга.
+
+### Стеновая сеть, ledger, API и общий бюджет
+
+Внешние оси e/2,Wc−e/2 и e/2,Dc−e/2. Продольные разделители x_l=e+L+p/2 и x_r=e+L+p+C+p/2, каждый на всю высоту между внешними осями. При cap одна поперечная перегородка на y=e+a+p/2 от x_l до x_r; при wing её нет. Рядовые перегородки левого крыла идут от западной оси до x_l, правого — от x_r до восточной оси. Координата — середина зарезервированного p между рядами. Внутри ряда перегородки между листьями соединяют верхнюю/нижнюю ограничивающую ось ряда. Ни один сегмент не дублируется.
+
+Для листа j с префиксом P=Σпредыдущих w+jp: слева x1=e+L−P,x0=x1−w; справа x0=e+L+2p+C+P,x1=x0+w. Общие y0=e+Σпредыдущих h+ip,y1=y0+h. Cap x∈[e+L+p,e+L+p+C],y∈[e,e+a]; corridor тот же x,y∈[e+b(a+p),Dc−e]. Anchor — центр настоящего прямоугольника; world точки exact q=2×mm, half-mm центры сохраняются. Analytic uncut ledger в мм²:
+
+    wall=Wc Dc−Iw Ih+2p Ih+b p C+(K_L−1)pL+(K_R−1)pR+Σ_s,i (m_si−1)p h_si;
+    user=Σ_s,i,j w_sij h_si + [separate/strip-cap] C a;
+    hall=[via-hall/strip-cap] C a;
+    corridor=C Hcorr;
+    gross=wall+user+hall+corridor, unallocated=0,trueVoid=0.
+
+Слагаемые внутренних полос не пересекаются; union физических тел стен, а не сумма bbox, заново выводится из сети. Проёмы не вычитаются из канонического wall ledger. Каждая область/площадь и ledger сверяются fresh prepareBoundFloorGeometry/validateRoomGeometry; несоответствие — internalError, не обычный отказ поиска.
+
+Будущие buildCentralCorridorLayout(raw,parameters)/createCentralCorridorSearch(raw) дают immutable/detached GenerationRawLayout/GenerationRoomCandidate с familyId=central-corridor, scope=central-corridor-layout, geometryStage=room-geometry, version/key/technology/height/entryHostRoomId/ledger. Wing hostRoomId — физический ID выбранного листа, cap — ID cap. Bindings используют реальные requirementId, у производных hall/corridor requirementId=null. Только fresh room validation снимает roomGeometryValidationRequired; openings/swing/access/links/Project/Building остаются pending. Никаких установленных openings/публичного success/score до прежнего C10/final guard. Некорректный raw — init failure с исходным path; параметры/невозможный профиль — rejected; исчерпанный корректный домен — exhausted; ресурс/отмена/deadline не маскируются исчерпанием.
+
+CanonicalParameterKey — JSON.stringify tuple [centralContractVersion,rulesVersion,technologyId,height,floorId,worldW,worldD,frame,mirror,entryPlacement,host|null,leftRowIds,rightRowIds,[L,C,R],a,leftHeights,rightHeights,leftWidths,rightWidths]. UUID сравниваются lowercase, исходные ID сохраняются. Phase/имена/emissionIndex в key не входят. UUIDv8/FNV32/4lanes/salt0…31 как прежде, namespace centralContractVersion; slots entry (только cap),corridor,left:i:j,right:i:j. Wall segment key — класс/материал/толщина/нормализованные world q-концы. Коллизии floor/requirements/уже занятых IDs проверяются, исчерпание salts — internalError. Этот key не заменяет C10 full physical identity и C15 grouping.
+
+Factory — только bounded raw preflight,1node явно в creation.counters. Следующий общий caller списывает ровно один раз; next(control?,nodeAllowance=64) допускает1…64nodes, в нуле остатка factory/next не вызываются. Оплачиваются все advances/done/pruned assignments/numeric checks/сегменты/fresh проверки. Terminal идемпотентен без новых hooks; controls до/после атомарных операций, reentry/throwing/nonboolean hooks — internalError. MaxLayouts1…10000, maxNodes1…128×maxLayouts — один lifetime для64/32потоков, seen keys≤maxLayouts; память — bounded DFS каждого потока/текущий layout, не все перестановки/миллиметры. Worker100мс не заявляется.
+
+Подключение C13.2d расширяет прежний raw public hall/mode/budget и общий тип familyId без новых UI-параметров, меняет engine version перед включением. Все3семейства и C10/fresh guard остаются в прежнем nodes13280000/access1000000, checked2000/10000 и10/30с; budgets не утраиваются. Общих живых C10 только4. При3живых семействах сначала каждому резервируется одно место; четвёртое допускается в round-robin, когда у двух остальных уже есть по одному job. До этого быстрый поиск не занимает второе место. После stop одного семейства действует прежний режим2+2 для двух оставшихся (уже работающие jobs не прерываются; новых не добавлять сверх доступных4/правила admission), после последнего — до4одному. Family turns продолжаются bounded/fair; нет отдельных ledger/reset/молчаливого extended. noSupportedLayout только после exhausted всех семейств/jobs, лимит хотя бы одного сохраняется как limit. Первый valid лишь provisional, cancellation/errors не публикуют частичный план.
+
+### Ручной C1 — B02: вход в крыле, граничный aspect входа
+
+World12000×8000,96м²/P40,height2600,ceramic e380/p120,frame0/mirror=false,entryPlacement=wing,host306. Iw11240/Ih7240; L5000/C1200/R4800,a0. Суффиксы301…306 относятся к неизменным UUID требований B02. Каждый ряд здесь одиночный:
+
+| Крыло/требование       | h×w, мм   | Чистая площадь/цель, м² |
+| ---------------------- | --------- | ----------------------- |
+| left303 кухня-гостиная | 3000×5000 | 15,000/15,0             |
+| left305 technical      | 2000×5000 | 10,000/10,0             |
+| left304 санузел        | 2000×5000 | 10,000/10,0             |
+| right301 спальня       | 2700×4800 | 12,960/13,0             |
+| right302 спальня       | 2700×4800 | 12,960/13,0             |
+| right306 entrance      | 1600×4800 | 7,680/7,7               |
+
+В обоих крыльях Σh+2p=7240. Corridor x5500…6700/y380…7620,8,688м²; user68,600,wall18,712,net77,288,gross96. Wall=14,6224 outer+1,7376 separators+1,2000 left rows+1,1520 right rows. Aspect entrance4800/1600=3 — ровно прежняя граница, не новый допуск. Literal rectangles/ledger/необходимые фасады совпали с frozen witness. Реальный восточный вход/1000мм passage306→corridor и отдельные двери к комнатам уже заданы в ручном witness; hard adjacency305↔304 и door301↔302=false сохранены. Это членство в домене и прежний ручной доступ, не результат отсутствующего C13 solver/не оптимизация больших служебных комнат.
+
+### Ручной C2 — A03: отдельный cap и поперечная ориентация
+
+World9000×9000,81м²/P36,height2700,ceramic e380/p120. Frame270/mirror=true даёт (u,v)→(v,u), не изменение current.rotation. Iw/Ih8240,L3500/C1800/R2700,entryPlacement=strip-cap,a1800,host306. Left rows301/302 h3500/4620,w3500; right303/304/305 h2000/2580/3420,w2700. Суммы h+p равны8240 с1/2перегородками. Площади/цели:30112,250/12,3;30216,170/16,2;3035,400/5,4;3046,966/7,0;3059,234/9,2; cap3063,240/3,2. Все прежние short/aspect/допуски соблюдены, цели шага0,1.
+
+World cap x380…2180/y4000…5800, corridor x2300…8620/y4000…5800 — буквально A03. User53,260/corridor11,376/wall16,364/net64,636/gross81м². Wall=13,1024 outer+1,9776 separators+0,216 cap+0,420 left rows+0,648 right rows. Ручной путь OUT→306→corridor→пользовательские комнаты уже есть в witness; adjacency301↔302/304↔305 и door303↔304=false сохранены. Геометрическое пересечение с возможностями C09 допустимо, не считать одинаковую геометрию новым разнообразием C15.
+
+### Ручной C3 — valid room arithmetic, но нет допустимого входного маршрута
+
+Только новый письменный отказной пример, не primary/diagnostic fixture. World10000×6000,60м²/P32,height2600,frame technology e200/p100,frame0/mirror=false,via-hall/strip-cap,host=null. Iw9600/Ih5600,L4500/C1000/R3900,a1500,Hcorr4000. Left: bedroom h2700/w4500 фактически12,150→цель12,2; kitchenLivingRoom h2800/w4500,12,600→12,6. Right: bedroom h3100/w3900,12,090→12,1; bathroom h2400/w3900,9,360→9,4. По2ряда с p100, суммы5600; все цели/short/aspect/окна по внешним фасадам допустимы. Hall1,500/corridor4,000/user46,200/wall8,300/gross60м²; wall6,240 outer+1,120 separators+0,100 cap+0,450 left rows+0,390 right rows. Unallocated/void0. Существующий raw preflight подтверждён отдельно, но не выдан за MVP.
+
+Длина оси cap↔corridor равна C+p=1100мм; после прежних концевых300+300 доступно500мм<внутренней двери800/прохода900. Cap соприкасается в крыльях только с первыми спальнями: их высоты2700/3100 больше a1500. Любой обход от hall к corridor/общей комнате требует транзита через спальню. Внешний мир/окно не дают внутреннее ребро. Поэтому этот явный вектор не может стать public MVP success, несмотря на C1000 и корректную площадь всех комнат. Не уменьшать gaps/проёмы/цели и не ослаблять C04; это не запрет всего исходного ввода.
+
+Контрольные ledger areaQ4 [gross,wall,user,hall,corridor]: C1 [384000000,74848000,274400000,0,34752000]; C2 [324000000,65456000,213040000,0,45504000]; C3 [240000000,33200000,184800000,6000000,16000000]. Отдельный внешний расчёт без production imports/future solver сверил111арифметических assertions, буквальные комнаты C1/C2 и независимый cell-union; три явно ручные схемы просмотрены. Независимость вычислительного метода не означает другого автора или приёмку владельцем. Это не111Vitest и не выполненный C13.2.
+
+### Малые шаги C13.2 и переход
+
+a — строгий raw preflight, ленивые skeletons двух крыльев/entry placements и числовые интервалы; до кода уточнить узкий API/собственные oracle-тесты, переиспользовать точную арифметику C09/C12 без переписывания. b — только явный вектор→namespace IDs/стены/anchors/bindings/ledger/fresh room geometry, C1/C2/C3; ручные openings для проверки чётко отделять от поиска. c — resumable search/seed/rank/dedup/контроли/оплата и реальный диагностический N_central raw→C13→C10→fresh MVP→2D не позднее третьей implementation-задачи. d — минимальное подключение третьего семейства, fair4slots/общий budget/version/fresh source guard и повтор того же раннего гейта primary10/diagnostics3; отдельно N_hallA01/A04/A05, N_sideB01/B05 и N_centralA03/B02. Не менять корпус/seed/пределы и не маскировать подтверждённую регрессию покрытия C12 расширенным бюджетом. При неуспехе действовать по DEVELOPMENT_PROCESS. Это декомпозиция существующей C13.2, не новые119карточки; каждую часть выполнять отдельно, дополнительное деление возможно до кода по размеру/контракту. C14 только после C13.2d; мебель/качество/Building/Worker/UI/iPhone остаются будущими.
 
 ## Детерминизм и остановка
 
