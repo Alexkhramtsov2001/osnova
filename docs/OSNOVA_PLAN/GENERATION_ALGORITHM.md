@@ -388,7 +388,7 @@ point/direction/wall/swapsSides/swing/sector — чистые внутренни
 
 ## C15.1 — контракт рейтинга score-mvp-2026.10.26-1
 
-Статус: письменный контракт выполнен 26.10.2026; C15 в целом **in_progress**, runtime рейтинга ещё нет. C15.2 реализует только арифметику; измеритель путей и подключение требуют следующих подкарточек. Это уточнение существующего C15, не новая возможность выпуска или изменение строительных RULES. Сохраняются исходные веса 30/25/20/15/10 и базовая формула c/u. Ниже явно вводится составная оценка циркуляции: половина прежней площадной оценки и половина маршрутов. Она ещё не реализована и не выдана за прежнее поведение.
+Статус: письменный контракт C15.1 и внутренняя арифметика C15.2 выполнены локально26.10.2026; C15 в целом **in_progress**. Модуль оценки не подключён к generate; измеритель путей и подключение требуют следующих подкарточек. Это уточнение существующего C15, не новая возможность выпуска или изменение строительных RULES. Сохраняются исходные веса 30/25/20/15/10 и базовая формула c/u. Ниже явно вводится составная оценка циркуляции: половина прежней площадной оценки и половина маршрутов. Она ещё не реализована и не выдана за прежнее поведение.
 
 ### Данные, доверие и применимость
 
@@ -464,3 +464,13 @@ n — число промежуточных посещённых livingRoom/kitc
 | Q равен, familyId central-hall/side-corridor, затем indices2/3 | central-hall; внутри одного family меньший candidateIndex |
 
 C15.3 добавит ручные геометрические свидетели полилиний (в том числе одинаковое число рёбер разной длины и близкие центры с длинным обходом), до кода путей. Для C15.2 достаточно независимой проверки таблицы выше. Итоговый C15.6c повторяет прежние10primary/3diagnostics в двух режимах и визуально проверяет лучшие фактически сгенерированные планы, отдельно учитывает complete quality/fallback/diversity. Исторические540тестов C14 не выдаются за новый прогон. C16/K2/2000mixed и UI/Building/мебель остаются последующими задачами.
+
+### Реализация C15.2 — арифметика подготовленных фактов
+
+Внутренний score.ts реализует evaluateQualityFacts(facts) и compareQualityCandidates(left,right), без экспорта через core/index. QualityFacts содержит фиксированный manifest с counts userSoftLinks/bedroomRoutes/functionalRoutes/transitRoutes, areas.freeAreaQ4/circulationAreaQ4/unallocatedAreaQ4, только пользовательские rooms(typeId,shortSideQ,longSideQ), links(origin,priority,desired,actual), scaleQ и routes.complete с массивами bedroomLengthsQ/functionalLengthsQ/transitCounts либо routes.incomplete с причиной pending/resourceLimit/unsupported. Подготовленные числовые массивы в unit-тестах синтетические; они не доказывают существование полилиний. C15.5 установит фактические источники/полноту/геометрическую identity.
+
+Scope=quality-arithmetic; geometryValidationRequired/buildingValidationRequired всегда true. Результаты ready/incomplete/invalidMetrics, итог Q только у ready. Component scores и нормированные вклады, c/u/площадь/B/T/Fn/R и warnings доступны отдельно; нулевой score не исключает компонент. Массивы ограничены rooms<=RULES.maxUserRooms, links<=2×ROOM_PROGRAM_LINK_LIMIT (user+defaults) и queries<=rooms+bedrooms+functional; числа safe integer и согласованы с manifest. Неполнота не меняет denominator. Это внутренняя типизированная функция, не новая граница raw JSON/Proxy/accessors.
+
+Сокращённые BigInt fractions приватны; транспортные numerator/denominator — строки, display округляется до9decimal через integer quotient, без Number(numerator)/Number(denominator). Private WeakMap хранит exact Q и совместимость арифметического manifest/типов/scale: только собственные ready-объекты сравниваются; JSON-копия не trusted score. Это не проверка одного дома/операции: будущий driver сохраняет отдельный source guard. Для compare отрицательное значение означает предпочтение left; затем ASCII familyId и неотрицательный safe candidateIndex.
+
+Проверено75новых адресных Vitest/0failed,TS core/UI/tools,ESLint2/Prettier2. Существующие поиск, raw-ввод, бюджеты, RULES, валидаторы, fixtures, UI и index не менялись. Helper пока синхронный и не подключён к ledger: на C15.6b требуется учёт/декомпозиция стоимости до подключения. Не заявлены64tick/Worker SLA, реальная оценка планировок, C16 или полный Building. Следующий C15.3 — малый контракт метрических путей.
