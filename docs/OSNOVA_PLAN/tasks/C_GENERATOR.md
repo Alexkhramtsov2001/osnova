@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. Следующий запрос — C15.4b.2; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. Следующий запрос — C15.5; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -314,6 +314,8 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 ### C15.4b — Взвешенный путь, восстановление и контроль соседних контрактов
 
+Выполнен локально26.10.2026 после .1/.2; C15.4 также завершён. Это room-path primitive, не глобальная сеть/driver/Building; следующий отдельно C15.5.
+
 До кода26.10.2026 разделён на .1 weighted distance engine и .2 polyline/public path; ожидаемый общий объём превышает одну малую задачу. C15.4b закрывается только после .2.
 
 - **Зависимости:** `C15.4a`, `C15.4b.2` (завершение). **Файлы:** measuredPath.ts (добавление запроса к owned space), tests/unit/measured-path.test.ts; адресные прежние clearance/access; локальные README/PROGRESS.
@@ -330,6 +332,8 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 - **Тесты/приёмка:** независимый fine-grid Bellman–Ford + swept-union subset oracle, M1/M2/M3/M4/M6, оба направления/8D4,blocked/disconnected/samepoint,heap decrease-key/ties,exact/−1 budgets иcontrols,owner/dispose/cache reuse,старые87space/input+136clearance без новыхожиданий. TS3/ESLint2/Prettier2/backup/diff. Parent пока in_progress.
 
 #### C15.4b.2 — Полилиния и окончательный path-контракт
+
+Выполнен локально26.10.2026:26новых+344прежних уникальных Vitest passed/0failed,TS3/ESLint2/Prettier2. A01/raw→freshMVP→room-path(3225мм/1000мм)→2D;4Chromium full/detail1440/390 просмотрены,overflow/pageerrors0. C15.4b/C15.4 закрыты; C15.5 отдельно.
 
 - **Зависимости:** `C15.4b.1`. **Файлы:** measuredPath.ts/measured-path.test.ts и необходимые соседние clearance/access tests; локальные README/PROGRESS.
 - **Результат:** createMeasuredPathSearch использует тот же private search iterator, затем оплаченные reconstruction/точное коллинеарное упрощение/проверка сегментов/frozen polylineQ,lengthQ. Один lifetime budget без reset между search/report; отмена до публикации не выдаёт частичный success. Scope/statuses исходного C15.3; diagnostic distance factory не публичный index.
