@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет. Следующий запрос — C15.3. Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. Следующий запрос — C15.4a. Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -272,6 +272,8 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 ### C15.3 — Малый контракт метрических путей до реализации
 
+Выполнен26.10.2026: [measured-routes-2026.10.26-1](../GENERATION_ALGORITHM.md#c153--измеренные-пути-measured-routes-20261026-1).487независимых primitive/assertions прошли; read-only legacy BFS подтвердил24м против доказанного5м, API connectivity не меняется. Внешняя диаграмма4примеров просмотрена. Новый Dijkstra/метрика ещё не реализованы.
+
 - **Зависимости:** `C15.2`. **Файлы:** соответствующий раздел существующего GENERATION_ALGORITHM и локальный PROGRESS; runtime/fixtures не менять.
 - **Результат:** точная конечная модель порталов/подходов/C04-компонент и внутрикомнатной сетки, согласование узкой двери с шириной комнат, сумма полилиний и отсутствие двойной оплаты пересечения, weighted shortest path для J, детерминизм, counters/контроли/память. Не считать старый BFS кратчайшим по длине и не менять его контракт ради этого.
 - **Независимые примеры:** прямой путь, U/Г-обход с близкими центрами, одинаковое число сеточных рёбер разной длины, широкая комната с узкой дверью, две компоненты одного roomId, ограниченная приватность начала/цели и мягкий транзит гостиной. Точки/ширины/длины проверяются до кода, без изменения frozen10.
@@ -279,9 +281,25 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 ### C15.4 — Прерываемый примитив измеренного clearance-пути
 
-- **Зависимости:** `C15.3`. **Файлы:** минимальный helper в src/core/geometry/clearance.ts либо отдельный geometry/measuredPath.ts по решению C15.3; tests/unit/measured-path.test.ts; локальные README/PROGRESS.
-- **Результат:** только зафиксированный низкоуровневый путь/длина/stepsUsed, bounded cursor, точные q и статусы connected/blocked/disconnected/resourceLimit/cancelled. Нет score/семейств/Project/UI. Переиспользовать существующие exact predicates; старые findClearancePath/валидация не меняют API/результаты.
+Составная карточка: ожидаемый объём разделён **до реализации** на C15.4a (подготовка) и C15.4b (поиск). Одна часть — один запрос; C15.4 закрывается только после обеих. Новые возможности/базовые119/MVP47 не добавляются.
+
+- **Зависимости:** `C15.3`, `C15.4b` (завершение). **Файлы:** geometry/measuredPath.ts, clearancePredicates.ts, минимальная замена двух формул в clearance.ts; адресные measured-space/measured-path и прежние clearance/access tests; локальные README/PROGRESS.
+- **Результат:** только зафиксированный низкоуровневый путь/длина/nodesUsed/accessStepsUsed, bounded cursor, точные q и статусы connected/blocked/disconnected/resourceLimit/cancelled. Нет score/семейств/Project/UI. Переиспользовать существующие exact predicates; старые findClearancePath/валидация не меняют API/результаты.
 - **Тесты/приёмка:** ручные примеры C15.3, independent small weighted-grid oracle, оба направления и8 D4, точные касания/узкий участок/полумиллиметры, source immutability, нулевой и−1 бюджет/контроли, неизменность прежних clearance/access-тестов по затронутой области. P-core, ledger/cancel/лимиты обязательны. При необходимости более400 строк сначала уточнить деление этого шага; не расширять его молча.
+
+### C15.4a — Подготовка точного пространства и терминалов
+
+- **Зависимости:** `C15.3`. **Файлы:** src/core/geometry/measuredPath.ts (только preparation), src/core/geometry/clearancePredicates.ts, минимальный import/две формулы в clearance.ts; tests/unit/measured-space.test.ts и связанные старые clearance/access-тесты без изменения ожиданий; локальные README/PROGRESS.
+- **Результат:** по C15.3 immutable/deep-frozen typed input, strict bounded preflight, paid incremental coordinate ordering/union-complement/expanded obstacles/critical grid и terminal mapping; owned prepared handle со scalar metadata и O(1)dispose. Preparation не обещает достижимость. Mutable input не замораживается функцией, а отвергается; empty space/blocked terminal не выданы за invalid shape. Бюджет/контроли/dual counters/порции<=64 реализованы до тяжёлых loops, без нового default allowance.
+- **Тесты:** независимые M1/M2/M3/M4/M6 basis/границы и1000/999, корректные q/половины, holes/accessors/range, zero/−1/точный бюджет, invalid quota без изменения cursor, cancel/deadline/reentry/terminal immutability/dispose. Соседние tests подтверждают **те же** API/результаты/counters legacy clearance, не новые golden. Big arrays не оплачивать одним tick. Память ограничена таблицей C15.3.
+- **Приёмка:** готов точный basis для C15.4b, но нет shortest path/score/подключения генератора. P-core/TS/точечный lint/format/backup; старый BFS/RULES/корпус не переписывать. При слишком большом объёме дальнейшее деление только до кода, по DEVELOPMENT_PROCESS.
+
+### C15.4b — Взвешенный путь, восстановление и контроль соседних контрактов
+
+- **Зависимости:** `C15.4a`. **Файлы:** measuredPath.ts (добавление запроса к owned space), tests/unit/measured-path.test.ts; адресные прежние clearance/access; локальные README/PROGRESS.
+- **Результат:** exact weighted Dijkstra на уже подготовленном grid, indexed heap/parents с оплатой каждого шага, polyline/length и отсутствие частичного success. Все query используют fixed room grid, не бесплатный rebuild/reset. В source-index/driver/UI не экспортировать. Global room/door network остаётся C15.5.
+- **Тесты:** ручные длины5000/10000/12000мм и ring5000против24000, independent small weighted-grid oracle (не импортирует production), оба направления/8D4 с равными числовыми длинами, same-point0,blocked/disconnected/resourceLimit, нулевой crossing отдельно от внутренних ненулевых grid edges. Exact и−1 nodes/access, отмена/сбой/reentry/контроли в heap/copy/path reconstruction, чужой/disposed handle, bounded caches/память. Входы и прежние ожидания неизменны.
+- **Приёмка:** подтверждены все требования родителя C15.4 и low-level контракт C15.3; P-core/TS/точечный lint/format/backup. Не объявлять primitive связанным с MVP-генерацией/эргономикой; затем только отдельно C15.5.
 
 ### C15.5 — Фактические маршруты и факты качества кандидата
 
