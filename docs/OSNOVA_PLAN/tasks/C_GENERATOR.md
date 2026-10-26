@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. Следующий запрос — C15.5.2; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. Следующий запрос — C15.5.2b; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -357,9 +357,37 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.2 — Fresh/source-bound порталы, состояния и вход
 
-- **Зависимости:** `C15.5.1`. **Файлы:** routes.ts/generation-routes.test.ts и минимальный безопасный адаптер C11 guard при необходимости; локальные README/PROGRESS.
+До кода26.10.2026 разделён: .2a immutable source ownership/.2b fresh MVP receipt/.2c physical portal-state binding/.2d совместимые мосты+selected entrance. Существующий frozen snapshot сам по себе не доказывает происхождение; родитель закрывается после .2d.
+
+- **Зависимости:** `C15.5.1`, `C15.5.2d` (завершение). **Файлы:** routes.ts/generation-routes.test.ts и минимальный безопасный адаптер C11 guard при необходимости; локальные README/PROGRESS.
 - **Результат:** до кода конкретный контракт owned fresh snapshot/context/identity; проверенная связь room/component/portion/physical opening/wall faces, повторное перечисление совместимых portions всех access.edges,проверкаlaneWidth. Односторонняя геометрия только selected entrance, без выдуманной второй комнаты; state/side/bridge identity и нулевой crossing не склеиваются по координате. Платные setup/copy/ordering/finite memory/shared ledger; ещё не поиск глобальных запросов. Если объём велик, разделить до кода с прежним критерием.
 - **Тесты/приёмка:** actual fresh cases/подменённый или stale snapshot/разные components/окно/potential slot/невыбранный внешний вход; hard physical guards и исходный состав сохраняются, incomplete не success.
+
+#### C15.5.2a — Неизменяемый источник и владение
+
+Выполнен локально26.10.2026:80адресных Vitest/0failed/0excluded(39новых+41bridge),TS3/ESLint2/Prettier2. ActualfrozenA01/A04 и C11compatibility1node/897access подтверждены; mvp/portal/building flags не сняты. Следующий отдельно .2b,родитель.2 ещё in_progress.
+
+- **Зависимости:** `C15.5.1`. **Файлы:** новый generation/routeContext.ts и tests/unit/route-context.test.ts, локальные README/PROGRESS.
+- **Результат:** paid bounded createRouteSourceSearch проверяет frozen own plain transport tree и raw MVP header, выдаёт opaque owned sourcePrepared handle с маленькими scalar metadata; matchesRouteSource — identity,JSON/clone/foreign/disposed не принимаются. Мутируемый ввод не копируется/не замораживается; успешная проверка гарантирует неизменяемость текущего дерева,не snapshot в момент factory. Existing transport caps20000values/depth32;aliases допустимы,cycles/getters/functions/holes/extra array fields —invalidInput. Нет MVP/physical certificate,flags pending.
+- **Тесты/приёмка:** реальные immutable raw A01/A04 и подделки/копии/изменённые источники,mutable descendants/descriptor guards/cycles/aliases/depth/value caps,zero/exact/−1/cancel/deadline/exception/reentry/latepublication/dispose. TS3/lint2/format2/backup/diff, старые runtime/guard/rules/corpus не менять.
+
+#### C15.5.2b — Свежая MVP-проверка и owned context
+
+- **Зависимости:** `C15.5.2a`. **Файлы:** routeContext.ts и минимальный C11 guard adapter/extraction только при необходимости ациклического reuse, адресные context/guard tests.
+- **Результат:** до кода конкретный контракт source handle→тот же owned OpeningBudget/fresh C11 gate→opaque context; не принимать caller snapshot/report как сертификат,не менять guard арифметику/протокол/исходный состав. Текущая synchronous legacy fresh-validation граница должна быть явно названа и оплачена,не объявляться resumable<=64 из-за внешнего cursor; не прятать повторный guard/free allowance. При архитектурной проблеме действовать по DEVELOPMENT_PROCESS.
+- **Тесты/приёмка:** чужой/stale/disposed source/context,ошибка/отмена/точный ledger и postpublication,настоящий свежий результат/неподменяемая source identity,соседние C11 expectations без изменений.
+
+#### C15.5.2c — Физические проёмы и состояния комнат
+
+- **Зависимости:** `C15.5.2b`. **Файлы:** routeContext.ts/routes.ts и context/route tests; локальные README/PROGRESS.
+- **Результат:** private paid maps room/region/component/portion/actual opening/wall faces и Ga/Gb/basis,проверка выбранных access states/edges/entrance и laneWidth; никаких bbox/окон/potential slots/объединения component по roomId. Fresh data из своего owned context,не caller arrays.
+- **Тесты/приёмка:** реальные fresh cases/потерянная связь/несовпавшая сторона/разные компоненты/нефизический проём/лимиты/отмена,identity через source/context. Если объём велик,уточнить деление до кода.
+
+#### C15.5.2d — Совместимые portions и единственный вход
+
+- **Зависимости:** `C15.5.2c`. **Файлы:** routes.ts/routeContext.ts и адресные tests; локальные README/PROGRESS.
+- **Результат:** заново перечислить все compatible portion pairs только подтверждённых edge states,paired bridges .1 и separately доказанная one-sided half selected entrance без выдуманной второй комнаты. State/side/bridge/portion identity сохраняется при одинаковом U,нулевые crossing не склеиваются;finite memory/общий ledger.
+- **Тесты/приёмка:** реальный narrow opening/fragmented approaches/entrance state/другая exterior door/совпавшие координаты/odd samples/stop,physical support из checked source. После .2d закрывается .2,но не .3/global paths/score.
 
 #### C15.5.3 — Сеть фактических маршрутов и лучшие J-пути
 

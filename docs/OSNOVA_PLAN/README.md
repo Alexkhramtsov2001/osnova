@@ -1,8 +1,8 @@
 # OSNOVA PLAN — документация v3.0
 
-Документация v3.0 сверена26.10.2026. **C15.5.1 выполнен локально26.10.2026: точный парный дверной мост — совместимые lane centres,Pa/Qa/U/Qb/Pb и длины двух половин. createPortalBridgeSearch имеет paid bounded cursor; это условная геометрия, physicalPortal/roomPath/building проверки остаются pending.188адресных Vitest passed/0failed/0excluded:41новый bridge+52прежних measured-path+95access; TS3/ESLint2/Prettier2 успешны. Следующий отдельно C15.5.2 — fresh/source-bound порталы, состояния и выбранный вход. C15.5/C15/driver/Building ещё не завершены.** Исходники/тесты локальные; в GitHub только документация. Подробнее — [PROGRESS](PROGRESS.md).
+Документация v3.0 сверена26.10.2026. **C15.5.2a выполнен локально26.10.2026: createRouteSourceSearch проверяет неизменяемый raw transport tree и выдаёт opaque owned source handle; JSON/clone/foreign/disposed marker не заменяет владение. Это только source preparation: mvpValidationRequired/portalBindingRequired/buildingValidationRequired=true.80адресных Vitest passed/0failed/0excluded (39новых source+41bridge),TS3/ESLint2/Prettier2 успешны. Следующий отдельно C15.5.2b — свежая MVP-проверка и owned context; физические проёмы/вход/сеть/score ещё pending.** В GitHub только документация, исходники/тесты локальные. Подробнее — [PROGRESS](PROGRESS.md).
 
-Необязательная [ветвь локальной модели N01–N19](tasks/N_LOCAL_MODEL.md): после C16 исследование, после D08 изолированные пробы/условное дообучение, после S04 внедрение при подтверждённой пользе. Базовые119карточек и MVP47 сохраняются; всего с новой ветвью138. Это будущие задачи, текущий следующий шаг C15.5.2 — source-bound порталы и вход.
+Необязательная [ветвь локальной модели N01–N19](tasks/N_LOCAL_MODEL.md): после C16 исследование, после D08 изолированные пробы/условное дообучение, после S04 внедрение при подтверждённой пользе. Базовые119карточек и MVP47 сохраняются; всего с новой ветвью138. Это будущие задачи, текущий следующий шаг C15.5.2b — fresh MVP и owned context.
 
 ## Приоритет и навигация
 
