@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. Следующий запрос — C15.5.2c.2; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c.2 выполнен: 226 адресных Vitest / 0 ошибок, 82 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c завершён, следующий запрос — C15.5.2d; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -381,6 +381,8 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.2c — Физические проёмы и состояния комнат
 
+Выполнен локально 26.10.2026: .1 каталог и .2 approach/portion/edge bindings готовы, bridge samples/network/Building остаются pending.
+
 До кода26.10.2026 разделён на .1 physical catalog и .2 approach/portion/edge binding; обе части нужны для родителя,геометрические проходы между состояниями не выдаются по одному каталогу.
 
 - **Зависимости:** `C15.5.2b`, `C15.5.2c.2` (завершение). **Файлы:** routeContext.ts/routes.ts и context/route tests; локальные README/PROGRESS.
@@ -389,13 +391,15 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.2c.1 — Owned каталог реальной геометрии
 
-Выполнен локально 26.10.2026. 69 новых + 75 прежних адресных тестов успешны; source/context/validator/driver не изменены. Каталог сохраняет portalBinding/network/building/project pending; это не разрешённые edges. Следующий .2c.2 отдельно.
+Выполнен локально 26.10.2026. 69 новых + 75 прежних адресных тестов успешны; source/context/validator/driver не изменены. Каталог сохраняет portalBinding/network/building/project pending; это не разрешённые edges. Продолжение привязки — подкарточка .2c.2.
 
 - **Зависимости:** `C15.5.2b`. **Файлы:** routeContext.ts (private catalog рядом с ownership gates),новый tests/unit/route-catalog.test.ts,локальные README/PROGRESS.
 - **Результат:** resumable paid maps checked region/room/topology/access-profile/component/state и actual wall/opening geometry/sides. UUID joins casefold,region/component/state keys opaque; component namespace per room,одна component-state identity без слияния по roomId/координатам. Aperture из actual wall direction/offset/width/axis,normal faces±thicknessMm вq;windows сохраняются как каталог,но не portal-kind. Owned context/source/budget,scalar summary/read-one-item/dispose,portal/network/building flags pending.
 - **Тесты/приёмка:** real A01/A04/producer-invariant fault injection,разные component labels/opaque keys,window/sides/region/profile/case/direction,grid memorycaps/zero/exact−1nodes/access,controls/reentry/source/context disposal/owner;TS3/ESLint2/Prettier2/backup/diff. Глобальный driver/валидаторы/правила/корпус не менять.
 
 #### C15.5.2c.2 — Связь каталога с подходами и разрешёнными переходами
+
+Выполнен локально 26.10.2026: 82 новых + 144 прежних Vitest успешны; TypeScript 3 / ESLint 2 / Prettier 2. Owned single-record readers и проверка actual selected entrance, без требования совпасть с предварительным topology.selectedEntranceId. Следующий .2d отдельно.
 
 - **Зависимости:** `C15.5.2c.1`. **Файлы:** routeContext.ts/routes.ts и адресные catalog/route tests;локальные README/PROGRESS.
 - **Результат:** проверка actual segment opening/room side/normal plane/full profile,component.portion segmentIndex и закрытых границ,access.edges state pair/actual portal/min(Ga,Gb,width)/selected entrance reference;нельзя ссылаться на окно/potential slot/улицу или склеить разные components. Данные только из своего ownedcatalog/context,sharedledger/caps/controls. Lane sample construction/one-sided entrance остаются .2d.
