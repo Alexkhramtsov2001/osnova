@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. Следующий запрос — C15.4a. Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. Следующий запрос — C15.4a.2; C15.4a.1 выполнен локально (289Vitest/0failed,58новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -289,10 +289,24 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 ### C15.4a — Подготовка точного пространства и терминалов
 
-- **Зависимости:** `C15.3`. **Файлы:** src/core/geometry/measuredPath.ts (только preparation), src/core/geometry/clearancePredicates.ts, минимальный import/две формулы в clearance.ts; tests/unit/measured-space.test.ts и связанные старые clearance/access-тесты без изменения ожиданий; локальные README/PROGRESS.
+- **Зависимости:** `C15.3`, `C15.4a.2` (завершение). **Файлы:** src/core/geometry/measuredPath.ts (только preparation), src/core/geometry/clearancePredicates.ts, минимальный import/две формулы в clearance.ts; tests/unit/measured-space.test.ts и связанные старые clearance/access-тесты без изменения ожиданий; локальные README/PROGRESS.
 - **Результат:** по C15.3 immutable/deep-frozen typed input, strict bounded preflight, paid incremental coordinate ordering/union-complement/expanded obstacles/critical grid и terminal mapping; owned prepared handle со scalar metadata и O(1)dispose. Preparation не обещает достижимость. Mutable input не замораживается функцией, а отвергается; empty space/blocked terminal не выданы за invalid shape. Бюджет/контроли/dual counters/порции<=64 реализованы до тяжёлых loops, без нового default allowance.
 - **Тесты:** независимые M1/M2/M3/M4/M6 basis/границы и1000/999, корректные q/половины, holes/accessors/range, zero/−1/точный бюджет, invalid quota без изменения cursor, cancel/deadline/reentry/terminal immutability/dispose. Соседние tests подтверждают **те же** API/результаты/counters legacy clearance, не новые golden. Big arrays не оплачивать одним tick. Память ограничена таблицей C15.3.
 - **Приёмка:** готов точный basis для C15.4b, но нет shortest path/score/подключения генератора. P-core/TS/точечный lint/format/backup; старый BFS/RULES/корпус не переписывать. При слишком большом объёме дальнейшее деление только до кода, по DEVELOPMENT_PROCESS.
+
+#### C15.4a.1 — Immutable input, управление и упорядоченный basis
+
+Выполнен локально26.10.2026:289адресных Vitest/0failed (58новых+231legacy),TS3/ESLint4/Prettier4. Только inputPrepared; space/path pending. Следующий отдельно C15.4a.2.
+
+- **Зависимости:** `C15.3`. **Файлы:** measuredPath.ts (только input cursor), clearancePredicates.ts и две точные замены в clearance.ts; measured-space.test.ts/старые clearance/access tests; локальные README/PROGRESS.
+- **Результат:** createMeasuredInputSearch/raw frozen typed data/budgets/controls, incremental canonical tiles/unique tile-edge X/Y, detached inputPrepared. Scope measured-input-preparation, space/path/building flags pending; не prepared space, не blocked/connected. Полный контракт — локальный PROGRESS до кода.
+- **Тесты/приёмка:** независимые сортировочные/границы/getters/holes/range/caps, lifetime/per-call/zero/−1 и quota1/64, cancel/deadline/reentry/exception, immutable data. Общие строгие predicates сохраняют старые API/значения/counters без изменения ожидаемых результатов. P-core/TS/lintchanged/format/backup. Нет grid/shortest/driver/UI; только затем отдельно .2.
+
+#### C15.4a.2 — Свободное пространство и настоящий prepared handle
+
+- **Зависимости:** `C15.4a.1`. **Файлы:** measuredPath.ts и measured-space.test.ts, необходимые старые clearance/access tests; локальные README/PROGRESS.
+- **Результат:** продолжение того же внутреннего input iterator с теми же counters, без повторного budget/reset: eroded bounds/atomic-cell complement/expanded obstacles/critical X/Y/grid cap, terminal mapping и opaque owned measured-space-preparation handle/O(1)dispose. Не принимать чужой inputPrepared DTO вместо собственного preflight.
+- **Тесты/приёмка:** ручные M1/M2/M3/M4/M6, exact1000/999, empty/blocked/malformed distinctions, paid geometry access atoms/<=64nodes/cancel/error/limits/immutability и unchanged legacy API/counters. Только по этому результату закрывается C15.4a; shortest query остаётся C15.4b. При необходимости дополнительное деление до кода по DEVELOPMENT_PROCESS.
 
 ### C15.4b — Взвешенный путь, восстановление и контроль соседних контрактов
 
