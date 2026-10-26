@@ -1,8 +1,8 @@
 # OSNOVA PLAN — документация v3.0
 
-Документация v3.0 сверена26.10.2026. **C15.5.2a выполнен локально26.10.2026: createRouteSourceSearch проверяет неизменяемый raw transport tree и выдаёт opaque owned source handle; JSON/clone/foreign/disposed marker не заменяет владение. Это только source preparation: mvpValidationRequired/portalBindingRequired/buildingValidationRequired=true.80адресных Vitest passed/0failed/0excluded (39новых source+41bridge),TS3/ESLint2/Prettier2 успешны. Следующий отдельно C15.5.2b — свежая MVP-проверка и owned context; физические проёмы/вход/сеть/score ещё pending.** В GitHub только документация, исходники/тесты локальные. Подробнее — [PROGRESS](PROGRESS.md).
+Документация v3.0 сверена26.10.2026. **C15.5.2b выполнен локально26.10.2026: validateRouteSource повторно проверяет owned immutable source через тот же C11 guard и создаёт owned context, связанный с источником и OpeningBudget. Подготовка списывается один раз, fresh gate при каждом вызове; MVP-флаг снимается только при успехе,portal/building/project остаются pending.116уникальных адресных Vitest passed/0failed/0excluded (36новых+80прежних),TS3/ESLint4/Prettier4; A01/raw→ownedsource→freshcontext→roompath→2D1440/390 проверен. Следующий отдельно C15.5.2c — физические проёмы и состояния комнат; сеть/score/driver ещё pending.** В GitHub только документация, исходники/тесты локальные. Подробнее — [PROGRESS](PROGRESS.md).
 
-Необязательная [ветвь локальной модели N01–N19](tasks/N_LOCAL_MODEL.md): после C16 исследование, после D08 изолированные пробы/условное дообучение, после S04 внедрение при подтверждённой пользе. Базовые119карточек и MVP47 сохраняются; всего с новой ветвью138. Это будущие задачи, текущий следующий шаг C15.5.2b — fresh MVP и owned context.
+Необязательная [ветвь локальной модели N01–N19](tasks/N_LOCAL_MODEL.md): после C16 исследование, после D08 изолированные пробы/условное дообучение, после S04 внедрение при подтверждённой пользе. Базовые119карточек и MVP47 сохраняются; всего с новой ветвью138. Это будущие задачи, текущий следующий шаг C15.5.2c — physical portal-state binding.
 
 ## Приоритет и навигация
 
