@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c.2 выполнен: 226 адресных Vitest / 0 ошибок, 82 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2d выполнен 27.10.2026: 180 адресных Vitest / 0 ошибок (57 новых), TypeScript 3 / ESLint 3 / Prettier 3, actual A01→source/context/catalog/bindings/bridges→2D1440/390. C15.5.2 завершён, следующий запрос — C15.5.3; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c.2 выполнен: 226 адресных Vitest / 0 ошибок, 82 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2d выполнен 27.10.2026: 180 адресных Vitest / 0 ошибок (57 новых), TypeScript 3 / ESLint 3 / Prettier 3, actual A01→source/context/catalog/bindings/bridges→2D1440/390. C15.5.2 завершён. C15.5.3 до кода разделён .3a/.3b/.3c/.3d; .3a выполнен: 186 адресных Vitest / 0 ошибок (47 новых), TS3/ESLint2/Prettier2. Следующий запрос — C15.5.3b; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -417,9 +417,37 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.3 — Сеть фактических маршрутов и лучшие J-пути
 
-- **Зависимости:** `C15.5.2`. **Файлы:** routes.ts/узкий route-search helper только при оправданном объёме, generation-routes.test.ts; локальные README/PROGRESS.
+До кода 27.10.2026 разделён на .3a сеть узлов/физических дуг, .3b lazy room paths/shared ledger, .3c directed source/sink/J search, .3d reconstruction/oracle. Родитель закрывается после .3d.
+
+- **Зависимости:** `C15.5.2`, `C15.5.3d` (завершение). **Файлы:** routeContext.ts/routes.ts/узкий helper при оправданном объёме, адресные route tests; локальные README/PROGRESS.
 - **Результат:** запросы B/Fn/T и directed source/sink, C15.4room paths с одной active space/query и тем же общим ledger. Exact global(J,L,n,crossings,path key), private transit и soft living penalty, threshold halves учтены один раз; нет all-pairs/free budget/улицы/комнатного bbox. При необходимости разделить до кода.
 - **Тесты/приёмка:** длинный обход/близкие центры/дверазные ширины/ближайшийJсанузел/приватность/живоймягкийтранзит/нулевыециклы/пределы/отмена; фактические полилинии и независимые длины, не фиктивные facts.
+
+#### C15.5.3a — Owned сеть физических узлов и дуг
+
+Выполнен локально 27.10.2026: 47 новых + physical57/bindings82 Vitest успешны, TS3/ESLint2/Prettier2. Каркас без room-path рёбер, virtual queries и J-search; parent .3 pending. Следующий .3b отдельно.
+
+- **Зависимости:** `C15.5.2`. **Файлы:** append routeContext.ts, новый route-network.test.ts; локальные README/PROGRESS.
+- **Результат:** оплаченные landing nodes по exact state/point, отдельные threshold ports для каждой physical bridge/side/portion и выбранного entrance half, направленные half/crossing дуги с прежними длинами. Landing merge только внутри того же room/component; одинаковый U не сливает threshold identities. Вход только threshold→landing, без street/переходов между samples. Immutable single-record readers/outgoing/state lists, owned physical handle+тот же ledger и transitive source/context/binding identity, O(1) disposal/finite caps. Нет inside-room all-pairs/room paths/J-search/приватностной сертификации всего маршрута.
+- **Тесты/приёмка:** реальные A01/A04, independent graph oracle, point merge/разные states/zero crossing/directions/threshold identity/selected entry/unused components, caps/exact−1/sharedledger/controls/reentry/disposal; старые physical57/bindings82. TypeScript3/ESLint2/Prettier2/source audit/backup. Родитель .3 pending.
+
+#### C15.5.3b — Ленивые пути внутри room/component в общем ledger
+
+- **Зависимости:** `C15.5.3a`. **Файлы:** routeContext.ts и минимальный geometry/measuredPath.ts adapter только при необходимости; адресные room-path/network/measured tests.
+- **Результат:** один active owned space/query, actual region.tiles/full G и только owned landing terminals этого state, C15.4 exact paths по требованию без полного квадратичного списка/межкандидатного cache. До кода уточнить контракт оплаченной композиции: дебет geometry до работы, без скрытого grant/reset/без бесплатного clone и без произвольной переписи старого solver. Возможная более мелкая декомпозиция не меняет семантику .3.
+- **Тесты/приёмка:** два разных doors одного state, disconnected/blocked, same point, reused prepared space, finite cache/ledger prefix, width/owner/cancel/dispose, independent swept-union/length; старый measured API/результаты/счётчики сохранить.
+
+#### C15.5.3c — Направленные запросы и exact J-поиск
+
+- **Зависимости:** `C15.5.3b`. **Файлы:** route-search helper/routeContext.ts при оправданном размере, адресные route tests.
+- **Результат:** directed virtual source/sink и реальные axis thresholds для B/Fn/T, поглощающая цель/без входа в virtual source, private transit из C04 и living penalty только при crossing из промежуточного жилого state. Exact tuple(J=4L+D×n,L,n,crossings,полный стабильный key), no profitable zero cycles, nearest-by-J цели, sharedledger/finite memory/оплаченные сравнения. Геометрия/веса C15.1–3 не меняются.
+- **Тесты/приёмка:** center shortcut/длинный обход, D20/L6n1 против L10n0/L16n0, private endpoints/forbidden transit, threshold/entry host0, same doorway0, tie/zero cycles/8D4/array permutations, stop без fake facts.
+
+#### C15.5.3d — Полилинии и адресная приёмка реальных маршрутов
+
+- **Зависимости:** `C15.5.3c`. **Файлы:** route search/reconstruction и адресные tests; локальные README/PROGRESS.
+- **Результат:** оплаченная сборка фактических room paths и каждой half ровно один раз, source/sink/physical identity и BigInt длины, независимая перепроверка полученного пути; готовый маршрут не означает quality facts/Building/driver. Parent .3 закрывается только после проверки.
+- **Тесты/приёмка:** independent fine graph oracle/J/L/n, swept strips/полилинии, raw→auto→fresh→видимый2D на реальных требованиях, контролируемые отмены/лимиты, сохранность соседних случаев. Full suite/гейт — только по процессу/на контрольном этапе.
 
 #### C15.5.4 — Факты качества с проверяемой применимостью
 
