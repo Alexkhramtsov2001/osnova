@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. Следующий запрос — C15.5; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. Следующий запрос — C15.5.2; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -341,9 +341,37 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 ### C15.5 — Фактические маршруты и факты качества кандидата
 
-- **Зависимости:** `C15.4`. **Файлы:** src/core/generation/routes.ts; tests/unit/generation-routes.test.ts; только необходимый адаптер подготовленных фактов score.ts и его тесты; локальные README/PROGRESS.
+До кода26.10.2026 разделён на .1 парный портал-мост/.2 fresh/source-bound сеть и вход/.3 глобальные измеренные запросы/.4 факты рейтинга: это разные проверяемые операции. Одна подкарточка — один запрос; родитель закрывается после .4.
+
+- **Зависимости:** `C15.4`, `C15.5.4` (завершение). **Файлы:** src/core/generation/routes.ts; tests/unit/generation-routes.test.ts; только необходимый адаптер подготовленных фактов score.ts и его тесты; локальные README/PROGRESS.
 - **Результат:** после свежего/source-bound MVP строить конечную сеть только реальных порталов, запросы B/Fn/T и лучшие J-пути с доказанными внутрикомнатными полилиниями. Отчёт привязан к конкретному snapshot/input, применимость одинакова для операции; вызов arithmetic helper без выдуманных значений. Тот же shared node/access budget, не бесплатный лимит на каждый путь.
 - **Тесты/приёмка:** длинный реальный обход при близких центрах, приватный тупик, гостиной можно пройти с мягким штрафом, ближайший по J санузел, непоставленный adjacency-slot/окно/улица не рёбра. Повторные дверные варианты могут изменить score при тех же комнатах. Fixture raw не менять; fresh validation, числовые примеры, остановки без частичного score и соседние contracts. P-core; driver пока прежний. Результат не доказывает мебель/полный Building.
+
+#### C15.5.1 — Точная геометрия парного дверного мостика
+
+Выполнен локально26.10.2026:188адресных Vitest/0failed/0excluded (41новый+147прежних),TS3/ESLint2/Prettier2. Independent250seeded lane/swept-union cases и M5/D4 пройдены. Physical/source validation пока pending; следующий отдельно .2.
+
+- **Зависимости:** `C15.4`. **Файлы:** generation/routes.ts (только bridge primitive), tests/unit/generation-routes.test.ts, локальные README/PROGRESS.
+- **Результат:** paid bounded createPortalBridgeSearch на frozen typed scalars: normal axis/faces/aperture/две full-width portion intervals/Ga/Gb/w. Точный compatible interval и до4lanes lo/hi/floor/ceil,Pa/Qa/U/Qb/Pb и длины половин. Scope=portal-bridge-geometry, physicalPortalValidationRequired/roomPathValidationRequired/buildingValidationRequired=true; это не fresh portal/сеть/score/сертификат дома.
+- **Тесты/приёмка:** независимый brute-lane/swept-union oracle, M5bath/living/half, несимметричные portions/D4/side reversal/odd midpoints,empty vs invalid,immutableJSON,caps/counters/cancel/deadline/reentry/zero/exact/−1nodes. TS3/ESLint2/Prettier2/backup/diff; старые правила/ядро не менять.
+
+#### C15.5.2 — Fresh/source-bound порталы, состояния и вход
+
+- **Зависимости:** `C15.5.1`. **Файлы:** routes.ts/generation-routes.test.ts и минимальный безопасный адаптер C11 guard при необходимости; локальные README/PROGRESS.
+- **Результат:** до кода конкретный контракт owned fresh snapshot/context/identity; проверенная связь room/component/portion/physical opening/wall faces, повторное перечисление совместимых portions всех access.edges,проверкаlaneWidth. Односторонняя геометрия только selected entrance, без выдуманной второй комнаты; state/side/bridge identity и нулевой crossing не склеиваются по координате. Платные setup/copy/ordering/finite memory/shared ledger; ещё не поиск глобальных запросов. Если объём велик, разделить до кода с прежним критерием.
+- **Тесты/приёмка:** actual fresh cases/подменённый или stale snapshot/разные components/окно/potential slot/невыбранный внешний вход; hard physical guards и исходный состав сохраняются, incomplete не success.
+
+#### C15.5.3 — Сеть фактических маршрутов и лучшие J-пути
+
+- **Зависимости:** `C15.5.2`. **Файлы:** routes.ts/узкий route-search helper только при оправданном объёме, generation-routes.test.ts; локальные README/PROGRESS.
+- **Результат:** запросы B/Fn/T и directed source/sink, C15.4room paths с одной active space/query и тем же общим ledger. Exact global(J,L,n,crossings,path key), private transit и soft living penalty, threshold halves учтены один раз; нет all-pairs/free budget/улицы/комнатного bbox. При необходимости разделить до кода.
+- **Тесты/приёмка:** длинный обход/близкие центры/дверазные ширины/ближайшийJсанузел/приватность/живоймягкийтранзит/нулевыециклы/пределы/отмена; фактические полилинии и независимые длины, не фиктивные facts.
+
+#### C15.5.4 — Факты качества с проверяемой применимостью
+
+- **Зависимости:** `C15.5.3`. **Файлы:** routes.ts и необходимый score.ts adapter, связанные route/score tests; локальные README/PROGRESS.
+- **Результат:** report принадлежит конкретному fresh input/snapshot, manifest запросов фиксирован до поиска,точные duplicatesTодинраз,overflow/incomplete явны; evaluateQualityFacts вызывается с измеренными значениями без изменения формул. Driver остаётся прежним до C15.6b.
+- **Тесты/приёмка:** неизменная применимость при других дверях/неудаче поиска,source ownership/manifest/transport range/полные метрики/отмена/ограничения,малый числовой эталон и соседние score tests. После .4 закрывается C15.5,неC15/Building.
 
 ### C15.6a — Ключ схемы комнат и ограниченное хранение разнообразия
 
