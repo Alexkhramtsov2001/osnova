@@ -241,7 +241,7 @@ C09.2 завершён только после a/b/c; C10 и C11.2 позже п
 
 ## C15 — Рейтинг допустимых вариантов
 
-C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c.2 выполнен: 226 адресных Vitest / 0 ошибок, 82 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c завершён, следующий запрос — C15.5.2d; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
+C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный контракт score-mvp-2026.10.26-1](../GENERATION_ALGORITHM.md#c151--контракт-рейтинга-score-mvp-20261026-1); контрактная арифметика проверена отдельно; C15.2 выполнен локально:75новых Vitest/TS3/ESLint2/Prettier2. Метрических путей и подключения driver ещё нет; C15.3 выполнен как письменный measured-routes контракт. C15.4b.1 выполнен локально:249адресных Vitest/0failed (26новых),TS3/ESLint2/Prettier2, distancePrepared без полилинии. C15.4b.2 выполнен:370уникальных адресных Vitest/0failed,TS3/ESLint2/Prettier2 и A01/raw→freshMVP→room-path→2D1440/390; C15.4 завершён. C15.5.1 выполнен локально:188адресных Vitest/0failed (41новый),TS3/ESLint2/Prettier2,только conditional paired bridge. C15.5.2a выполнен локально:80адресных Vitest/0failed(39новых),TS3/ESLint2/Prettier2,только owned immutable source без fresh MVP. C15.5.2b выполнен:116уникальных адресных Vitest/0failed (36новых),TS3/ESLint4/Prettier4,source/budget ownedcontext и реальная A01→2Dвертикаль. C15.5.2c.1 выполнен локально: 144 уникальных адресных Vitest / 0 ошибок, 69 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2c.2 выполнен: 226 адресных Vitest / 0 ошибок, 82 новых; TypeScript 3 / ESLint 2 / Prettier 2. C15.5.2d выполнен 27.10.2026: 180 адресных Vitest / 0 ошибок (57 новых), TypeScript 3 / ESLint 3 / Prettier 3, actual A01→source/context/catalog/bindings/bridges→2D1440/390. C15.5.2 завершён, следующий запрос — C15.5.3; C15.4a.1/.2 выполнены локально, C15.4a завершён (шаг.4a.2:223Vitest/0failed,29новых). Один запрос выполняет одну подкарточку; C15 закрывается только после C15.6c. Это декомпозиция прежнего C15, не добавление возможностей к MVP или изменение базовых119 карточек.
 
 - **Цель:** Получить самостоятельный проверяемый результат: рейтинг допустимых вариантов.
 - **Зависимости:** `C14`, `C15.6c` (завершение составной карточки).
@@ -357,6 +357,8 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.2 — Fresh/source-bound порталы, состояния и вход
 
+Выполнен локально 27.10.2026 после .2a/.2b/.2c/.2d. Подготовка физических соединений готова; глобальная сеть и J-пути — следующий C15.5.3.
+
 До кода26.10.2026 разделён: .2a immutable source ownership/.2b fresh MVP receipt/.2c physical portal-state binding/.2d совместимые мосты+selected entrance. Существующий frozen snapshot сам по себе не доказывает происхождение; родитель закрывается после .2d.
 
 - **Зависимости:** `C15.5.1`, `C15.5.2d` (завершение). **Файлы:** routes.ts/generation-routes.test.ts и минимальный безопасный адаптер C11 guard при необходимости; локальные README/PROGRESS.
@@ -399,13 +401,15 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.2c.2 — Связь каталога с подходами и разрешёнными переходами
 
-Выполнен локально 26.10.2026: 82 новых + 144 прежних Vitest успешны; TypeScript 3 / ESLint 2 / Prettier 2. Owned single-record readers и проверка actual selected entrance, без требования совпасть с предварительным topology.selectedEntranceId. Следующий .2d отдельно.
+Выполнен локально 26.10.2026: 82 новых + 144 прежних Vitest успешны; TypeScript 3 / ESLint 2 / Prettier 2. Owned single-record readers и проверка actual selected entrance, без требования совпасть с предварительным topology.selectedEntranceId. Продолжение подготовки — подкарточка .2d.
 
 - **Зависимости:** `C15.5.2c.1`. **Файлы:** routeContext.ts/routes.ts и адресные catalog/route tests;локальные README/PROGRESS.
 - **Результат:** проверка actual segment opening/room side/normal plane/full profile,component.portion segmentIndex и закрытых границ,access.edges state pair/actual portal/min(Ga,Gb,width)/selected entrance reference;нельзя ссылаться на окно/potential slot/улицу или склеить разные components. Данные только из своего ownedcatalog/context,sharedledger/caps/controls. Lane sample construction/one-sided entrance остаются .2d.
 - **Тесты/приёмка:** actual room segments иfaulted producer refs,width/state/side/portion/entrance mismatches,opaque IDs иdup coordinates,остановки без partialsuccess. После .2 закрыть .2c,не .2d/network/score. При большом объёме уточнить деление до кода.
 
 #### C15.5.2d — Совместимые portions и единственный вход
+
+Выполнен локально 27.10.2026. Все совместимые pairs actual edge states, source-bound paired bridges и отдельно one-sided selected entrance; 180 адресных Vitest / 0 ошибок, TS3/ESLint3/Prettier3. Actual A01/11 crossings+1 entrance half/fresh oracle/4 PNG1440/390; .5.2 завершён, network/score/Building pending. Следующий .5.3 отдельно.
 
 - **Зависимости:** `C15.5.2c`. **Файлы:** routes.ts/routeContext.ts и адресные tests; локальные README/PROGRESS.
 - **Результат:** заново перечислить все compatible portion pairs только подтверждённых edge states,paired bridges .1 и separately доказанная one-sided half selected entrance без выдуманной второй комнаты. State/side/bridge/portion identity сохраняется при одинаковом U,нулевые crossing не склеиваются;finite memory/общий ledger.
