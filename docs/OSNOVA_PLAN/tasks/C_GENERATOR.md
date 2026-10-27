@@ -513,9 +513,25 @@ C15 in_progress. C15.1 выполнен 26.10.2026 как [письменный 
 
 #### C15.5.4 — Факты качества с проверяемой применимостью
 
-- **Зависимости:** `C15.5.3`. **Файлы:** routes.ts и необходимый score.ts adapter, связанные route/score tests; локальные README/PROGRESS.
+До кода27.10.2026 разделён на .4a fixed manifest/static candidate plan и .4b measured complete facts/score. Родитель закрывается после .4b, driver остаётся .6b.
+
+- **Зависимости:** `C15.5.3`, `C15.5.4b` (завершение). **Файлы:** routes.ts и необходимый score.ts adapter, связанные route/score tests; локальные README/PROGRESS.
 - **Результат:** report принадлежит конкретному fresh input/snapshot, manifest запросов фиксирован до поиска,точные duplicatesTодинраз,overflow/incomplete явны; evaluateQualityFacts вызывается с измеренными значениями без изменения формул. Driver остаётся прежним до C15.6b.
 - **Тесты/приёмка:** неизменная применимость при других дверях/неудаче поиска,source ownership/manifest/transport range/полные метрики/отмена/ограничения,малый числовой эталон и соседние score tests. После .4 закрывается C15.5,неC15/Building.
+
+#### C15.5.4a — Фиксированный manifest программы и статический план кандидата
+
+Выполнен локально27.10.2026:52новых+75score+75context=202уникальных адресных Vitest,0оставшихся failed/0excluded;TS3/ESLint3/Prettier3 успешны. Manifest переживает исходный candidate, plan source-bound; pending routes не превращаются в исключённые критерии. Следующая .4b отдельно, .4/.5 ещё in_progress. Actual2D counter1 после .3d; повтор не позднее третьей реализации.
+
+- **Зависимости:** `C15.5.3`. **Файлы:** qualityPlan.ts/routeContext.ts и адресные тесты, локальные README/PROGRESS.
+- **Результат:** owned reusable manifest исходной программы в одном budget, canonical requirements/links/signature и B/Fn/T query keys до metric search. Source-bound candidate plan проверяет полное semantic соответствие, извлекает actual areas/dimensions/link observations и связывает logical IDs с room IDs. Смена doors/physical room IDs не меняет применимость; manifest не geometry certificate, candidate plan transitive source-bound. routes.incomplete/pending, production evaluate не вызывается.
+- **Приёмка:** independent actual A01/A04 manifest/static facts, order/physical variant/reuse vs input mismatch, negative soft/default/hard semantics, noFn/zero entry queries не исчезают; owner/lifetime/budget/controls/immutability и соседняя арифметика.
+
+#### C15.5.4b — Полное измерение запросов и факты качества
+
+- **Зависимости:** `C15.5.4a`. **Файлы:** source-bound metric job/routeContext/минимальный score adapter и адресные tests.
+- **Результат:** один последовательный query/search/reconstruction в прежнем budget с source-derived plan requests, fixed manifest/slots без зависимости от успеха. Проверенные route summaries в safe-number range, overflow/incomplete явны; после каждого query временные geometry/search/query reports освобождаются, scalar facts сохраняют собственную source proof. complete facts передаются unchanged evaluateQualityFacts, не меняя формулы; cancel/error/resource не становятся excluded/ready. Source-bound report actual input/context/manifest, driver по-прежнему не подключён.
+- **Приёмка:** full B/Fn/T exact duplicate policy/zero/ties, source/manifest/foreign ownership, intermediate resource/overflow/error/cancel, ручной numeric fraction oracle и соседние75score; actual raw→auto→fresh→route facts→2D не позднее третьей реализации. До кода уточнить небольшой mapping/job контракт без расширения архитектуры/лимитов. После .4b закрываются .4/.5, C15 ещё до .6.
 
 ### C15.6a — Ключ схемы комнат и ограниченное хранение разнообразия
 
