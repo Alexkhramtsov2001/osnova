@@ -654,7 +654,7 @@ C16 до полного прогона разделён на четыре неб
 #### C16.3b — Остальные фиксированные пакеты
 
 - **Зависимости:** `C16.3a`. **Файлы:** тотжеexecutor/README/appendPROGRESS;безправокruntimeрадипроцента.
-- **Результат:** pending;следующийbatch1/indices100–199,затемпоочереди2–19. Одинпакетилималаяограниченнаягруппанакаждыйзапрос,реальноеelapsedзафиксировать. Продолжатьтолькототжеманифест/матрицу/sourceSHA,успешныепакетынеповторять.
+- **Результат:** in_progress, 29.10.2026 пакет1/индексы100–199 завершён за 172.653с:100 новых запусков,0 повторных; known-feasible 10/10 success, unproven 1/40, boundary 2/20, все30 invalid-input отклонены. Один Chromium batch-тест пройден,0 ошибок исполнения/невалидных success; все success fresh MVP browser+Node/original-intent-valid. Совокупно200/2000,2/20 пакетов; прежние100 receipts, manifest и source SHA сохранены. Следующий пакет2/индексы200–299, затем поочерёдно3–19. Один пакет или малая ограниченная группа на запрос; продолжать только тот же manifest/матрицу/source SHA, успешные пакеты не повторять.
 - **Приёмка:** все2000различныхIDучтеныодинраз,1900оставшихсяenginecasesвыполнены;каждыйsuccessfresh+intent-valid,600invalidrejected,0invalidsuccess/hangs. Доли200known/800unproven/600invalid/400boundary/1871distinctrequestsраздельно. Неполныепакетынепринимать;наfailureадреснаядиагностикаиDEVELOPMENT_PROCESS.
 
 #### C16.3c — Prefix, отмена и protocol guards
