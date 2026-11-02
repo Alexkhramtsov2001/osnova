@@ -653,7 +653,7 @@ C16 до полного прогона разделён на четыре неб
 #### C16.3b — Остальные фиксированные пакеты
 
 - **Зависимости:** `C16.3a`. **Файлы:** test-only исполнитель/выбор диапазона/тесты,README/appendPROGRESS;безправокruntimeрадипроцента.
-- **Результат:** in_progress,02.11.2026 группа550–799 завершена за 524.160с:250 новых вызовов,0 повторных. Known-feasible 25/25, unproven 10/100, boundary 4/50 success; все75 invalid-input отклонены. Совокупно800/2000,0 invalidsuccess/executorerrors. Адресный Chromium-тест пройден; прежние550 receipts, manifest run-v3-range и56 source SHA сохранены. Код/тесты/матрица/seed/лимиты не менялись. Следующая группа800–1049; далее по250 и последний остаток200. C16.3c/C16.4 впереди, успешные входы не перезапускать.
+- **Результат:** in_progress,02.11.2026 группа800–1049 завершена за 553.780с:250 новых вызовов,0 повторных. Known-feasible 25/25, unproven 9/100, boundary 6/50 success; все75 invalid-input отклонены. Совокупно1050/2000,0 invalidsuccess/executorerrors. Адресный Chromium-тест пройден; прежние800 receipts, manifest run-v3-range и56 source SHA сохранены. Код/тесты/матрица/seed/лимиты не менялись. Следующая группа1050–1299; затем по250 и последний остаток200. C16.3c/C16.4 впереди, успешные входы не перезапускать.
 - **Приёмка:** все2000различныхIDучтеныодинраз,все оставшиеся enginecases выполнены;каждыйsuccessfresh+intent-valid,600invalidrejected,0invalidsuccess/hangs. Доли200known/800unproven/600invalid/400boundary/1871distinctrequestsраздельно. Неполныепакетынепринимать;наfailureадреснаядиагностикаиDEVELOPMENT_PROCESS.
 
 #### C16.3c — Prefix, отмена и protocol guards
