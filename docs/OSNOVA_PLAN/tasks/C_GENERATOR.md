@@ -642,7 +642,7 @@ C16 до полного прогона разделён на четыре неб
 ### C16.3 — Mixed2000, prefix и отмена с checkpoint
 
 - **Зависимости:** `C16.2`, `C16.3c` (завершение составной карточки). **Файлы:** generation-gate.test.ts/минимальный test-only executor;existing matrix helper/fixture не менять ради результатов;README/PROGRESS.
-- **Результат:** выполнить все2000rows фиксированными20batch×100,возможное продолжение только с совпадающими matrix digest/source hashes. Receipts/checkpoints внеsource,каждыйcase один раз в знаменателе. Неполные пакеты/ошибки/watchdog не считатьpassed. Отдельно12indices×9nodecaps×2prefix repeats сclock0,а также cancellation/protocol guards;это не добавочные mixedcases.
+- **Результат:** выполнить все2000rows в исходном порядке. Матрица сохраняет20 исходных блоков×100; по решению владельца02.11.2026 исполнитель обрабатывает последовательные диапазоны по250 на задачу, последний остаток короче. Продолжение только при совпадении manifest/source/input identity; явный перенос между эпохами допускается только с происхождением каждого receipt и полной повторной проверкой без генерации. Receipts/checkpoints внеsource,каждыйcase один раз в знаменателе. Неполные пакеты/ошибки/watchdog не считатьpassed. Отдельно12indices×9nodecaps×2prefix repeats сclock0,а также cancellation/protocol guards;это не добавочные mixedcases.
 - **Приёмка:**0invalidsuccess/необработанныхзависаний;status/stopReason/validity/quality/groups/versions/seed/request/source hashes играницы для каждогоcase. Доля success на200known-feasible отдельно от800unproven/600invalid/400boundary. Только явныеquota-boundary inputs имеют0/1лимиты,остальнымпрежнийполныйnormalbudget. Повторы отрицательных (1871distinct из2000) не скрывать. На failure адреснаядиагностика,после2безрезультатныхalgorithm attempts DEVELOPMENT_PROCESS;неповторятьуспешныепакетыбезпричины.
 
 #### C16.3a — Исполнитель/checkpoint и первый пакет
@@ -653,9 +653,9 @@ C16 до полного прогона разделён на четыре неб
 
 #### C16.3b — Остальные фиксированные пакеты
 
-- **Зависимости:** `C16.3a`. **Файлы:** тотжеexecutor/README/appendPROGRESS;безправокruntimeрадипроцента.
-- **Результат:** in_progress, 29.10.2026 пакет2/индексы200–299 завершён за 181.083с:100 новых запусков,0 повторных. Known-feasible 10/10 success, unproven 2/40, boundary 2/20; все30 invalid-input отклонены. Один Chromium batch-тест пройден;0 ошибок ядра/невалидных success, каждый success fresh MVP browser+Node/original-intent-valid. Первый старт до ядра остановлен блокировкой localhost песочницей; доступ разрешён, код не менялся. Совокупно300/2000,3/20 пакетов; прежние200 receipts, manifest и source SHA сохранены. Следующий пакет3/индексы300–399, затем поочерёдно4–19. Продолжать только тот же manifest/матрицу/source SHA; успешные пакеты не повторять.
-- **Приёмка:** все2000различныхIDучтеныодинраз,1900оставшихсяenginecasesвыполнены;каждыйsuccessfresh+intent-valid,600invalidrejected,0invalidsuccess/hangs. Доли200known/800unproven/600invalid/400boundary/1871distinctrequestsраздельно. Неполныепакетынепринимать;наfailureадреснаядиагностикаиDEVELOPMENT_PROCESS.
+- **Зависимости:** `C16.3a`. **Файлы:** test-only исполнитель/выбор диапазона/тесты,README/appendPROGRESS;безправокruntimeрадипроцента.
+- **Результат:** in_progress,02.11.2026 группа300–549 завершена за 485.516с:250 новых вызовов,0 повторных. Known-feasible 25/25, unproven 6/100, boundary 6/50 success; все75 invalid-input отклонены. Совокупно550/2000,0 invalidsuccess/executorerrors.48 unit+2 Chromium invocation прошли;300 старых payloads перенесены в run-v3-range и fresh/intent-перепроверены без generate. Run-v2 сохранена, проверяющая функция побайтно прежняя; изменён только выбор диапазона/режим verify-only. Следующий диапазон550–799; далее по250 и последний остаток200. Матрица/seed/бюджеты неизменны, успешные входы не перезапускать.
+- **Приёмка:** все2000различныхIDучтеныодинраз,все оставшиеся enginecases выполнены;каждыйsuccessfresh+intent-valid,600invalidrejected,0invalidsuccess/hangs. Доли200known/800unproven/600invalid/400boundary/1871distinctrequestsраздельно. Неполныепакетынепринимать;наfailureадреснаядиагностикаиDEVELOPMENT_PROCESS.
 
 #### C16.3c — Prefix, отмена и protocol guards
 
