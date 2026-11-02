@@ -653,7 +653,7 @@ C16 до полного прогона разделён на четыре неб
 #### C16.3b — Остальные фиксированные пакеты
 
 - **Зависимости:** `C16.3a`. **Файлы:** test-only исполнитель/выбор диапазона/тесты,README/appendPROGRESS;безправокruntimeрадипроцента.
-- **Результат:** in_progress,02.11.2026 группа300–549 завершена за 485.516с:250 новых вызовов,0 повторных. Known-feasible 25/25, unproven 6/100, boundary 6/50 success; все75 invalid-input отклонены. Совокупно550/2000,0 invalidsuccess/executorerrors.48 unit+2 Chromium invocation прошли;300 старых payloads перенесены в run-v3-range и fresh/intent-перепроверены без generate. Run-v2 сохранена, проверяющая функция побайтно прежняя; изменён только выбор диапазона/режим verify-only. Следующий диапазон550–799; далее по250 и последний остаток200. Матрица/seed/бюджеты неизменны, успешные входы не перезапускать.
+- **Результат:** in_progress,02.11.2026 группа550–799 завершена за 524.160с:250 новых вызовов,0 повторных. Known-feasible 25/25, unproven 10/100, boundary 4/50 success; все75 invalid-input отклонены. Совокупно800/2000,0 invalidsuccess/executorerrors. Адресный Chromium-тест пройден; прежние550 receipts, manifest run-v3-range и56 source SHA сохранены. Код/тесты/матрица/seed/лимиты не менялись. Следующая группа800–1049; далее по250 и последний остаток200. C16.3c/C16.4 впереди, успешные входы не перезапускать.
 - **Приёмка:** все2000различныхIDучтеныодинраз,все оставшиеся enginecases выполнены;каждыйsuccessfresh+intent-valid,600invalidrejected,0invalidsuccess/hangs. Доли200known/800unproven/600invalid/400boundary/1871distinctrequestsраздельно. Неполныепакетынепринимать;наfailureадреснаядиагностикаиDEVELOPMENT_PROCESS.
 
 #### C16.3c — Prefix, отмена и protocol guards
