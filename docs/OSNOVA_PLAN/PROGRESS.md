@@ -20,12 +20,12 @@
 | C13.2b            | 72central+49bound+59rooms=180passed/0failed,37новых; TypeScript3/ESLint3,4Chromium. Только explicit geometry, ручные проёмы C1/C2 для fresh MVP/2D                            |
 | C13.2c            | 28новых+72builder+3N_hall=103passed/0failed,261excluded; TypeScript3/ESLint2/4Chromium. Реальные A03/B02 без ручной геометрии прошли C10/fresh guard                          |
 | C13.2d            | generate-families-2026.10.26-1:3семейства/прежнийbudget/fair4slots/freshsourceguard;196passed/0failed,TypeScript3/ESLint5/4Chromium; earlygate26/26,обаprimary10/10           |
-| C14               | Exact-q D4 point/wall/world normal/swing/sector;116новых+424связанных=540passed/0failed; свежие80MVP,TS3/ESLint5/4Chromium |
-| C15.1            | Письменный контракт/независимая арифметика, восемь малых подшагов; runtime не создан, старые тесты не повторялись |
-| C15.2            | Внутренние evaluateQualityFacts/compareQualityCandidates;75новых passed/0failed,TS3/ESLint2/Prettier2, без подключения к поиску |
-| C15.3            | Физический контракт мостов/порогов/weighted paths/counters/памяти;487manual primitive assertions,1read-only BFS diagnostic,1внешняя диаграмма |
-| C15.4a.1        | Frozen input/cursor/ordered coordinates;289passed/0failed,58новых;legacy API/counters сохранены, не prepared-space |
-| Следующий шаг     | C15.4a.2: union-complement/eroded bounds/expanded obstacles/grid/terminal mapping/owned handle |
+| C14               | Exact-q D4 point/wall/world normal/swing/sector;116новых+424связанных=540passed/0failed; свежие80MVP,TS3/ESLint5/4Chromium                                                    |
+| C15.1             | Письменный контракт/независимая арифметика, восемь малых подшагов; runtime не создан, старые тесты не повторялись                                                             |
+| C15.2             | Внутренние evaluateQualityFacts/compareQualityCandidates;75новых passed/0failed,TS3/ESLint2/Prettier2, без подключения к поиску                                               |
+| C15.3             | Физический контракт мостов/порогов/weighted paths/counters/памяти;487manual primitive assertions,1read-only BFS diagnostic,1внешняя диаграмма                                 |
+| C15.4a.1          | Frozen input/cursor/ordered coordinates;289passed/0failed,58новых;legacy API/counters сохранены, не prepared-space                                                            |
+| Следующий шаг     | C15.4a.2: union-complement/eroded bounds/expanded obstacles/grid/terminal mapping/owned handle                                                                                |
 
 Для C11.2 сохранены прежние общие ceilings nodes13280000/access1000000 и hall nodes1280000/layouts10000; normal2000checked/10с, extended10000checked/30с. Запуск последовательный на Windows x64/Node24.22.1/Ryzen5 5600X; исходный корпус/seed0 не менялись. Достигнутый предел успешных запусков — nodes, не полное число2000/10000. Это ранний гейт, **не K2/C16** (extended10/10 ещё нет), не SLA Worker100мс и не реальный iPhone. Последние проверки кода C11.2: TypeScript core/UI/tools и точечный ESLint успешны; C12.1 изменяет только Markdown, выполняются документационные/ручные проверки. Полный Building, C15-рейтинг/эргономика, R01–R02-оборудование, UI/Worker/сохранения/PDF, owner/iPhone pending.
 
@@ -418,7 +418,6 @@ C16.1 выполнен локально 28.10.2026: закреплена test-on
 
 Следующий отдельно C16.2:реальныеdesktopChromium36runs (10primary+3diag+5catalog)×2modes,прежниеseed0/лимиты,каждыйpublicsuccess freshMVP/originalintent+qualitymetadata,каталоготдельно. Потом .3выполняет2000rows фиксированнымипакетами сreceipt/source/digest checkpoint,аprefix repeats/cancelотдельноот2000denominator. .4закроетC16толькопослеполныхдоказательств. Runtime/старыеfixtures/старыеtests/RULES/UI/config/AGENTS/CI unchanged. Состояние/инвентарь/DAG/MDlinks/diff/backup сверяетсяпередзавершением;GitHubтолько6MD,код/тестылокально.
 
-
 ## Общий рабочий проект калькулятора и PLAN — согласованный контракт, 28.10.2026
 
 По поручению владельца подробно закреплён будущий UX: одна вкладка браузера и представления «Параметры / Планировка / Смета», один контроллер текущего черновика, переиспользуемые поля вместо второго калькулятора. Основной владелец правил взаимодействия — INTEGRATION §3; SPEC сохраняет числовые ограничения, ARCHITECTURE — канон/ревизии, E/U — малые этапы исполнения. Это документационное уточнение будущего E, не реализация общей оболочки и не изменение текущего C16.2.
@@ -465,7 +464,6 @@ Checkpoint фиксирует matrix digest5d1368a83fbbe6085aaf5faa4ebc9bb7d499b
 
 Реальныйresume-onlyповторпринялтеже100сохранённыхcase,зановосверилsource/inputs/receipts/Nodefresh/intent,вызововgenerate0. Байты100receiptиcheckpointсравненыдо/после,онинеизменны;countостался100,не200. Всего2000rows/1871distinctrequestsматрицысохраняются,ноостальные1900enginecasesнепроверены. Артефакты/checkpoint/отчёты/временныефайлывнеисходников,core/runtime/прежниеtests/fixtures/config/AGENTS/CIпобайтносохранены. Код/тестыгенераторалокальны,вGitHubтолькошестьMDпрогресса;DAG/ссылки/whitespace/инвентарь/backupсверяютсяназавершении. Скриншоты/полнаярегрессия/buildнеповторялись:runtime/UIнеизменны,актуальная2DпроверкаC16.2. СледующийточныйшагC16.3b,batch1/indices100–199сэтимжеманифестом.
 
-
 ## 29.10.2026 — C16.3b: пакет1 завершён, 200/2000 mixed
 
 На прежних исходниках и run-v2 manifest d1a81142665af1b4ff449c29139c376660b8f7e8b1ffce7c04cafc7163694332 выполнены только индексы100–199. Один адресный Vitest-тест с реальным Chromium156.0.8078.4 пройден,0 упавших;100 новых вызовов ядра,0 resumed/recovered. Пакет занял 172.653с по внешнему elapsed исполнителя, включая проверки и сохранение; это не время одного generate. Каждый найденный план заново проверен MVP в браузере и Node, свежий snapshot совпал с опубликованным, состав/ID/type/target/floor комнат и origin/current/links/height/technology сверены с исходным вводом. Версии/бюджеты/stopReason/terminal metadata и отсутствие page errors проверены. Невалидных success и ошибок исполнения нет.
@@ -476,7 +474,6 @@ Checkpoint фиксирует matrix digest5d1368a83fbbe6085aaf5faa4ebc9bb7d499b
 
 В GitHub отправляется только текущая сводка в шести существующих MD; порядок и зависимости карточек не меняются. Проверки документации: Markdown parse, локальные ссылки/якоря, whitespace и git diff --check; состав отправки сверяется. TypeScript/ESLint/старые unit/скриншоты/full suite/build не повторялись, поскольку runtime, тесты и UI не менялись; это не новые результаты прежних проверок. C16.3b остаётся in_progress. Следующий небольшой шаг — пакет2/индексы200–299 на этом же manifest; затем остальные17 пакетов, C16.3c prefix/cancel и C16.4. C16/K2, N/UI/Building/v1 не закрыты.
 
-
 ## 29.10.2026 — C16.3b: пакет2 завершён, 300/2000 mixed
 
 Проверены только индексы200–299 на прежнем run-v2 manifest d1a81142665af1b4ff449c29139c376660b8f7e8b1ffce7c04cafc7163694332. Адресный Chromium156.0.8078.4 batch-тест:1 пройден,0 упавших в итоговом запуске;100 новых вызовов ядра,0 resumed/recovered, elapsed 181.083с с проверками/записью. Первый инфраструктурный запуск упал до загрузки helper и до вызовов ядра/открытия checkpoint; отдельная диагностика подтвердила connect EACCES к localhost в песочнице. Разрешённый запуск с доступом к локальному Vite прошёл; код/конфигурация/лимиты не менялись. Начальный failed-report сохранён отдельно, в знаменатель не включён; это не алгоритмическая попытка.
@@ -484,7 +481,6 @@ Checkpoint фиксирует matrix digest5d1368a83fbbe6085aaf5faa4ebc9bb7d499b
 Пакет2: known-feasible 10/10, unproven 2/40, boundary 2/20 success; все30 invalid-input отклонены. Совокупно300: known-feasible 30/30, unproven 5/120, boundary 6/60 success; все90 invalid-input отклонены. Статусы: {"success":41,"invalidInput":232,"stepLimit":19,"timeout":6,"noSupportedLayout":2}; best-complete=38, geometric-fallback=3. Каждый success fresh MVP browser+Node/snapshot/original-intent-valid; ошибки исполнения ядра и невалидные success отсутствуют. Проверенный вход не равен найденному плану; лимит/отказ не доказывает геометрическую невозможность. Полные групповые статусы сохранены во внешних receipts/отчёте, ещё1700 входов не проверены.
 
 Сверены300 receipts/input SHA по фиксированной матрице и55 source SHA; прежние200 receipt bytes/hash и manifest неизменны, checkpoint содержит ровно ID0–299, writer lock снят. Runtime/тесты/матрица/seed/RULES/лимиты сохранены. Только локальные README/append-only PROGRESS и шесть существующих MD прогресса сайта; остальные172/174 локальных файла побайтно неизменны. Резервные копии и состав отправки проверяются независимо; Markdown parse/ссылки/якоря/whitespace/git diff --check, DAG без изменений. TypeScript/ESLint/старые unit/скриншоты/full suite/build не повторялись при неизменном коде/UI. В GitHub только документация. Следующий шаг C16.3b пакет3/индексы300–399 на том же manifest; C16.3c prefix/cancel и C16.4 впереди, C16/K2/N/UI/Building/v1 пока pending.
-
 
 ## 02.11.2026 — C16.3b: группа250, 300–549; всего550/2000
 
