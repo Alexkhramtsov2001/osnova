@@ -255,6 +255,32 @@ D4 — до0,5CNY/5мин/12обращений: DeepSeek пишет только
 - **Ручная проверка:** Проверить понятность результата и отсутствие заявлений о несуществующих возможностях.
 - **Переход:** все проверки этой карточки подтверждены в локальном PROGRESS, отсутствуют неразобранные регрессии; затем только отдельно порученная карточка с выполненными зависимостями. Pending-разрешение/реальный iPhone не засчитывать выполненным.
 
+### U04.1 — Контракт входа и пожеланий, 03.11.2026
+
+**Состояние:** письменный контракт; PreferencesStep/preferencesState ещё не реализованы. Зависимости U02/U03 готовы локально. Источники поведения: SPECIFICATION §4/§10, GENERATION_ALGORITHM (separate/via-hall и явное исключение ориентаций), прежние prepareRoomProgram/prepareRoomProgramLinks, RULES. Это выбор входа, пользовательские связи и полная предпроверка состава/бюджета перед U05, не геометрия, размещение или генерация.
+
+**Граница U04/U05.** U04 выбирает entryMode, редактирует пять полей userLinks, показывает defaults/warnings и результат C02.2a/C02.2b. Он не запускает поиск/Worker, не строит SVG, не сохраняет Project, не меняет комнаты/цели и не исправляет отказы автоматически. U05 получает только ok-профиль и запускает генерацию. Ошибки U04 дают возврат к U03, а не скрытую правку списка.
+
+**Ориентация и сторона.** Текущий raw-ввод не содержит ориентационных предпочтений; GENERATION_ALGORITHM прямо исключает O-компонент и запрещает фиктивные поля. Поэтому U04 не добавляет north/south/entryFacade и не обещает их влияние. В U04 «сторона» — только separate/via-hall и фактическое требование entrance; ориентация появится отдельным контрактом версии raw/score.
+
+**Входные данные.** Ровно `house: HouseState` и `rooms: RoomsValue` (requirements+userLinks) из U03. Для C02.2a: `origin = house.origin.footprint`, `current = house.current.footprint.requested`, `requirements` пересобирается в точный сырой конверт `{rulesVersion,floorId,rooms}` (только 5 полей комнаты), а не передаётся PreparedRoomRequirements с counts/needsTargetConfirmation. Если `currentHouseValue(house) = null`, origin отсутствует или `needsTargetConfirmation = true`, U04 отказывает и не подставляет прошлый lastValid. U04 не создаёт второй RoomsState.
+
+**Состояние.** PreferencesState: source `{origin,current,requirements}` либо sourceError; entryMode `"separate"|"via-hall"|null`; userLinks; program `PreparedRoomProgram|null`; linksResult `PreparedRoomProgramLinks|null`; issues; warnings; defaults; revision; canContinue. entryMode изначально null: separate/via-hall не подставляется по умолчанию и не выводится из наличия entrance. Любое изменение входа/связей/источника вызывает onGeometryEdit до проверки и увеличивает revision; неизменная операция revision не меняет.
+
+**API.** Планируемый preferencesState.ts: `createPreferencesDraft({house,rooms})`, `setEntryMode(state,mode,onGeometryEdit)`, `addUserLink(state,link,onGeometryEdit)`, `updateUserLink(state,index,link,onGeometryEdit)`, `removeUserLink(state,index,onGeometryEdit)`, `updatePreferencesSource(state,{house,rooms},onGeometryEdit)`, `currentPreferencesValue(state)` → `{program,linksResult}|null`. Изменяющие функции возвращают immutable state; неизвестный индекс/аргумент не затрагивает другой элемент.
+
+**Проверка.** Сначала `prepareRoomProgram({origin,current,requirements,entryMode})`; при ok — `prepareRoomProgramLinks({program,links:userLinks})`, где `program` — тот же сырой конверт `{origin,current,requirements,entryMode}`, а не `PreparedRoomProgram`. Показывать code+message(+relatedPaths). Программные `CALCULATOR_COUNT_LIMIT`, `MISSING_FUNCTION`, `AREA_LOWER_BOUND_EXCEEDED`, `UNSUPPORTED_CAPABILITY` блокируют и предлагают вернуться к U03; U04 не добавляет entrance/кухню и не меняет цели. Ссылочные `INVALID_REFERENCE`, `INVALID_LINK`, `DUPLICATE_LINK`, `CONFLICTING_LINKS` блокируют; `SOFT_LINK_CONFLICT` — warning, не блокирует. Defaults (кухня↔гостиная soft door) показываются отдельно, не входят в userLinks и не дедуплицируют пользовательские связи.
+
+**Связи.** Пять полей from/to/kind/priority/desired; from≠to; from/to — текущие комнаты; kind adjacency|door; priority hard|soft; desired boolean; предел ROOM_PROGRAM_LINK_LIMIT. Логические дубликаты и конфликты остаются явными, не исправляются молча. Связь не доказывает физическую дверь, проход, соседство или приватность.
+
+**Review/продолжение.** Показывать: выбранный вход, counts, budget `outerAreaQ4/minimumCatalogAreaQ4/minimumAcceptedAreaQ4/nominalUserAreaQ4/remainingAfterMinimumAreaQ4` в м², userLinks, defaults, warnings. «Далее» доступно только при entryMode≠null, program.ok, linksResult.ok; передаёт `{program,linksResult}` в U05. «Назад» сохраняет тот же parent state; отказ не теряет введённые вход/связи. `currentPreferencesValue` возвращает null при любом issue, а не прошлый результат.
+
+**Файлы записи.** `src/ui/wizard/preferencesState.ts`, `PreferencesStep.tsx`, `preferences.css`; `tests/unit/preferences-state.test.ts`, `tests/unit/preferences-step.test.ts`; `tests/helpers/preferencesHarness.ts`, `tests/helpers/preferences.vite.config.ts`, `tests/fixtures/preferences-step.html`; `playwright.preferences.config.ts`, `tests/e2e/preferences.spec.ts`, script `test:e2e:preferences`; PROGRESS/README/AGENTS — координатор. App/B12/C07/U05/Worker не меняются.
+
+**Ручные примеры.** 120 м²/P44, комнаты 14+14+5+16+24+6, separate с entrance: program ok, 79 nominal/77,14 minAccepted/42,86 remaining. Тот же список без entrance: separate → MISSING_FUNCTION, via-hall → ok. 30 м²/P22, 12+3+20+2 → AREA_LOWER_BOUND_EXCEEDED (36,6 > 30) при индивидуально допустимых C02.1-целях. 200 м²/P60 с одной спальней → CALCULATOR_COUNT_LIMIT. Связи: door hard desired=true и та же пара hard desired=false → CONFLICTING_LINKS; точный дубль пяти полей → DUPLICATE_LINK; soft-конфликт → warning. Это ручная арифметика, не прогон тестов.
+
+**Малые срезы.** U04.2a — preferencesState + адресные unit (вход/связи/проверка/review, без UI). U04.2b — controlled PreferencesStep + harness/e2e 1440/768/390. U04.3 — приёмка/документация. U05 — только отдельным поручением после U04.
+
 ## U05 — Результат, отказ и повторный поиск
 
 - **Цель:** Получить самостоятельный проверяемый результат: результат, отказ и повторный поиск.
