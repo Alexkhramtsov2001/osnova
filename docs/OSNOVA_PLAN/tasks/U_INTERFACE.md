@@ -390,7 +390,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b — Потребители, raw, Worker и повторная проверка
 
-- **Состояние:** in_progress; b1a независимо принят Codex04.11.2026 после3исправлений/19дополнительных тестов,216unique passed. Последовательность b1a→b1b→b2→b3; решение b1b принято письменно05.11 с уточнениями, b1b.1 links и b1b.2 validators приняты локально, следующий отдельный кодовый срез b1b.3. Код b1b.3/b2/b3 не начат. Каждый срез требует независимой приёмки.
+- **Состояние:** in_progress; b1a и весь b1b (links/validators/hall-layout) независимо приняты локально05.11, полный b1 завершён. Следующий отдельный шаг — scope v2 side/central до b2; hall-only policy не утверждена. B2/b3 не реализованы, каждый срез требует приёмки.
 - **Зависимость:** независимо принят U07.3a, отдельное поручение.
 - **Файлы/границы:** domain dispatcher/revision и requirements/facts, generationState, hall/layout, workers/result, независимые validation adapters и все найденные потребители старых полей (включая roomDiagnostics); минимальные typed accessors в UI-state допустимы для компиляции, новые controls остаются c. До правок закрепить полный перечень и версии из ARCHITECTURE.
 - **Результат:** v2 origin/current без A/P-пересчёта, effective для правил, отдельный v2 generation-result contract, клиентское ожидание версии/identity, own raw и fresh revalidation; старый v1 wire/результаты/хеши без изменений. Неизвестная/неподдержанная версия не ошибка комнаты.
@@ -399,7 +399,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b1 — Доменная подготовка и hall/layout, последовательные b1a/b1b
 
-- **Статус:** in_progress; b1a принят локально, b1b ожидает отдельного решения и поручения. Прежний единый b1 был остановлен на подтверждённой типовой зависимости. B1 не закрывается по одним facts.
+- **Статус:** completed локально05.11 после независимой приёмки b1a и всех b1b.1/.2/.3. Подготовка до реального v2 hall-layout подтверждена; поиск/Worker/полный b этим не закрыты.
 - **Причина:** PreparedHallInput.roomProgram и GenerationRawLayout/HallRawLayout используют прежний PreparedRoomProgramLinks, а buildPreparedHallLayoutSteps разделяется публичным builder и поиском. Требование сразу получить v2-layout без затрагивания этих границ было слишком широким. Типовая зависимость не доказывает необходимость переписывать весь hall или менять алгоритм; решение откладывается до отдельного b1b.
 
 ##### U07.3b1a — Versioned revision, requirements и facts без hall
@@ -412,7 +412,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b1b — Общий hall/layout: принятое решение и три последовательных среза
 
-- **Статус:** in_progress; решение принято письменно05.11.2026 с поправками Codex, b1b.1 links и b1b.2 validators независимо приняты локально. Принят b1a. Следующий отдельно поручаемый кодовый пункт b1b.3; его код не начат, весь b1b ещё не закрыт.
+- **Статус:** completed локально05.11.2026 после независимой приёмки links, validators и hall/layout. Последний b1b.3 исправлен Codex: malformed parameters v2 возвращают rejected вместо исключения;20добавленных тестов,1112unique passed,9606legacy records/events совпали. Новое публичное v2 search/generate/Worker не подключено.
 - **Выбранное направление:** общий внутренний геометрический builder и helpers без копирования алгоритма, отдельные v1/v2 preparation/build wrappers. Существующие PreparedHallInput/HallRawLayout/GenerationRawLayout/HallLayoutResult и public v1 validators остаются прежними: не заменять roomProgram на program, не удалять capabilityProfile/rulesVersion, не добавлять обязательный rawProgram в старый публичный тип. Новые internal representations создаются адаптерами. No-op/порядок полей/канонические параметры/хеши/прежние controls сохраняются.
 - **Типовая безопасность:** программа, raw, выбранный независимый validator и result обязаны принадлежать одной ветви. Не использовать независимые program/raw unions, допускающие пару v1 program+v2 raw, и не закрывать проблему double casts/any. Допустим constrained generic либо закрытая discriminated-union/internal adapter с коррелированными ветвями. Callback/подготовленный контекст — только внутренняя граница, не supplied raw и не доказательство checked. Геометрический kernel не обязан знать версии; versioned wrapper материализует собственный raw и вызывает соответствующие fresh validators. Нынешний stepped builder/search обязан сохранить yield/control accounting; перенос проверки не убирает оплачиваемые шаги и отмену.
 - **Validation issues:** одинаковый success payload rooms не означает одинаковый полный RoomGeometryResult. Старый union ошибок не включает все новые footprint/revision коды. V2 binding/bound/room result/issue-типы должны сохранять новые коды, path и relatedPaths; общий геометрический success можно переиспользовать. Старые v1 unions не расширять молча и новые коды не превращать в generic room error.
@@ -434,7 +434,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ###### U07.3b1b.3 — Общий stepped hall builder и отдельный v2 layout API
 
-- **Зависимость/статус:** b1b.2 независимо принят05.11.2026; следующий отдельно поручаемый кодовый пункт, pending реализации.
+- **Зависимость/статус:** completed локально05.11.2026 после независимой приёмки Codex.4TS: hall/layout/index и новый hall-v2 unit.1исправление параметров/20добавленных unit;1112unique passed (658+289+137+28), TS4/lint4/format4 passed.9606legacy comparisons включают9497bounded search events с идентичными callback counts; в этих trace prefixes кандидатов0, полная генерация ими не доказана. Реальные v2 layouts/rotation/area/fresh validation проверены отдельно. Следующий отдельный шаг — scope side/central до b2.
 - **Результат/граница:** hall.ts/layout.ts, только необходимые внутренние helpers/index/tests. PrepareHallInputV2/buildHallLayoutV2 и отдельные типы результата; public v1 API не меняются. Общий алгоритм стен/комнат/параметров/transform/ledger остаётся один, wrapper обеспечивает коррелированный raw/validator/result и полную frozen ownership. Builder использует fresh b1b.2, не adapters мока. V1 поиск и side/central работают через прежние wrappers, v2 поиск/Worker не подключаются.
 - **Проверки/приёмка:** реальный допустимый v2 layout плюс fresh bound/room validation,6000×11000 rotation0/90, точные8130²/8253×8001 на соответствующих стадиях (не требовать один и тот же состав помещений у любого footprint), user/negative links, double rotation/A-P/ownership/fake prepared, v1 layout/канонические ключи/хеши. Публичный legacy generate по-прежнему отклоняет v2 до рабочего семейного поиска; budgets/10–30с/reserve250мс не меняются. Не заявлять access/openings/Worker/v1 whole ready. До b2 отдельно фиксируется scope адаптации side/central.
 
