@@ -390,7 +390,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b — Потребители, raw, Worker и повторная проверка
 
-- **Состояние:** pending; после read-only трассировки DeepSeek и проверки Codex04.11.2026 уточнён последовательный split b1a→b1b→b2→b3 ниже. После конкретной трассировки зависимости hall/layout следующим отдельно поручен только b1a. Код не начат. Каждый срез требует независимой приёмки до следующего.
+- **Состояние:** in_progress; b1a независимо принят Codex04.11.2026 после3исправлений/19дополнительных тестов,216unique passed. Последовательность b1a→b1b→b2→b3; следующий отдельный шаг — контракт/решение b1b. Код b1b/b2/b3 не начат. Каждый срез требует независимой приёмки.
 - **Зависимость:** независимо принят U07.3a, отдельное поручение.
 - **Файлы/границы:** domain dispatcher/revision и requirements/facts, generationState, hall/layout, workers/result, независимые validation adapters и все найденные потребители старых полей (включая roomDiagnostics); минимальные typed accessors в UI-state допустимы для компиляции, новые controls остаются c. До правок закрепить полный перечень и версии из ARCHITECTURE.
 - **Результат:** v2 origin/current без A/P-пересчёта, effective для правил, отдельный v2 generation-result contract, клиентское ожидание версии/identity, own raw и fresh revalidation; старый v1 wire/результаты/хеши без изменений. Неизвестная/неподдержанная версия не ошибка комнаты.
@@ -399,12 +399,12 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b1 — Доменная подготовка и hall/layout, последовательные b1a/b1b
 
-- **Статус:** pending; прежний единый b1 остановлен без кода на подтверждённой типовой зависимости. Выполняются b1a→приёмка→решение b1b→реализация/приёмка b1b. B1 не закрывается по одним facts.
+- **Статус:** in_progress; b1a принят локально, b1b ожидает отдельного решения и поручения. Прежний единый b1 был остановлен на подтверждённой типовой зависимости. B1 не закрывается по одним facts.
 - **Причина:** PreparedHallInput.roomProgram и GenerationRawLayout/HallRawLayout используют прежний PreparedRoomProgramLinks, а buildPreparedHallLayoutSteps разделяется публичным builder и поиском. Требование сразу получить v2-layout без затрагивания этих границ было слишком широким. Типовая зависимость не доказывает необходимость переписывать весь hall или менять алгоритм; решение откладывается до отдельного b1b.
 
 ##### U07.3b1a — Versioned revision, requirements и facts без hall
 
-- **Зависимость/статус:** принят a; pending реализации, отдельно поручен только b1a.
+- **Зависимость/статус:** completed локально04.11.2026 после независимой приёмки Codex.4TS: новый footprintV2Revision/unit, requirements/index. Исправлены mutable changes entries, отсутствие origin/current в issue paths и необработанные исключения нечитаемого raw в новых v2 facts/program; v1 boundary не менялась.216unique unit (40+33+59+84),19тестов добавлены Codex; TS4/lint/format passed,1890legacy JSON-сравнений на630входах совпали. Hall/layout/Worker/UI не входят в эту приёмку.
 - **Результат:** additive v2 origin/revision и domain preparation/facts/предпроверка программы сохраняют собственный raw, local/world и baseline; effective/declared читаются по SPECIFICATION §2.1. V1 API/результаты/типы и hashes сохраняются. Неизвестные/смешанные версии, accessors и поддельные prepared отклоняются. Нет скрытой конверсии или изменения комнат.
 - **Граница:** новый footprintV2Revision.ts либо additive domain dispatcher, requirements.ts/небольшой v2-модуль и необходимые общие внутренние helpers, additive exports и адресные unit. Count/budget/catalog формулы и разбор требований переиспользуются, не копируются в параллельную реализацию. Старые публичные типы не расширяются до union ради ещё не подключённого потребителя. Hall/layout/generate/Worker/validation adapters/UI не менять.
 - **Проверки:** raw→origin/revision→requirements/facts/предпроверка программы; exact стороны/факт для обеих rotation,8130²,7900×8450,8253×8001; area180/side10003 и area36/side2980 показывают effective thresholds/envelope; dimensions declared=null. Baseline не заменяется при правке, caller mutation/getters/symbols/смешанные версии/поддельный prepared не обходят проверку. Footprint-пример не всегда является допустимым составом комнат: раздельные facts и preflight, независимые положительные/отрицательные составы. Сохранить99unit a и прежние requirements/facts/input проверки; TS4, точечные ESLint/Prettier/whitespace. Измерение стоимости только доменной подготовки, не всего поиска. Full suite/Worker/браузер/build не нужны.
@@ -412,7 +412,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b1b — Hall/layout v2, отдельное решение после b1a
 
-- **Зависимость/статус:** независимо принят b1a, затем отдельный контракт и поручение Codex; pending, вариант реализации пока не утверждён.
+- **Зависимость/статус:** b1a независимо принят04.11.2026; следующий отдельный шаг — контракт/решение Codex по b1b. Pending реализации; вариант и код пока не утверждены.
 - **Решение до кода:** проверить минимальное обобщение общих внутренних типов/процедур или явный адаптер с сохранением legacy wrappers и runtime version gate. Перечислить прямые зависимости builder/search/raw/validation, доказать что публичный generate до b2 не выдаст v2 под legacy generation-result. Нельзя считать расширение TypeScript типа само по себе доказательством runtime-поддержки; нужны проверки на фактическом внешнем входе. Не копировать hall-алгоритм и не проводить несвязанный рефакторинг2000строк.
 - **Результат/приёмка:** точные стороны и собственный v2 raw проходят реальную подготовку семейства/layout и необходимые независимые validation adapters; обе ориентации без повторного rotation/A-P-восстановления, хотя бы один настоящий допустимый layout. Правила/хеши/бюджеты v1 сохраняются. Контракт Worker result остаётся b2; если runtime gate требует изменения generate, это сначала явно включается в контракт b1b, а не обходится условием или молчаливым расширением scope. Пока b1b не принят, b1 и родитель b не закрываются.
 
