@@ -474,10 +474,23 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b2.4 — Полный downstream v2, сначала конкретный контракт
 
-- **Статус/зависимость:** in_progress только письменная приёмка после принятого b2.3. Первый контракт DeepSeek проверен Codex 05.11: направление versioned/shared budget принято, точный implementation contract не принят. Следующий отдельный результат — уточнение того же контракта и accounting доказательств; код/постоянные тесты не начинать. Proposed b2.4a–d пока не утверждённые карточки.
-- **Условия уточнения:** не обновлять все 19 locks только из-за стабильности actual. Независимо подтверждены 730/19 и 6 geometry hashes; old whole-result SHA восстанавливаются заменой одного accessStepsUsed. Нужны точные debit/exact-last/cancel/deadline инварианты, remaining budget diffs, candidate validation payload/stream metadata/initialControl, bound interval/binding/swing/portals/wall raw gates и routeContext fresh v1 call. Законный candidate rejection отделять от structural/protocol failure. Shape MVP snapshot можно сохранить, но raw/source revalidation versioned. Уточнить принимаемые validation/final/source-quality/scheduler пакеты без копий алгоритмов и изменения primary fixtures.
+- **Статус/зависимость:** in_progress; редакция2 проверена Codex05.11 и принята для следующего отдельного test-only пакета a. Направление b–g принято, их точный implementation scope/приёмка отдельно до кода; весь downstream не разрешён одним патчем. A пока не реализован.
+- **Независимая база:**8targeted ignored scenarios passed/0failed: точные N−1/N/N+1 при836, post-cancel/deadline и3real budget e2e. A01/A04/A05 отличаются от old budget только accessSteps1052/1653/1498; layout/keys/nodes/codeUnits прежние.6whole-result hash differences ранее доказаны как только accessStepsUsed. Полный permanent файл остаётся730/19, blanket обновление иных metadata не разрешено.
 - **Первый результат:** письменный raw→openings/access/roomLayout/wallProfile→MVP→final→route/quality→internal scheduler контракт с точными типами/snapshot/result/error ownership и последовательными подзадачами. Разобрать baseline19openings failures отдельным ограниченным шагом до изменений соответствующего кода. Не начинать весь downstream одним патчем и не создавать временную генерацию под legacy resultVersion.
 - **Критерии будущей реализации:** реальные candidates всех3семейств, свежие v2 opening/access/MVP/final/quality проверки, единые прежние rules/metrics/quality scheduler/budget/round-robin, отсутствие повторного A/P/rotation. Каждая независимая validation/transport граница принимается отдельно. Public generate/Worker до последнего согласованного подключения остаются legacy.
+
+##### U07.3b2.4a — Точечное закрытие старых openings locks и accounting regression
+
+- **Статус:** scope принят Codex05.11.2026; pending реализации/независимой приёмки.
+- **Файлы:** только локальный tests/unit/generate-openings.test.ts и ignored diagnostic artifacts. Production/fixtures/config/правила/лимиты не менять.
+- **Результат:** обновить6подтверждённых whole-result SHA и обоснованные access counters/budget locks, сохранить layoutSha/key/ID/stream/status и730прежних passing cases. A01/A04/A05 budget payload уже проверены Codex, повторный общий аудит не нужен. Проверить последующие assertions и расход второго automatic variant до его обновления; unexpected non-access diff не rebaseline.
+- **Проверки:** постоянные точные836−1/836/836+1, actual=charged/shared delta, no-publication при ресурсе/cancel/deadline, repeated terminal без нового debit. Все749старых cases проходят плюс новые адресные cases с честным отдельным числом; не фиксировать итог как749 после расширения тестов. Targeted Vitest, TS tools, ESLint/Prettier изменённого теста, diff/scope; не fullsuite/browser/build.
+- **Граница:** после отчёта остановка для Codex. A не разрешает production b–g. При не-access изменении locked geometry/key/ordering/status остановить затронутую часть с diff.
+
+##### U07.3b2.4b–g — Последовательные downstream границы
+
+- Направление: b opening binding/bound intervals/placement/static+pair swings; c topology/physical links/portals/access/roomLayout; d opening preparation/search/materialization; e bound wallProfile/MVP/final; f owned source/route/quality; g internal v2 scheduler. Каждый implementation allowlist/типовые negative tests/самостоятельный результат уточняется непосредственно до поручения, код сейчас не начинать.
+- Candidate сохраняет фактический materialized value + success.value validation + full keys + OpeningParameterStreamMetadata, initialControl не теряется. RawVersion хранить private у owned handle, не добавлять в legacy caller DTO. Topology→swings, physical links→topology, portals→physical links, access geometry→portals; не создать цикл. Общие алгоритмы/budget/правила, v1 API и версии сохраняются; v2 cursors/scheduler не public barrel доb2.5. Snapshot shape может быть нейтральным, source fresh revalidation versioned.
 
 ##### U07.3b2.5 — Публичный v2 result и Worker, завершение b2
 
