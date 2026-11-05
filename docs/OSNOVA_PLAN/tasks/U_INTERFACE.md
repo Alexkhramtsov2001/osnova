@@ -390,7 +390,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b — Потребители, raw, Worker и повторная проверка
 
-- **Состояние:** in_progress; b1a и весь b1b (links/validators/hall-layout) независимо приняты локально05.11, полный b1 завершён. Scope v2 side/central/поиска принят, b2.1 side-builder реализован и принят локально; следующий отдельный b2.2. Hall-only policy не утверждена, полный b2/b3 не завершены.
+- **Состояние:** in_progress; b1, b2.1–b2.2 builders и b2.3a/b/c cursors независимо приняты локально 05.11. Следующий отдельный шаг — письменный контракт b2.4 downstream. Все три семейства сохраняются; полный b2/b3 не завершён.
 - **Зависимость:** независимо принят U07.3a, отдельное поручение.
 - **Файлы/границы:** domain dispatcher/revision и requirements/facts, generationState, hall/layout, workers/result, независимые validation adapters и все найденные потребители старых полей (включая roomDiagnostics); минимальные typed accessors в UI-state допустимы для компиляции, новые controls остаются c. До правок закрепить полный перечень и версии из ARCHITECTURE.
 - **Результат:** v2 origin/current без A/P-пересчёта, effective для правил, отдельный v2 generation-result contract, клиентское ожидание версии/identity, own raw и fresh revalidation; старый v1 wire/результаты/хеши без изменений. Неизвестная/неподдержанная версия не ошибка комнаты.
@@ -440,7 +440,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b2 — Контракт результата Worker и fresh-проверка
 
-- **Зависимость/статус:** in_progress; полный b1 и b2.1 side-builder приняты локально05.11. Scope v2 side/central/поиска утверждён; следующий отдельный кодовый пункт b2.2 central-builder. Внутренние подзадачи не открывают повторно b1 и не являются готовым Worker.
+- **Зависимость/статус:** in_progress; b1, b2.1–b2.2 builders и b2.3a/b/c cursors приняты локально 05.11. Следующий отдельный результат — контракт b2.4. Это не готовый Worker и не повод повторно открывать b1.
 - **Результат/файлы:** подключить доменный v2-путь к generate.ts, workers/result/client/runtime и независимым validation adapters; необходимые generationState/runtime handlers только для raw/ожидаемой версии/identity/fresh, без controls. Включение происходит совместно с версией v2 result, а не заранее в b1. Транспортный protocol остаётся worker-mvp-2026.11.03-2; legacy result generate-quality-2026.10.27-1, v2 success и отказы generate-footprint-v2-2026.11.04-1. Валидация raw и геометрии заново, соответствие ожидаемой ветви и полной identity; старый принятый план сохраняется.
 - **Проверки/приёмка:** synthetic raw→family/layout→wire decoder→fresh и хотя бы один настоящий v2 Worker success; старый Worker/legacy invalidInput, неправильные/смешанные/неизвестные версии, поздние ответы и mutation. INVALID_STRUCTURE отдельно не доказывает старый Worker. Прежние codec/Worker/unit и адресный реальный Worker;0новых legacy-регрессий. Измерить подготовку/revalidation внутри10/30с и reserve250мс; бюджеты не повышать. Если нужны самостоятельные дополнительные контракты — уточнить границы до правок. После отчёта остановиться.
 
@@ -461,12 +461,12 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b2.2 — Central-corridor v2 preparation и builder
 
-- **Статус/зависимость:** b2.1 независимо принят05.11.2026; следующий отдельно поручаемый кодовый пункт, pending реализации.
+- **Статус/зависимость:** completed локально 05.11.2026 после независимой приёмки Codex в разрешённом владельцем пакете b2.2+b2.3. Central v2 wing и strip-cap построены по B02/A03, fresh bound/rooms проходят; ручной ledger, настоящий world rotation и area-shape ownership проверены. Central-v2 13 unit, общий адресный набор 1225 passed/0 failed. Лимиты/правила не менялись.
 - **Результат/граница:** centralCorridor.ts/необходимый internal helper/index/tests; отдельные v2 input/raw/result и один общий stepped builder. EntryPlacements и wing/strip-cap ограничения сохраняются. Реальный допустимый central layout/fresh bound/rooms, обе ориентации/режимы/links/ownership; прежние v1 keys/traces/results. V2 cursors/generate/Worker ещё не включаются; после отчёта остановка.
 
 ##### U07.3b2.3 — Versioned family cursors, три последовательных результата
 
-- **Статус:** pending после b2.2; до реализации каждого отдельное поручение с точным allowlist.
+- **Статус:** b2.3a/b/c completed локально 05.11.2026 после независимой приёмки всего согласованного увеличенного пакета. Реальные A01/B01/B02 candidates, кванты 1/7/64, точный node-limit, cancel/deadline, ownership/version guards проверены. Codex добавил 43 общих cursor/API unit и исправил hall v2 reentry/неboolean controls; legacy v1 semantics не изменены. Три v2 cursors и их типы остаются module-level, преждевременные public-barrel exports удалены. Дифференциально со снимком совпали 33 441 v1 событие и control polls; полное пространство поиска этим не доказано.
 - **B2.3a:** hall cursor/event/candidate v2, существующий hallStream/assignment/necessary connections общий с соответствующими versioned validators; не копировать цикл и не доверять старому v1 bound при v2 raw.
 - **B2.3b:** side cursor/events/stream v2 после принятого a; тот же поиск/порядок/allowance/controls, существующий side builder hook и необходимые прямые contact probes versioned.
 - **B2.3c:** central cursor/events/stream v2 после принятого b; сохраняются entryPlacements и прежние условия. Общий GenerationRoomCandidateV2 задаётся только один раз additive в layout.ts на первом нуждающемся срезе, старый GenerationRoomCandidate не расширяется union.
@@ -474,7 +474,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b2.4 — Полный downstream v2, сначала конкретный контракт
 
-- **Статус/зависимость:** pending после независимой приёмки b2.3; архитектурное направление принято, полный implementation allowlist/малые срезы пока не утверждены.
+- **Статус/зависимость:** pending; следующий отдельно поручаемый письменный контракт после принятого b2.3. Архитектурное направление принято, точный implementation allowlist/малые срезы ещё не утверждены. Код downstream/Worker автоматически не начинать.
 - **Первый результат:** письменный raw→openings/access/roomLayout/wallProfile→MVP→final→route/quality→internal scheduler контракт с точными типами/snapshot/result/error ownership и последовательными подзадачами. Разобрать baseline19openings failures отдельным ограниченным шагом до изменений соответствующего кода. Не начинать весь downstream одним патчем и не создавать временную генерацию под legacy resultVersion.
 - **Критерии будущей реализации:** реальные candidates всех3семейств, свежие v2 opening/access/MVP/final/quality проверки, единые прежние rules/metrics/quality scheduler/budget/round-robin, отсутствие повторного A/P/rotation. Каждая независимая validation/transport граница принимается отдельно. Public generate/Worker до последнего согласованного подключения остаются legacy.
 
