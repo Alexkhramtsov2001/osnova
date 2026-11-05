@@ -390,7 +390,7 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 #### U07.3b — Потребители, raw, Worker и повторная проверка
 
-- **Состояние:** in_progress; b1a и весь b1b (links/validators/hall-layout) независимо приняты локально05.11, полный b1 завершён. Scope v2 side/central/поиска принят письменно внутри b2; следующий отдельный кодовый пункт b2.1. Hall-only policy не утверждена. B2/b3 не реализованы, каждый срез требует приёмки.
+- **Состояние:** in_progress; b1a и весь b1b (links/validators/hall-layout) независимо приняты локально05.11, полный b1 завершён. Scope v2 side/central/поиска принят, b2.1 side-builder реализован и принят локально; следующий отдельный b2.2. Hall-only policy не утверждена, полный b2/b3 не завершены.
 - **Зависимость:** независимо принят U07.3a, отдельное поручение.
 - **Файлы/границы:** domain dispatcher/revision и requirements/facts, generationState, hall/layout, workers/result, независимые validation adapters и все найденные потребители старых полей (включая roomDiagnostics); минимальные typed accessors в UI-state допустимы для компиляции, новые controls остаются c. До правок закрепить полный перечень и версии из ARCHITECTURE.
 - **Результат:** v2 origin/current без A/P-пересчёта, effective для правил, отдельный v2 generation-result contract, клиентское ожидание версии/identity, own raw и fresh revalidation; старый v1 wire/результаты/хеши без изменений. Неизвестная/неподдержанная версия не ошибка комнаты.
@@ -434,13 +434,13 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ###### U07.3b1b.3 — Общий stepped hall builder и отдельный v2 layout API
 
-- **Зависимость/статус:** completed локально05.11.2026 после независимой приёмки Codex.4TS: hall/layout/index и новый hall-v2 unit.1исправление параметров/20добавленных unit;1112unique passed (658+289+137+28), TS4/lint4/format4 passed.9606legacy comparisons включают9497bounded search events с идентичными callback counts; в этих trace prefixes кандидатов0, полная генерация ими не доказана. Реальные v2 layouts/rotation/area/fresh validation проверены отдельно. Scope side/central принят письменно внутри b2; следующий отдельный кодовый пункт b2.1.
+- **Зависимость/статус:** completed локально05.11.2026 после независимой приёмки Codex.4TS: hall/layout/index и новый hall-v2 unit.1исправление параметров/20добавленных unit;1112unique passed (658+289+137+28), TS4/lint4/format4 passed.9606legacy comparisons включают9497bounded search events с идентичными callback counts; в этих trace prefixes кандидатов0, полная генерация ими не доказана. Реальные v2 layouts/rotation/area/fresh validation проверены отдельно. Scope side/central принят письменно внутри b2; текущий исполнительский шаг — в README/PROGRESS.
 - **Результат/граница:** hall.ts/layout.ts, только необходимые внутренние helpers/index/tests. PrepareHallInputV2/buildHallLayoutV2 и отдельные типы результата; public v1 API не меняются. Общий алгоритм стен/комнат/параметров/transform/ledger остаётся один, wrapper обеспечивает коррелированный raw/validator/result и полную frozen ownership. Builder использует fresh b1b.2, не adapters мока. V1 поиск и side/central работают через прежние wrappers, v2 поиск/Worker не подключаются.
 - **Проверки/приёмка:** реальный допустимый v2 layout плюс fresh bound/room validation,6000×11000 rotation0/90, точные8130²/8253×8001 на соответствующих стадиях (не требовать один и тот же состав помещений у любого footprint), user/negative links, double rotation/A-P/ownership/fake prepared, v1 layout/канонические ключи/хеши. Публичный legacy generate по-прежнему отклоняет v2 до рабочего семейного поиска; budgets/10–30с/reserve250мс не меняются. Не заявлять access/openings/Worker/v1 whole ready. До b2 отдельно фиксируется scope адаптации side/central.
 
 #### U07.3b2 — Контракт результата Worker и fresh-проверка
 
-- **Зависимость/статус:** полный b1 принят локально; scope v2 side/central/поиска принят письменно05.11 с уточнениями Codex. Код b2 pending, следующий отдельно поручаемый b2.1. Внутренние подзадачи ниже не открывают повторно завершённый b1 и не являются готовым Worker.
+- **Зависимость/статус:** in_progress; полный b1 и b2.1 side-builder приняты локально05.11. Scope v2 side/central/поиска утверждён; следующий отдельный кодовый пункт b2.2 central-builder. Внутренние подзадачи не открывают повторно b1 и не являются готовым Worker.
 - **Результат/файлы:** подключить доменный v2-путь к generate.ts, workers/result/client/runtime и независимым validation adapters; необходимые generationState/runtime handlers только для raw/ожидаемой версии/identity/fresh, без controls. Включение происходит совместно с версией v2 result, а не заранее в b1. Транспортный protocol остаётся worker-mvp-2026.11.03-2; legacy result generate-quality-2026.10.27-1, v2 success и отказы generate-footprint-v2-2026.11.04-1. Валидация raw и геометрии заново, соответствие ожидаемой ветви и полной identity; старый принятый план сохраняется.
 - **Проверки/приёмка:** synthetic raw→family/layout→wire decoder→fresh и хотя бы один настоящий v2 Worker success; старый Worker/legacy invalidInput, неправильные/смешанные/неизвестные версии, поздние ответы и mutation. INVALID_STRUCTURE отдельно не доказывает старый Worker. Прежние codec/Worker/unit и адресный реальный Worker;0новых legacy-регрессий. Измерить подготовку/revalidation внутри10/30с и reserve250мс; бюджеты не повышать. Если нужны самостоятельные дополнительные контракты — уточнить границы до правок. После отчёта остановиться.
 
@@ -455,13 +455,13 @@ Full-page/viewport/SVG PNG всех четырёх размеров и zoom/pinc
 
 ##### U07.3b2.1 — Side-corridor v2 preparation и builder
 
-- **Статус/зависимость:** pending, следующий отдельно поручаемый кодовый пункт после принятого b1.
+- **Статус/зависимость:** completed локально05.11.2026 после независимой приёмки Codex.4TS: sideCorridor/layout/index и новый side-v2 test. Production-код без исправлений;21дополнительный Codex unit,1167unique passed (1112+31+24), TS4/lint4/format4 passed.3450legacy comparisons совпали (3344events/3candidate events/controls); это bounded сравнение, не полный поиск. Hall/central/generate/Worker/UI/правила неизменны. Следующий отдельный b2.2.
 - **Файлы/результат:** sideCorridor.ts, минимальный internal raw/helper при доказанной общей потребности, additive index exports/unit. prepareSideCorridorInputV2/buildSideCorridorLayoutV2 и отдельные input/raw/result/issue types; существующий stepped builder общий для обеих версий, fresh bound/rooms v2, точные world размеры и own nested raw. V1 cursor продолжает использовать прежний wrapper без изменения scheduling. Hall/helper разрешены только для узкого общего helper без изменения старого API/алгоритма; не переносить все builders в новый framework.
 - **Проверки/приёмка:** настоящий допустимый side layout из независимого состава/параметров, area/dimensions,rotation0/90,точность/shape/baseline/links/ownership/нечитаемые параметры; fresh bound/rooms, v1 records/keys/stepped traces. Сохранить1112unit прошлого адресного набора, TS4/точечные lint/format. Не central/search/generate/openings/Worker/UI; после отчёта остановка.
 
 ##### U07.3b2.2 — Central-corridor v2 preparation и builder
 
-- **Статус/зависимость:** pending, после независимой приёмки b2.1 и отдельного поручения.
+- **Статус/зависимость:** b2.1 независимо принят05.11.2026; следующий отдельно поручаемый кодовый пункт, pending реализации.
 - **Результат/граница:** centralCorridor.ts/необходимый internal helper/index/tests; отдельные v2 input/raw/result и один общий stepped builder. EntryPlacements и wing/strip-cap ограничения сохраняются. Реальный допустимый central layout/fresh bound/rooms, обе ориентации/режимы/links/ownership; прежние v1 keys/traces/results. V2 cursors/generate/Worker ещё не включаются; после отчёта остановка.
 
 ##### U07.3b2.3 — Versioned family cursors, три последовательных результата
